@@ -25,8 +25,8 @@ file(GLOB ALL_SOURCES
         "src/*.cpp"
 
         # fruitworks files
-        "../fruitworks/include/*.h"
-        "../fruitworks/src/*.cpp"
+        "${FRUITWORK_INCLUDE_DIR}/*.h"
+        "${FRUITWORK_SRC_DIR}/*.cpp"
         )
 
 add_executable(yuzu_catch ${ALL_SOURCES})
