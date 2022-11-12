@@ -4,7 +4,7 @@
 #
 
 cmake_minimum_required(VERSION 3.22)
-project(fruitwork_catch)
+project(yuzu_catch)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -29,6 +29,6 @@ file(GLOB ALL_SOURCES
         "../fruitworks/src/*.cpp"
         )
 
-add_executable(fruitwork_catch ${ALL_SOURCES})
+add_executable(yuzu_catch ${ALL_SOURCES})
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} SDL2main.lib SDL2.lib SDL2_image.lib SDL2_ttf.lib SDL2_mixer.lib)
