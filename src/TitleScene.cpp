@@ -3,6 +3,8 @@
 #include "TitleScene.h"
 #include "System.h"
 #include "ExitScene.h"
+#include "Label.h"
+#include "ResponsiveSprite.h"
 
 namespace yuzu
 {
@@ -11,20 +13,27 @@ namespace yuzu
         bool success = true;
         std::cout << "TitleScene::enter()" << std::endl;
 
-        startButton = fruitwork::Button::getInstance(500, 500, 100, 100, "Start");
+        fruitwork::Button *startButton = fruitwork::Button::getInstance(50, 400, 390, 100, "Start");
         startButton->registerCallback([](fruitwork::Button *src)
                                       {
                                           std::cout << "Start button clicked" << std::endl;
                                           fruitwork::sys.setNextScene(fruitwork::ExitScene::get_instance());
                                       });
 
-        logo = fruitwork::Sprite::getInstance(100, 200, 100, 100, "logo.png");
+        startButton->setTextColor({255, 0, 0, 255});
+        startButton->setColor({0, 255, 0, 255});
 
+        fruitwork::Label *label = fruitwork::Label::getInstance(0, 50, 1200, 900, "yuzu!catch");
+        label->setColor({255, 204, 242, 255});
+        label->setAlignment(fruitwork::Label::Alignment::CENTER);
+        label->setFontSize(100);
+        label->setFont("Kepler 296.ttf");
+
+        fruitwork::Sprite *background = fruitwork::Sprite::getInstance(0, 0, 1200, 900, "background.png");
+
+        add_component(background);
+        add_component(label);
         add_component(startButton);
-        add_component(logo);
-
-        if (startButton == nullptr || logo == nullptr)
-            success = false;
 
         return success;
     }
@@ -34,9 +43,10 @@ namespace yuzu
         bool success = true;
         std::cout << "Exiting TitleScene" << std::endl;
 
-        delete startButton;
-
-        delete logo;
+        for (auto &c: components)
+        {
+            delete c;
+        }
 
         return success;
     }

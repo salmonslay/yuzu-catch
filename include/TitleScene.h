@@ -23,9 +23,6 @@ namespace yuzu
         static TitleScene instance;
 
         TitleScene();
-
-        fruitwork::Button *startButton;
-        fruitwork::Sprite *logo;
     };
 
 } // yuzu
