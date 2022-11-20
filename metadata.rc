@@ -22,3 +22,5 @@ BEGIN
     VALUE "Translation", 0x409, 1252
   END
 END
+
+// https://stackoverflow.com/a/708382/11420970
