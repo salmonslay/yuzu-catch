@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err34-c"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat"
 
@@ -140,4 +138,3 @@ namespace yuzu
 } // yuzu
 
 #pragma GCC diagnostic pop
-#pragma clang diagnostic pop
