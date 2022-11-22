@@ -31,7 +31,7 @@ namespace yuzu
         std::string line;
         BeatmapSection section = BeatmapSection::NONE;
         TimingPoint lastTimingPoint;
-        int discard; // used to discard unused values
+        void* discard; // used to discard unused values
 
         while (std::getline(infile, line))
         {
