@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 #define ERR(s, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, s, __VA_ARGS__);
 
@@ -24,6 +25,7 @@ namespace yuzu
     Beatmap Beatmap::loadBeatmap(const std::string &beatmapName)
     {
         SDL_Log("Parsing beatmap: %s...", beatmapName.c_str());
+        auto start = std::chrono::high_resolution_clock::now();
 
         std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapName + ".osu");
 
@@ -122,8 +124,12 @@ namespace yuzu
             }
         }
 
-        SDL_Log("Beatmap parsed successfully!");
         infile.close();
+
+        auto finish = std::chrono::high_resolution_clock::now();
+        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish-start);
+
+        SDL_Log("Beatmap loaded and parsed in %lld µs.", microseconds.count());
 
         return beatmap;
     }
@@ -131,6 +137,7 @@ namespace yuzu
     std::vector<HitObject> Beatmap::getHitObjects()
     {
         std::vector<HitObject> hitObjects;
+
 
 
     }
