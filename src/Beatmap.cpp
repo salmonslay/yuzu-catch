@@ -22,18 +22,20 @@ namespace yuzu
         return line.substr(line.find(':') + 1);
     }
 
-    Beatmap Beatmap::loadBeatmap(const std::string &beatmapName)
+    Beatmap Beatmap::loadBeatmap(const std::string &beatmapPath)
     {
-        SDL_Log("Parsing beatmap: %s...", beatmapName.c_str());
+        SDL_Log("Parsing beatmap: %s...", beatmapPath.c_str());
         auto start = std::chrono::high_resolution_clock::now();
 
-        std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapName + ".osu");
+        std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
 
         Beatmap beatmap;
         std::string line;
         BeatmapSection section = BeatmapSection::NONE;
         TimingPoint lastTimingPoint;
-        void* discard; // used to discard unused values
+        void *discard; // used to discard unused values
+
+        beatmap.beatmapDir = beatmapPath.substr(0, beatmapPath.find_last_of('/'));
 
         while (std::getline(infile, line))
         {
@@ -48,6 +50,8 @@ namespace yuzu
                     section = BeatmapSection::METADATA;
                 else if (line.find("[Difficulty]") != std::string::npos)
                     section = BeatmapSection::DIFFICULTY;
+                else if (line.find("[Events]") != std::string::npos)
+                    section = BeatmapSection::EVENTS;
                 else if (line.find("[TimingPoints]") != std::string::npos)
                     section = BeatmapSection::TIMINGPOINTS;
                 else if (line.find("[Colours]") != std::string::npos)
@@ -69,6 +73,8 @@ namespace yuzu
                     else if (line.find("Drum") != std::string::npos)
                         beatmap.sampleType = SampleType::DRUM;
                 }
+                else if (line.find("AudioFilename:") != std::string::npos)
+                    beatmap.audioFilename = getStringFromLine(line);
             }
             else if (section == BeatmapSection::METADATA)
             {
@@ -89,6 +95,14 @@ namespace yuzu
                     beatmap.sliderMultiplier = getDoubleFromLine(line);
                 else if (line.find("SliderTickRate:") != std::string::npos)
                     beatmap.sliderTickRate = getDoubleFromLine(line);
+            }
+            else if (section == BeatmapSection::EVENTS)
+            {
+                if (line.find("0,0,\"") != std::string::npos)
+                {
+                    // 0,0,"Splatoon-3.jpeg",0,0
+                    beatmap.backgroundFilename = line.substr(line.find('"') + 1, line.find_last_of('"') - line.find('"') - 1);
+                }
             }
             else if (section == BeatmapSection::COLOURS)
             {
@@ -127,9 +141,9 @@ namespace yuzu
         infile.close();
 
         auto finish = std::chrono::high_resolution_clock::now();
-        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish-start);
+        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
 
-        SDL_Log("Beatmap loaded and parsed in %lld µs.", microseconds.count());
+        SDL_Log("Beatmap \"%s\" loaded and parsed in %lld µs.", beatmap.title.c_str(), microseconds.count());
 
         return beatmap;
     }
@@ -137,7 +151,6 @@ namespace yuzu
     std::vector<HitObject> Beatmap::getHitObjects()
     {
         std::vector<HitObject> hitObjects;
-
 
 
     }

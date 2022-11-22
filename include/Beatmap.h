@@ -11,7 +11,12 @@ namespace yuzu
 
     struct Beatmap {
 
-        static Beatmap loadBeatmap(const std::string &beatmapName);
+        /***
+         * Loads and returns a beatmap from the given path.
+         * @param beatmapPath The path to the beatmap file
+         * @return The beatmap
+         */
+        static Beatmap loadBeatmap(const std::string &beatmapPath);
 
         enum class SampleType {
             DEFAULT,
@@ -28,6 +33,7 @@ namespace yuzu
             GENERAL,
             METADATA,
             DIFFICULTY,
+            EVENTS,
             TIMINGPOINTS,
             COLOURS,
             HITOBJECTS
@@ -35,6 +41,10 @@ namespace yuzu
 
         // [General]
         SampleType sampleType = SampleType::NORMAL;
+
+        std::string beatmapDir;
+        std::string audioFilename;
+        std::string backgroundFilename;
 
         // [Metadata]
         /** The title of the song. */
