@@ -21,7 +21,7 @@ namespace yuzu
          * @param beatmapPath The path to the beatmap file
          * @return The beatmap
          */
-        static Beatmap loadBeatmap(const std::string &beatmapPath);
+        static Beatmap *loadBeatmap(const std::string &beatmapPath);
 
         enum class SampleType {
             DEFAULT,
@@ -51,8 +51,9 @@ namespace yuzu
         std::string audioFilename;
         std::string backgroundFilename;
 
-        SDL_Texture* getBackgroundTexture();
-        Mix_Music* getAudio();
+        SDL_Texture *getBackgroundTexture();
+
+        Mix_Music *getAudio();
 
         // [Metadata]
         /** The title of the song. */

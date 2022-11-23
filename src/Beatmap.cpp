@@ -25,20 +25,20 @@ namespace yuzu
         return line.substr(line.find(':') + 1);
     }
 
-    Beatmap Beatmap::loadBeatmap(const std::string &beatmapPath)
+    Beatmap *Beatmap::loadBeatmap(const std::string &beatmapPath)
     {
         SDL_Log("Parsing beatmap: %s...", beatmapPath.c_str());
         auto start = std::chrono::high_resolution_clock::now();
 
         std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
 
-        Beatmap beatmap;
+        Beatmap *beatmap = new Beatmap();
         std::string line;
         BeatmapSection section = BeatmapSection::NONE;
         TimingPoint lastTimingPoint;
         void *discard; // used to discard unused values
 
-        beatmap.beatmapDir = beatmapPath.substr(0, beatmapPath.find_last_of('/'));
+        beatmap->beatmapDir = beatmapPath.substr(0, beatmapPath.find_last_of('/'));
 
         while (std::getline(infile, line))
         {
@@ -72,39 +72,39 @@ namespace yuzu
                 if (line.find("SampleSet:") != std::string::npos)
                 {
                     if (line.find("Soft") != std::string::npos)
-                        beatmap.sampleType = SampleType::SOFT;
+                        beatmap->sampleType = SampleType::SOFT;
                     else if (line.find("Drum") != std::string::npos)
-                        beatmap.sampleType = SampleType::DRUM;
+                        beatmap->sampleType = SampleType::DRUM;
                 }
                 else if (line.find("AudioFilename:") != std::string::npos)
-                    beatmap.audioFilename = getStringFromLine(line);
+                    beatmap->audioFilename = getStringFromLine(line);
             }
             else if (section == BeatmapSection::METADATA)
             {
                 if (line.find("TitleUnicode:") != std::string::npos)
-                    beatmap.title = getStringFromLine(line);
+                    beatmap->title = getStringFromLine(line);
                 else if (line.find("ArtistUnicode:") != std::string::npos)
-                    beatmap.artist = getStringFromLine(line);
+                    beatmap->artist = getStringFromLine(line);
                 else if (line.find("Creator:") != std::string::npos)
-                    beatmap.creator = getStringFromLine(line);
+                    beatmap->creator = getStringFromLine(line);
                 else if (line.find("Version:") != std::string::npos)
-                    beatmap.version = getStringFromLine(line);
+                    beatmap->version = getStringFromLine(line);
                 else if (line.find("Tags:") != std::string::npos)
-                    beatmap.tags = getStringFromLine(line);
+                    beatmap->tags = getStringFromLine(line);
             }
             else if (section == BeatmapSection::DIFFICULTY)
             {
                 if (line.find("SliderMultiplier:") != std::string::npos)
-                    beatmap.sliderMultiplier = getDoubleFromLine(line);
+                    beatmap->sliderMultiplier = getDoubleFromLine(line);
                 else if (line.find("SliderTickRate:") != std::string::npos)
-                    beatmap.sliderTickRate = getDoubleFromLine(line);
+                    beatmap->sliderTickRate = getDoubleFromLine(line);
             }
             else if (section == BeatmapSection::EVENTS)
             {
                 if (line.find("0,0,\"") != std::string::npos)
                 {
                     // 0,0,"Splatoon-3.jpeg",0,0
-                    beatmap.backgroundFilename = line.substr(line.find('"') + 1, line.find_last_of('"') - line.find('"') - 1);
+                    beatmap->backgroundFilename = line.substr(line.find('"') + 1, line.find_last_of('"') - line.find('"') - 1);
                 }
             }
             else if (section == BeatmapSection::COLOURS)
@@ -116,7 +116,7 @@ namespace yuzu
                     if (sscanf(line.c_str(), "%s : %hhd,%hhd,%hhd", &discard, &c.r, &c.g, &c.b) == EOF)
                         ERR("Failed to parse combo colour: %d, and %d", c.r, c.g)
 
-                    beatmap.comboColours.push_back(c);
+                    beatmap->comboColours.push_back(c);
                 }
             }
             else if (section == BeatmapSection::TIMINGPOINTS)
@@ -137,7 +137,7 @@ namespace yuzu
                 else if (lastTimingPoint.offset)
                     timingPoint.beatLength = lastTimingPoint.beatLength / (-100 / timingPoint.beatLength);
 
-                beatmap.timingPoints.push_back(timingPoint);
+                beatmap->timingPoints.push_back(timingPoint);
             }
         }
 
@@ -146,7 +146,7 @@ namespace yuzu
         auto finish = std::chrono::high_resolution_clock::now();
         auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
 
-        SDL_Log("Beatmap \"%s\" loaded and parsed in %lld µs.", beatmap.title.c_str(), microseconds.count());
+        SDL_Log("Beatmap \"%s\" loaded and parsed in %lld µs.", beatmap->title.c_str(), microseconds.count());
 
         return beatmap;
     }
