@@ -81,9 +81,9 @@ namespace yuzu
             }
             else if (section == BeatmapSection::METADATA)
             {
-                if (line.find("TitleUnicode:") != std::string::npos)
+                if (line.find("Title:") != std::string::npos)
                     beatmap->title = getStringFromLine(line);
-                else if (line.find("ArtistUnicode:") != std::string::npos)
+                else if (line.find("Artist:") != std::string::npos)
                     beatmap->artist = getStringFromLine(line);
                 else if (line.find("Creator:") != std::string::npos)
                     beatmap->creator = getStringFromLine(line);
