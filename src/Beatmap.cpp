@@ -3,10 +3,12 @@
 
 #include "Beatmap.h"
 #include "Constants.h"
+#include "System.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <SDL_image.h>
 
 #define ERR(s, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, s, __VA_ARGS__);
 
@@ -153,6 +155,43 @@ namespace yuzu
         std::vector<HitObject> hitObjects;
 
 
+    }
+
+    SDL_Texture *Beatmap::getBackgroundTexture()
+    {
+        if (backgroundTexture != nullptr)
+            return backgroundTexture;
+
+        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + backgroundFilename;
+        backgroundTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fullPath.c_str());
+
+        if (backgroundTexture == nullptr)
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load background texture %s: %s", fullPath.c_str(), SDL_GetError());
+
+        return backgroundTexture;
+    }
+
+    Mix_Music *Beatmap::getAudio()
+    {
+        if (music != nullptr)
+            return music;
+
+        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + audioFilename;
+        music = Mix_LoadMUS(fullPath.c_str());
+
+        if (music == nullptr)
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load audio %s: %s", fullPath.c_str(), Mix_GetError());
+
+        return music;
+    }
+
+    Beatmap::~Beatmap()
+    {
+        if (backgroundTexture != nullptr)
+            SDL_DestroyTexture(backgroundTexture);
+
+        if (music != nullptr)
+            Mix_FreeMusic(music);
     }
 
 } // yuzu

@@ -51,8 +51,8 @@ namespace yuzu
         std::string audioFilename;
         std::string backgroundFilename;
 
-        SDL_Texture *backgroundTexture = nullptr;
-        Mix_Music *music = nullptr;
+        SDL_Texture* getBackgroundTexture();
+        Mix_Music* getAudio();
 
         // [Metadata]
         /** The title of the song. */
@@ -96,6 +96,12 @@ namespace yuzu
 
         // [HitObjects]
         std::vector<HitObject> getHitObjects();
+
+        ~Beatmap();
+
+    private:
+        SDL_Texture *backgroundTexture = nullptr;
+        Mix_Music *music = nullptr;
 
 
     };
