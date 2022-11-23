@@ -22,6 +22,7 @@ namespace yuzu
 
         songTime = fruitwork::Label::getInstance(x + 175, y + 110, 66, 29, "02:28"); // TODO: Get song time from beatmap
         songTime->setFontSize(24);
+        songTime->setColor({255, 255, 255, 225});
     }
 
     void GalleryItem::draw() const
