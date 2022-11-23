@@ -5,10 +5,15 @@
 #include <vector>
 #include <SDL.h>
 #include "Fruit.h"
+#include <SDL_mixer.h>
 
 namespace yuzu
 {
 
+    /**
+     * Container for a beatmap and all its contents.
+     * A beatmap will never be destroyed, but its background and audio can be unloaded.
+     */
     struct Beatmap {
 
         /***
@@ -45,6 +50,9 @@ namespace yuzu
         std::string beatmapDir;
         std::string audioFilename;
         std::string backgroundFilename;
+
+        SDL_Texture *backgroundTexture = nullptr;
+        Mix_Music *music = nullptr;
 
         // [Metadata]
         /** The title of the song. */
