@@ -1,4 +1,5 @@
 #pragma GCC diagnostic push
+#pragma clang diagnostic ignored "-Wdangling-gsl"
 #pragma GCC diagnostic ignored "-Wformat"
 
 #include "Beatmap.h"
@@ -162,11 +163,11 @@ namespace yuzu
         if (backgroundTexture != nullptr)
             return backgroundTexture;
 
-        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + backgroundFilename;
-        backgroundTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fullPath.c_str());
+        const char *fullPath = (constants::gResPath + "beatmaps/" + beatmapDir + "/" + backgroundFilename).c_str();
+        backgroundTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fullPath);
 
         if (backgroundTexture == nullptr)
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load background texture %s: %s", fullPath.c_str(), SDL_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load background texture %s: %s", fullPath, IMG_GetError());
 
         return backgroundTexture;
     }
@@ -176,11 +177,11 @@ namespace yuzu
         if (music != nullptr)
             return music;
 
-        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + audioFilename;
-        music = Mix_LoadMUS(fullPath.c_str());
+        const char *fullPath = (constants::gResPath + "beatmaps/" + beatmapDir + "/" + audioFilename).c_str();
+        music = Mix_LoadMUS(fullPath);
 
         if (music == nullptr)
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load audio %s: %s", fullPath.c_str(), Mix_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load audio %s: %s", fullPath, Mix_GetError());
 
         return music;
     }
