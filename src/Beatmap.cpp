@@ -101,7 +101,7 @@ namespace yuzu
             }
             else if (section == BeatmapSection::EVENTS)
             {
-                if (line.find("0,0,\"") != std::string::npos)
+                if (line.rfind("0,0,\"", 0) == 0)
                 {
                     // 0,0,"Splatoon-3.jpeg",0,0
                     beatmap->backgroundFilename = line.substr(line.find('"') + 1, line.find_last_of('"') - line.find('"') - 1);
