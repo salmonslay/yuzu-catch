@@ -163,11 +163,11 @@ namespace yuzu
         if (backgroundTexture != nullptr)
             return backgroundTexture;
 
-        const char *fullPath = (constants::gResPath + "beatmaps/" + beatmapDir + "/" + backgroundFilename).c_str();
-        backgroundTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fullPath);
+        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + backgroundFilename;
+        backgroundTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fullPath.c_str());
 
         if (backgroundTexture == nullptr)
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load background texture %s: %s", fullPath, IMG_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load background texture %s: %s", fullPath.c_str(), IMG_GetError());
 
         return backgroundTexture;
     }
@@ -177,11 +177,11 @@ namespace yuzu
         if (music != nullptr)
             return music;
 
-        const char *fullPath = (constants::gResPath + "beatmaps/" + beatmapDir + "/" + audioFilename).c_str();
-        music = Mix_LoadMUS(fullPath);
+        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + audioFilename;
+        music = Mix_LoadMUS(fullPath.c_str());
 
         if (music == nullptr)
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load audio %s: %s", fullPath, Mix_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load audio %s: %s", fullPath.c_str(), Mix_GetError());
 
         return music;
     }
