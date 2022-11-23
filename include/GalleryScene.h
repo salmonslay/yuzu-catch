@@ -18,10 +18,12 @@ namespace yuzu
 
     private:
         static GalleryScene instance;
+        int currentPage = 0;
 
         GalleryScene();
 
-        std::vector<GalleryItem *> galleryItems {};
+        std::vector<GalleryItem *> galleryItems{};
+        fruitwork::Label *pageLabel;
 
         /**
          * Loads in all beatmaps and fills the beatmap list.
@@ -33,6 +35,12 @@ namespace yuzu
          * @param page The page to add, 0 is the first page.
          */
         void addGalleryItems(int page);
+
+        /**
+         * Changes page of the gallery.
+         * @param next True if the next page should be shown, false if the previous page should be shown.
+         */
+        void changePage(bool next);
     };
 
 

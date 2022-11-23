@@ -6,6 +6,7 @@
 #include "Button.h"
 #include "GameScene.h"
 #include "GalleryItem.h"
+#include "ImageButton.h"
 #include <ResourceManager.h>
 #include <filesystem>
 
@@ -20,25 +21,40 @@ namespace yuzu
         if (beatmaps.empty())
             loadBeatmaps();
 
-        fruitwork::Button *buttonNextPage = fruitwork::Button::getInstance(10, 842, 240, 48, "Next page");
+        fruitwork::ImageButton *buttonPreviousPage = fruitwork::ImageButton::getInstance(
+                92, 705, 128, 128, fruitwork::ResourceManager::getTexturePath("arrow.png"));
+        buttonPreviousPage->registerCallback([](fruitwork::Button *src)
+                                             {
+                                                 GalleryScene::get_instance()->changePage(false);
+                                             });
+        buttonPreviousPage->setFlip(SDL_FLIP_HORIZONTAL);
+
+        fruitwork::ImageButton *buttonNextPage = fruitwork::ImageButton::getInstance(
+                374, 705, 128, 128, fruitwork::ResourceManager::getTexturePath("arrow.png"));
         buttonNextPage->registerCallback([](fruitwork::Button *src)
                                          {
-                                             std::cout << "Next page" << std::endl;
-                                             auto *scene = GalleryScene::get_instance();
-                                             scene->addGalleryItems(1);
+                                             GalleryScene::get_instance()->changePage(true);
                                          });
+
+        pageLabel = fruitwork::Label::getInstance(223, 741, 149, 79, "1/1");
+        pageLabel->setFontSize(36);
+        pageLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
+        pageLabel->setColor({255, 255, 255, 255});
 
         fruitwork::Sprite *background = fruitwork::Sprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight,
                                                                        fruitwork::ResourceManager::getTexturePath("background.png"));
 
 
         add_component(background);
+        add_component(buttonPreviousPage);
         add_component(buttonNextPage);
+        add_component(pageLabel);
 
-        addGalleryItems(0);
+        addGalleryItems(currentPage);
 
         return success;
     }
+
 
     void GalleryScene::addGalleryItems(int page)
     {
@@ -77,6 +93,20 @@ namespace yuzu
                 y += h + padding;
             }
         }
+
+        pageLabel->setText(std::to_string(page + 1) + "/" + std::to_string((beatmaps.size() / 6) + 1));
+    }
+
+    void GalleryScene::changePage(bool next)
+    {
+        currentPage += next ? 1 : -1;
+
+        if (currentPage < 0)
+            currentPage = beatmaps.size() / 6;
+        else if (currentPage > beatmaps.size() / 6)
+            currentPage = 0;
+
+        addGalleryItems(currentPage);
     }
 
     bool GalleryScene::exit()
