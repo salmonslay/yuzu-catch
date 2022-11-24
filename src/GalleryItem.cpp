@@ -12,12 +12,12 @@ namespace yuzu
     {
         sprite = fruitwork::ResponsiveSprite::getInstance(x, y, 246, 139, beatmap->getBackgroundTexture());
 
-        songTitle = fruitwork::Label::getInstance(x, y + 139, 246, 30, beatmap->title);
-        songTitle->setFontSize(18);
+        songTitle = fruitwork::Label::getInstance(x, y + 139, 246, 40, beatmap->title);
+        songTitle->setFontSize(20);
         songTitle->setColor({255, 255, 255, 255});
 
-        songArtist = fruitwork::Label::getInstance(x, y + 169, 246, 30, beatmap->artist);
-        songArtist->setFontSize(16);
+        songArtist = fruitwork::Label::getInstance(x, y + 167, 246, 40, beatmap->artist);
+        songArtist->setFontSize(18);
         songArtist->setColor({255, 255, 255, 178});
 
         songTime = fruitwork::Label::getInstance(x + 175, y + 110, 66, 29, "02:28"); // TODO: Get song time from beatmap
