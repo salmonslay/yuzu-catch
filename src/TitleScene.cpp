@@ -32,7 +32,6 @@ namespace yuzu
         label->setColor({255, 204, 242, 255});
         label->setAlignment(fruitwork::Label::Alignment::CENTER);
         label->setFontSize(100);
-        label->setFont("Kepler 296.ttf");
 
         fruitwork::InputField *inputField = fruitwork::InputField::getInstance(50, 300, 390, 48, "Enter your name...");
 
