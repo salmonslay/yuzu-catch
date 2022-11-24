@@ -16,6 +16,8 @@ namespace yuzu
 
         bool exit() override;
 
+        void setSelectedBeatmap(int index);
+
     private:
         static GalleryScene instance;
         int currentPage = 0;

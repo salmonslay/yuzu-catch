@@ -44,7 +44,6 @@ namespace yuzu
         fruitwork::Sprite *background = fruitwork::Sprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight,
                                                                        fruitwork::ResourceManager::getTexturePath("background.png"));
 
-
         add_component(background);
         add_component(buttonPreviousPage);
         add_component(buttonNextPage);
@@ -164,6 +163,11 @@ namespace yuzu
         }
 
         beatmaps;
+    }
+
+    void GalleryScene::setSelectedBeatmap(int index)
+    {
+
     }
 
     GalleryScene GalleryScene::instance;
