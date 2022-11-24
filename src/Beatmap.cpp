@@ -27,7 +27,7 @@ namespace yuzu
 
     Beatmap *Beatmap::loadBeatmap(const std::string &beatmapPath)
     {
-        SDL_Log("Parsing beatmap: %s...", beatmapPath.c_str());
+        //SDL_Log("Parsing beatmap: %s...", beatmapPath.c_str());
         auto start = std::chrono::high_resolution_clock::now();
 
         std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
