@@ -52,6 +52,12 @@ namespace yuzu
         SDL_Log("Loading game resources...");
         auto start = std::chrono::high_resolution_clock::now();
 
+        if (currentBeatmap == nullptr)
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Beatmap is null!");
+            return;
+        }
+
         // fruits
         std::vector<std::string> fruits = {"apple", "grapes", "orange", "pear"};
         for (std::string &f: fruits)
@@ -70,14 +76,21 @@ namespace yuzu
         dropTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), "fruit-drop.png");
 
         // background
-        backgroundTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("jerafina.png").c_str());
+        backgroundTexture = currentBeatmap->getBackgroundTexture();
 
         // samples
-        // TODO: load correct sample type from beatmap, for now we just use soft
-        hitSampleSet.normal = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/soft-hitnormal.wav").c_str());
-        hitSampleSet.whistle = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/soft-hitwhistle.wav").c_str());
-        hitSampleSet.finish = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/soft-hitfinish.wav").c_str());
-        hitSampleSet.clap = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/soft-hitclap.wav").c_str());
+        std::string sample = "normal";
+        if (currentBeatmap->sampleType == Beatmap::SampleType::SOFT)
+            sample = "soft";
+        else if (currentBeatmap->sampleType == Beatmap::SampleType::DRUM)
+            sample = "drum";
+
+        hitSampleSet.normal = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitnormal.wav").c_str());
+        hitSampleSet.whistle = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitwhistle.wav").c_str());
+        hitSampleSet.finish = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitfinish.wav").c_str());
+        hitSampleSet.clap = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitclap.wav").c_str());
+
+        music = currentBeatmap->getAudio();
 
         // https://stackoverflow.com/a/12883734/11420970
         auto finish = std::chrono::high_resolution_clock::now();

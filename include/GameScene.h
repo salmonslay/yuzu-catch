@@ -43,6 +43,8 @@ namespace yuzu
         HitObjectSet bananaSet;
         SDL_Texture *dropTexture;
         SDL_Texture *backgroundTexture;
+
+        Mix_Music *music;
         HitSampleSet hitSampleSet;
 
         void initResources();
