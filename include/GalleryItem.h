@@ -10,9 +10,13 @@
 
 namespace yuzu
 {
+    /**
+     * A gallery item is one of the six cards in the gallery.
+     * It displays the name of the beatmap, the artist, and the background.
+     */
     class GalleryItem : public fruitwork::Component {
     public:
-        static GalleryItem *getInstance(Beatmap *beatmap, int x, int y);
+        static GalleryItem *getInstance(Beatmap *beatmap, int x, int y, int beatmapIndex);
 
         void onMouseDown(const SDL_Event &) override;
 
@@ -27,7 +31,7 @@ namespace yuzu
         ~GalleryItem() override;
 
     protected:
-        GalleryItem(Beatmap *beatmap, int x, int y);
+        GalleryItem(Beatmap *beatmap, int x, int y, int beatmapIndex);
 
     private:
 
@@ -38,6 +42,7 @@ namespace yuzu
         fruitwork::Label *songTitle;
         fruitwork::Label *songArtist;
         fruitwork::Label *songTime;
+        int beatmapIndex;
     };
 
 } // yuzu

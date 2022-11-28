@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Beatmap.h"
 #include "GalleryItem.h"
+#include "GalleryFocus.h"
 
 namespace yuzu
 {
@@ -26,6 +27,7 @@ namespace yuzu
 
         std::vector<GalleryItem *> galleryItems{};
         fruitwork::Label *pageLabel;
+        GalleryFocus *galleryFocus;
 
         /**
          * Loads in all beatmaps and fills the beatmap list.

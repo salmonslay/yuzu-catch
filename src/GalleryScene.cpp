@@ -44,10 +44,14 @@ namespace yuzu
         fruitwork::Sprite *background = fruitwork::Sprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight,
                                                                        fruitwork::ResourceManager::getTexturePath("background.png"));
 
+        galleryFocus = GalleryFocus::getInstance(637, 36);
+
+
         add_component(background);
         add_component(buttonPreviousPage);
         add_component(buttonNextPage);
         add_component(pageLabel);
+        add_component(galleryFocus);
 
         addGalleryItems(currentPage);
 
@@ -81,7 +85,8 @@ namespace yuzu
             if (beatmap == nullptr)
                 break;
 
-            GalleryItem *item = GalleryItem::getInstance(beatmaps[(page * 6) + i][0], x, y);
+            int beatmapIndex = (page * 6) + i;
+            GalleryItem *item = GalleryItem::getInstance(beatmaps[beatmapIndex][0], x, y, beatmapIndex);
             galleryItems.push_back(item);
             add_component(item);
 
@@ -167,7 +172,9 @@ namespace yuzu
 
     void GalleryScene::setSelectedBeatmap(int index)
     {
-
+        currentBeatmap = beatmaps[index][0];
+        SDL_Log("Selected beatmap %s", currentBeatmap->title.c_str());
+        galleryFocus->setBeatmap(currentBeatmap);
     }
 
     GalleryScene GalleryScene::instance;

@@ -4,23 +4,21 @@
 
 namespace yuzu
 {
-    GalleryItem *GalleryItem::getInstance(Beatmap *beatmap, int x, int y)
+    GalleryItem *GalleryItem::getInstance(Beatmap *beatmap, int x, int y, int beatmapIndex)
     {
-        return new GalleryItem(beatmap, x, y);
+        return new GalleryItem(beatmap, x, y, beatmapIndex);
     }
 
-    GalleryItem::GalleryItem(Beatmap *beatmap, int x, int y)
-            : Component(x, y, 246, 199)
+    GalleryItem::GalleryItem(Beatmap *beatmap, int x, int y, int beatmapIndex)
+            : Component(x, y, 246, 199), beatmapIndex(beatmapIndex)
     {
         sprite = fruitwork::ImageButton::getInstance(x, y, 246, 139, beatmap->getBackgroundTexture());
         sprite->registerCallback([](fruitwork::Button *src)
                                  {
-                                     SDL_Log("Clicked!");
-                                     //yuzu::GalleryScene::get_instance()->setSelectedBeatmap(i); // how?
+                                     yuzu::GalleryScene::get_instance()->setSelectedBeatmap(1); // beatmapIndex instead of 1 - how?
                                  });
         coverBackdropRect = {x, y, 246, 139};
         coverFrameRect = {x - 1, y - 1, 246 + 2, 139 + 2};
-
 
 
         songTitle = fruitwork::Label::getInstance(x, y + 139, 246, 40, beatmap->title);
