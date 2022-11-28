@@ -10,6 +10,7 @@
 #include <vector>
 #include <chrono>
 #include <SDL_image.h>
+#include <algorithm>
 
 #define ERR(s, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, s, __VA_ARGS__);
 
@@ -143,10 +144,29 @@ namespace yuzu
 
         infile.close();
 
+        // set difficulty from version
+        std::string lowerVersion = beatmap->version;
+        std::transform(lowerVersion.begin(), lowerVersion.end(), lowerVersion.begin(), ::tolower);
+
+        if (lowerVersion.find("easy") != std::string::npos || lowerVersion.find("cup") != std::string::npos)
+            beatmap->difficulty = Difficulty::CUP;
+        else if (lowerVersion.find("normal") != std::string::npos || lowerVersion.find("salad") != std::string::npos)
+            beatmap->difficulty = Difficulty::SALAD;
+        else if (lowerVersion.find("hard") != std::string::npos || lowerVersion.find("platter") != std::string::npos || lowerVersion.find("advanced") != std::string::npos)
+            beatmap->difficulty = Difficulty::PLATTER;
+        else if (lowerVersion.find("insane") != std::string::npos || lowerVersion.find("rain") != std::string::npos)
+            beatmap->difficulty = Difficulty::RAIN;
+        else if (lowerVersion.find("expert+") != std::string::npos || lowerVersion.find("overdose+") != std::string::npos || lowerVersion.find("extra") != std::string::npos)
+            beatmap->difficulty = Difficulty::FEAST;
+        else if (lowerVersion.find("expert") != std::string::npos || lowerVersion.find("overdose") != std::string::npos)
+            beatmap->difficulty = Difficulty::OVERDOSE;
+        else
+            SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown difficulty %s for beatmap \"%s\", using default.", beatmap->title.c_str(), lowerVersion.c_str());
+
         auto finish = std::chrono::high_resolution_clock::now();
         auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
 
-        SDL_Log("Beatmap \"%s\" loaded and parsed in %lld µs.", beatmap->title.c_str(), microseconds.count());
+        SDL_Log("Beatmap \"%s (%s)\" loaded and parsed in %lld µs.", beatmap->title.c_str(), beatmap->version.c_str(), microseconds.count());
 
         return beatmap;
     }

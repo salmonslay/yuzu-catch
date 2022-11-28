@@ -44,6 +44,15 @@ namespace yuzu
             HITOBJECTS
         };
 
+        enum class Difficulty {
+            CUP,
+            SALAD,
+            PLATTER,
+            RAIN,
+            OVERDOSE,
+            FEAST,
+        };
+
         // [General]
         SampleType sampleType = SampleType::NORMAL;
 
@@ -59,6 +68,9 @@ namespace yuzu
         /** The title of the song. */
         std::string title;
 
+        /** A cleaned title will not contain addons like "tv size", "ft. artist", etc. */
+        std::string cleanedTitle;
+
         /** The artist of the song. */
         std::string artist;
 
@@ -67,6 +79,9 @@ namespace yuzu
 
         /** Usually referred to as "Difficulty" in osu!. */
         std::string version;
+
+        /** Difficulty in yuzu!catch. Feast is the highest difficulty, and used if no other is found */
+        Difficulty difficulty = Difficulty::FEAST;
 
         std::string tags;
 
