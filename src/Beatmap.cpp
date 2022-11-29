@@ -23,7 +23,20 @@ namespace yuzu
 
     static inline std::string getStringFromLine(const std::string &line)
     {
-        return line.substr(line.find(':') + 1);
+        std::string s = line.substr(line.find(':') + 1);
+
+        // trim
+        // @see https://stackoverflow.com/a/217605/11420970
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch)
+        {
+            return !std::isspace(ch);
+        }));
+        s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch)
+        {
+            return !std::isspace(ch);
+        }).base(), s.end());
+
+        return s;
     }
 
     Beatmap *Beatmap::loadBeatmap(const std::string &beatmapPath)
@@ -204,7 +217,7 @@ namespace yuzu
         if (music != nullptr)
             return music;
 
-        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + audioFilename;
+        std::string fullPath = beatmapDir + "/" + audioFilename;
         music = Mix_LoadMUS(fullPath.c_str());
 
         if (music == nullptr)
