@@ -88,7 +88,7 @@ namespace yuzu
         background->setTexture(beatmap->getBackgroundTexture());
         songTitle->setText(beatmap->title);
         songArtist->setText(beatmap->artist);
-        songCreator->setText(beatmap->creator);
+        songCreator->setText("Mapped by " + beatmap->creator);
         //songTime->setText(beatmap->time);
     }
 
