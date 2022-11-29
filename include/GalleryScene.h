@@ -48,11 +48,14 @@ namespace yuzu
     };
 
     /**
-     * The currently picked beatmap set.
+     * The currently picked beatmap set, used for the GalleryFocus.
      */
-    extern std::vector<Beatmap *> currentBeatmap;
+    extern std::vector<Beatmap *> currentBeatmapSet;
 
-
+    /**
+     * The currently picked beatmap, used for the Game scene.
+     */
+    extern Beatmap *currentBeatmap;
 
     /**
      * 2D array of beatmaps.

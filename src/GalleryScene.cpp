@@ -170,14 +170,15 @@ namespace yuzu
 
     void GalleryScene::setSelectedBeatmap(int index)
     {
-        currentBeatmap = beatmaps[index];
-        SDL_Log("Selected beatmap %s", currentBeatmap[0]->title.c_str());
-        galleryFocus->setBeatmap(currentBeatmap);
+        currentBeatmapSet = beatmaps[index];
+        SDL_Log("Selected beatmap %s", currentBeatmapSet[0]->title.c_str());
+        galleryFocus->setBeatmap(currentBeatmapSet);
     }
 
     GalleryScene GalleryScene::instance;
 
-    std::vector<Beatmap *> currentBeatmap = {};
+    std::vector<Beatmap *> currentBeatmapSet = {};
+    Beatmap *currentBeatmap = nullptr;
     std::vector<std::vector<Beatmap *>> beatmaps = {};
 
 } // yuzu

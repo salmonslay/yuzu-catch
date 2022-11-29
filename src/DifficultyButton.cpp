@@ -2,6 +2,8 @@
 #include "DifficultyButton.h"
 #include "Beatmap.h"
 #include "ResourceManager.h"
+#include "GalleryScene.h"
+#include "GameScene.h"
 
 namespace yuzu
 {
@@ -11,7 +13,7 @@ namespace yuzu
     }
 
     DifficultyButton::DifficultyButton(int x, int y, int w, int h, Beatmap *beatmap)
-            : fruitwork::Button(x, y, w, h, "")
+            : fruitwork::Button(x, y, w, h, ""), beatmap(beatmap)
     {
         switch (beatmap->difficulty)
         {
@@ -62,6 +64,14 @@ namespace yuzu
         difficultyLabel->setFontSize(36);
         difficultyLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
         difficultyLabel->setColor({72, 72, 72, 255});
+
+        registerCallback([](fruitwork::Button *src)
+                         {
+                             auto *button = (DifficultyButton *) src;
+                             currentBeatmap = button->beatmap;
+                             SDL_Log("Starting beatmap \"%s\" (%s)...", currentBeatmap->title.c_str(), currentBeatmap->version.c_str());
+                             fruitwork::sys.setNextScene(GameScene::get_instance());
+                         });
     }
 
     void DifficultyButton::draw() const

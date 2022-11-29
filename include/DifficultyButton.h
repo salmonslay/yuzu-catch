@@ -29,6 +29,8 @@ namespace yuzu
         SDL_Color starModColor;
         std::vector<fruitwork::Sprite*> stars;
         SDL_Texture *starTexture = nullptr;
+
+        Beatmap* beatmap;
     };
 
 } // yuzu
