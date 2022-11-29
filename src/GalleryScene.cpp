@@ -166,8 +166,6 @@ namespace yuzu
 
             beatmaps.push_back(beatmapsInSet);
         }
-
-        beatmaps;
     }
 
     void GalleryScene::setSelectedBeatmap(int index)

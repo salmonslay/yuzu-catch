@@ -182,7 +182,7 @@ namespace yuzu
     {
         std::vector<HitObject> hitObjects;
 
-
+        return hitObjects;
     }
 
     SDL_Texture *Beatmap::getBackgroundTexture()

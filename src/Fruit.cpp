@@ -24,7 +24,7 @@ namespace yuzu
 
     Fruit::~Fruit()
     {
-        delete &overlay;
+        delete overlay;
     }
 
 } // yuzu

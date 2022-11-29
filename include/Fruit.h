@@ -24,7 +24,7 @@ namespace yuzu
         Fruit(int x, int w, int h, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
 
     private:
-        fruitwork::Sprite* overlay;
+        fruitwork::Sprite *overlay = nullptr;
     };
 
 } // yuzu
