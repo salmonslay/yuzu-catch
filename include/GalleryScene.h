@@ -47,20 +47,12 @@ namespace yuzu
         void changePage(bool next);
     };
 
-
-    struct BeatmapSet {
-        std::vector<Beatmap *> beatmaps;
-        std::string title;
-        std::string artist;
-        std::string creator;
-        int songLength;
-        SDL_Texture *background;
-    };
-
     /**
-     * The currently picked beatmap
+     * The currently picked beatmap set.
      */
-    extern Beatmap *currentBeatmap;
+    extern std::vector<Beatmap *> currentBeatmap;
+
+
 
     /**
      * 2D array of beatmaps.

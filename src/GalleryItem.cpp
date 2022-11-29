@@ -15,7 +15,7 @@ namespace yuzu
         sprite = fruitwork::ImageButton::getInstance(x, y, 246, 139, beatmap->getBackgroundTexture());
         sprite->registerCallback([](fruitwork::Button *src)
                                  {
-                                     yuzu::GalleryScene::get_instance()->setSelectedBeatmap(1); // beatmapIndex instead of 1 - how?
+                                     yuzu::GalleryScene::get_instance()->setSelectedBeatmap(3); // beatmapIndex instead of 1 - how?
                                  });
         coverBackdropRect = {x, y, 246, 139};
         coverFrameRect = {x - 1, y - 1, 246 + 2, 139 + 2};

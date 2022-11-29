@@ -52,7 +52,7 @@ namespace yuzu
         SDL_Log("Loading game resources...");
         auto start = std::chrono::high_resolution_clock::now();
 
-        if (currentBeatmap == nullptr)
+        if (currentBeatmap.empty())
         {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Beatmap is null!");
             return;
@@ -76,13 +76,13 @@ namespace yuzu
         dropTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), "fruit-drop.png");
 
         // background
-        backgroundTexture = currentBeatmap->getBackgroundTexture();
+        backgroundTexture = currentBeatmap[0]->getBackgroundTexture();
 
         // samples
         std::string sample = "normal";
-        if (currentBeatmap->sampleType == Beatmap::SampleType::SOFT)
+        if (currentBeatmap[0]->sampleType == Beatmap::SampleType::SOFT)
             sample = "soft";
-        else if (currentBeatmap->sampleType == Beatmap::SampleType::DRUM)
+        else if (currentBeatmap[0]->sampleType == Beatmap::SampleType::DRUM)
             sample = "drum";
 
         hitSampleSet.normal = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitnormal.wav").c_str());
@@ -90,7 +90,7 @@ namespace yuzu
         hitSampleSet.finish = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitfinish.wav").c_str());
         hitSampleSet.clap = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitclap.wav").c_str());
 
-        music = currentBeatmap->getAudio();
+        music = currentBeatmap[0]->getAudio();
 
         // https://stackoverflow.com/a/12883734/11420970
         auto finish = std::chrono::high_resolution_clock::now();

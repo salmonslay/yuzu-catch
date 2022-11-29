@@ -1,16 +1,14 @@
+#include <algorithm>
 #include "GalleryFocus.h"
 #include "ResourceManager.h"
+#include "DifficultyButton.h"
+#include "GalleryScene.h"
 
 namespace yuzu
 {
     GalleryFocus *yuzu::GalleryFocus::getInstance(int x, int y)
     {
         return new GalleryFocus(x, y);
-    }
-
-    void GalleryFocus::update()
-    {
-        Component::update();
     }
 
     GalleryFocus::GalleryFocus(int x, int y) :
@@ -44,6 +42,12 @@ namespace yuzu
     void GalleryFocus::start()
     {
         background->start();
+    }
+
+    void GalleryFocus::update()
+    {
+        for (auto &difficultyButton: difficultyButtons)
+            difficultyButton->update();
     }
 
     void GalleryFocus::draw() const
@@ -83,13 +87,22 @@ namespace yuzu
             difficultyButton->onMouseUp(e);
     }
 
-    void GalleryFocus::setBeatmap(Beatmap *beatmap)
+    void GalleryFocus::setBeatmap(std::vector<Beatmap *> beatmapSet)
     {
+        Beatmap *beatmap = beatmapSet[0];
         background->setTexture(beatmap->getBackgroundTexture());
         songTitle->setText(beatmap->title);
         songArtist->setText(beatmap->artist);
         songCreator->setText("Mapped by " + beatmap->creator);
         //songTime->setText(beatmap->time);
+
+        // sort beatmaps by difficulty, this could ideally be done elsewhere but i think it's fine here
+        std::sort(beatmapSet.begin(), beatmapSet.end(), [](Beatmap *a, Beatmap *b) {
+            return a->difficulty < b->difficulty;
+        });
+
+        for (int i = 0; i < std::min(static_cast<int>(beatmapSet.size()), 4); i++)
+            difficultyButtons.push_back(DifficultyButton::getInstance(get_rect().x, get_rect().y + 460 + (90 * i), 460, 76, beatmapSet[i]));
     }
 
     GalleryFocus::~GalleryFocus()

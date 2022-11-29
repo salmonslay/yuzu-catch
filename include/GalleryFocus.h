@@ -27,7 +27,7 @@ namespace yuzu
 
         void onMouseUp(const SDL_Event &) override;
 
-        void setBeatmap(Beatmap *beatmap);
+        void setBeatmap(std::vector<Beatmap *> beatmapSet);
 
         ~GalleryFocus() override;
 
