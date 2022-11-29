@@ -161,7 +161,7 @@ namespace yuzu
         else if (lowerVersion.find("expert") != std::string::npos || lowerVersion.find("overdose") != std::string::npos)
             beatmap->difficulty = Difficulty::OVERDOSE;
         else
-            SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown difficulty %s for beatmap \"%s\", using default.", beatmap->title.c_str(), lowerVersion.c_str());
+            SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown difficulty %s for beatmap \"%s\", using default.", lowerVersion.c_str(), beatmap->title.c_str());
 
 
         // this monster of a regex was made by me a year ago and removes unnecessary stuff from titles
