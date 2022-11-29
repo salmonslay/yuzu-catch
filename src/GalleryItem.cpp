@@ -21,7 +21,7 @@ namespace yuzu
         coverFrameRect = {x - 1, y - 1, 246 + 2, 139 + 2};
 
 
-        songTitle = fruitwork::Label::getInstance(x, y + 139, 246, 40, beatmap->title);
+        songTitle = fruitwork::Label::getInstance(x, y + 139, 246, 40, beatmap->cleanedTitle);
         songTitle->setFontSize(20);
         songTitle->setColor({255, 255, 255, 255});
 

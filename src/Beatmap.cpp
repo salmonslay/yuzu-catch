@@ -6,11 +6,11 @@
 #include "Constants.h"
 #include "System.h"
 #include <fstream>
-#include <iostream>
 #include <vector>
 #include <chrono>
 #include <SDL_image.h>
 #include <algorithm>
+#include <regex>
 
 #define ERR(s, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, s, __VA_ARGS__);
 
@@ -162,6 +162,13 @@ namespace yuzu
             beatmap->difficulty = Difficulty::OVERDOSE;
         else
             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown difficulty %s for beatmap \"%s\", using default.", beatmap->title.c_str(), lowerVersion.c_str());
+
+
+        // this monster of a regex was made by me a year ago and removes unnecessary stuff from titles
+        // tests: https://regex101.com/r/BfLme6/1
+        // src: https://github.com/LiterallyFabian/SVB/blob/main/app/public/catch/js/fillFeed.js#L30
+        std::regex titleRegex(R"(((\[.+\]$)|(\(.+\)$)|(\-.+\-$)|(\~.+\~$)|((feat|ft| ver ).+)|(\/|\-.+remix))$)", std::regex_constants::icase);
+        beatmap->cleanedTitle = std::regex_replace(beatmap->title, titleRegex, "");
 
         auto finish = std::chrono::high_resolution_clock::now();
         auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
