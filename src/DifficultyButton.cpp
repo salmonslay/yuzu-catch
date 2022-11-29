@@ -74,7 +74,9 @@ namespace yuzu
 
     DifficultyButton::~DifficultyButton()
     {
-
+        delete difficultyLabel;
+        for (auto &star: stars)
+            delete star;
     }
 
 } // yuzu

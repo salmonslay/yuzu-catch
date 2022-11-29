@@ -89,6 +89,8 @@ namespace yuzu
 
     void GalleryFocus::setBeatmap(std::vector<Beatmap *> beatmapSet)
     {
+        // TODO: clear old difficulty buttons
+
         Beatmap *beatmap = beatmapSet[0];
         background->setTexture(beatmap->getBackgroundTexture());
         songTitle->setText(beatmap->title);
