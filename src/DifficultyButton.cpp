@@ -52,13 +52,13 @@ namespace yuzu
 
         for (int i = 0; i < 5; i++)
         {
-            stars.push_back(fruitwork::Sprite::getInstance(x + 227 + (i * 43), y + 16, 43, 43, starTexture));
+            stars.push_back(fruitwork::Sprite::getInstance(x + 192 + (i * 52), y + 12, 52, 50, starTexture));
             stars[i]->setColorMod(starModColor);
             if (i >= starCount)
                 stars[i]->setAlphaMod(100);
         }
 
-        difficultyLabel = fruitwork::Label::getInstance(x + 10, y + 11, 200, 48, difficultyName);
+        difficultyLabel = fruitwork::Label::getInstance(x + 10, y + 11, 165, 48, difficultyName);
         difficultyLabel->setFontSize(36);
         difficultyLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
         difficultyLabel->setColor({72, 72, 72, 255});
