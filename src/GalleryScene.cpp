@@ -97,7 +97,7 @@ namespace yuzu
             }
         }
 
-        pageLabel->setText(std::to_string(page + 1) + "/" + std::to_string((beatmaps.size() / 6) + 1));
+        pageLabel->setText(std::to_string(page + 1) + "/" + std::to_string((beatmaps.size() / 6)));
     }
 
     void GalleryScene::changePage(bool next)
@@ -106,7 +106,7 @@ namespace yuzu
 
         if (currentPage < 0)
             currentPage = beatmaps.size() / 6;
-        else if (currentPage > beatmaps.size() / 6)
+        else if (currentPage >= beatmaps.size() / 6)
             currentPage = 0;
 
         addGalleryItems(currentPage);
