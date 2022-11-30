@@ -63,8 +63,7 @@ namespace yuzu
     {
         for (auto &item: galleryItems)
         {
-            remove_component(item);
-            // TODO: delete items, but the main loop will still try to call them and crash
+            remove_component(item, true);
         }
 
         galleryItems.clear();
@@ -137,6 +136,8 @@ namespace yuzu
 
     void GalleryScene::loadBeatmaps()
     {
+        auto start = std::chrono::high_resolution_clock::now();
+
         // read all beatmaps from the beatmaps folder
         std::string beatmapPath = constants::gResPath + "beatmaps/";
         std::vector<std::string> beatmapSetPathNames;
@@ -166,6 +167,10 @@ namespace yuzu
 
             beatmaps.push_back(beatmapsInSet);
         }
+
+        auto finish = std::chrono::high_resolution_clock::now();
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
+        SDL_Log("Loaded %zu beatmaps in %lldms", beatmaps.size(), ms.count());
     }
 
     void GalleryScene::setSelectedBeatmap(int index)
