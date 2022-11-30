@@ -37,11 +37,6 @@ namespace yuzu
                 starCount = 4;
                 starModColor = {255, 78, 111, 255};
                 break;
-            case Beatmap::Difficulty::OVERDOSE:
-                difficultyName = "Overdose";
-                starCount = 5;
-                starModColor = {198, 69, 184, 255};
-                break;
             case Beatmap::Difficulty::FEAST:
                 difficultyName = "Feast";
                 starCount = 5;

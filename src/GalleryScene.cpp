@@ -10,6 +10,8 @@
 #include <ResourceManager.h>
 #include <filesystem>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
 namespace yuzu
 {
 
@@ -97,16 +99,17 @@ namespace yuzu
             }
         }
 
-        pageLabel->setText(std::to_string(page + 1) + "/" + std::to_string((beatmaps.size() / 6)));
+        pageLabel->setText(std::to_string(page + 1) + "/" + std::to_string((beatmaps.size() / 6) + 1));
     }
 
     void GalleryScene::changePage(bool next)
     {
         currentPage += next ? 1 : -1;
 
+        // 6 beatmaps per page
         if (currentPage < 0)
-            currentPage = beatmaps.size() / 6;
-        else if (currentPage >= beatmaps.size() / 6)
+            currentPage = (beatmaps.size() / 6);
+        else if (currentPage * 6 >= beatmaps.size())
             currentPage = 0;
 
         addGalleryItems(currentPage);
@@ -170,7 +173,7 @@ namespace yuzu
 
         auto finish = std::chrono::high_resolution_clock::now();
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
-        SDL_Log("Loaded %zu beatmaps in %lldms", beatmaps.size(), ms.count());
+        SDL_Log("Loaded beatmaps in %lldms", ms.count());
     }
 
     void GalleryScene::setSelectedBeatmap(int index)
@@ -187,3 +190,4 @@ namespace yuzu
     std::vector<std::vector<Beatmap *>> beatmaps = {};
 
 } // yuzu
+#pragma clang diagnostic pop

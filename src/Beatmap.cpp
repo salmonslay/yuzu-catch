@@ -161,18 +161,23 @@ namespace yuzu
         std::string lowerVersion = beatmap->version;
         std::transform(lowerVersion.begin(), lowerVersion.end(), lowerVersion.begin(), ::tolower);
 
-        if (lowerVersion.find("easy") != std::string::npos || lowerVersion.find("cup") != std::string::npos)
+        if (lowerVersion.find("easy") != std::string::npos
+            || lowerVersion.find("cup") != std::string::npos)
             beatmap->difficulty = Difficulty::CUP;
-        else if (lowerVersion.find("normal") != std::string::npos || lowerVersion.find("salad") != std::string::npos)
+        else if (lowerVersion.find("normal") != std::string::npos
+                 || lowerVersion.find("salad") != std::string::npos)
             beatmap->difficulty = Difficulty::SALAD;
-        else if (lowerVersion.find("hard") != std::string::npos || lowerVersion.find("platter") != std::string::npos || lowerVersion.find("advanced") != std::string::npos)
+        else if (lowerVersion.find("hard") != std::string::npos
+                 || lowerVersion.find("platter") != std::string::npos
+                 || lowerVersion.find("advanced") != std::string::npos)
             beatmap->difficulty = Difficulty::PLATTER;
-        else if (lowerVersion.find("insane") != std::string::npos || lowerVersion.find("rain") != std::string::npos)
+        else if (lowerVersion.find("insane") != std::string::npos
+                 || lowerVersion.find("rain") != std::string::npos)
             beatmap->difficulty = Difficulty::RAIN;
-        else if (lowerVersion.find("expert+") != std::string::npos || lowerVersion.find("overdose+") != std::string::npos || lowerVersion.find("extra") != std::string::npos)
+        else if (lowerVersion.find("extra") != std::string::npos
+                 || lowerVersion.find("expert") != std::string::npos
+                 || lowerVersion.find("overdose") != std::string::npos)
             beatmap->difficulty = Difficulty::FEAST;
-        else if (lowerVersion.find("expert") != std::string::npos || lowerVersion.find("overdose") != std::string::npos)
-            beatmap->difficulty = Difficulty::OVERDOSE;
         else
             SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Unknown difficulty \"%s\" for beatmap \"%s\", using default.", lowerVersion.c_str(), beatmap->title.c_str());
 

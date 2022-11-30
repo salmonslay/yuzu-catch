@@ -49,7 +49,6 @@ namespace yuzu
             SALAD,
             PLATTER,
             RAIN,
-            OVERDOSE,
             FEAST,
         };
 
