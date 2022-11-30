@@ -35,9 +35,9 @@ namespace yuzu
 
     private:
 
-        SDL_Rect coverBackdropRect;
-        SDL_Rect coverFrameRect;
-        SDL_Rect lengthBackdropRect;
+        SDL_Rect coverBackdropRect{};
+        SDL_Rect coverFrameRect{};
+        SDL_Rect lengthBackdropRect{};
         fruitwork::ImageButton *sprite;
         fruitwork::Label *songTitle;
         fruitwork::Label *songArtist;
