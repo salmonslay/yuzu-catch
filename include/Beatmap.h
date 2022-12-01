@@ -59,9 +59,14 @@ namespace yuzu
         std::string audioFilename;
         std::string backgroundFilename;
 
+        /** The beatmap length in milliseconds. */
+        int length = 0;
+
         SDL_Texture *getBackgroundTexture();
 
         Mix_Music *getAudio();
+
+        std::string getLengthString() const;
 
         // [Metadata]
         /** The title of the song. */

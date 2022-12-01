@@ -29,7 +29,7 @@ namespace yuzu
         songArtist->setFontSize(18);
         songArtist->setColor({255, 255, 255, 178});
 
-        songTime = fruitwork::Label::getInstance(x + 180, y + 110, 63, 23, "02:28"); // TODO: Get song time from beatmap
+        songTime = fruitwork::Label::getInstance(x + 180, y + 110, 63, 23, beatmap->getLengthString()); // TODO: Get song time from beatmap
         songTime->setFontSize(24);
         songTime->setColor({255, 255, 255, 225});
         lengthBackdrop = fruitwork::Rectangle::getInstance(x + 180 - 1, y + 112 - 1, 63 + 2, 23 + 2, {0, 0, 0, 178});

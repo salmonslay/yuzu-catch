@@ -30,13 +30,13 @@ namespace yuzu
         songCreator->setColor({255, 255, 255, 178});
 
         int songX = x + 420;
-        int songY = y + 257;
+        int songY = y + 255;
 
         songTime = fruitwork::Label::getInstance(songX, songY, 100, 36, "00:00");
-        songTime->setFontSize(36);
+        songTime->setFontSize(32);
         songTime->setColor({255, 255, 255, 255});
 
-        lengthBackdrop = fruitwork::Rectangle::getInstance(songX - 2, songY, 106, 36, {0, 0, 0, 178});
+        lengthBackdrop = fruitwork::Rectangle::getInstance(songX - 2, songY + 2, 106, 36, {0, 0, 0, 178});
     }
 
     void GalleryFocus::start()
@@ -89,7 +89,7 @@ namespace yuzu
         songTitle->setText(beatmap->title);
         songArtist->setText(beatmap->artist);
         songCreator->setText("Mapped by " + beatmap->creator);
-        //songTime->setText(beatmap->time);
+        songTime->setText(beatmap->getLengthString());
 
         // sort beatmaps by difficulty, this could ideally be done elsewhere but i think it's fine here
         std::sort(beatmapSet.begin(), beatmapSet.end(), [](Beatmap *a, Beatmap *b)

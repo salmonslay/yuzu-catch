@@ -46,10 +46,9 @@ namespace yuzu
 
         std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
 
-        Beatmap *beatmap = new Beatmap();
+        auto *beatmap = new Beatmap();
         std::string line;
         BeatmapSection section = BeatmapSection::NONE;
-        TimingPoint lastTimingPoint;
         void *discard; // used to discard unused values
 
         beatmap->beatmapDir = beatmapPath.substr(0, beatmapPath.find_last_of('/'));
@@ -133,25 +132,11 @@ namespace yuzu
                     beatmap->comboColours.push_back(c);
                 }
             }
-            else if (section == BeatmapSection::TIMINGPOINTS)
+            else if (section == BeatmapSection::HITOBJECTS)
             {
-                /**
-                  * @see Source https://github.com/LiterallyFabian/SVB/blob/main/app/public/catch/js/processor.js#L256-L302
-                  * @see Docs https://osu.ppy.sh/wiki/en/Client/File_formats/Osu_%28file_format%29#timing-points
-                  */
-                Beatmap::TimingPoint timingPoint{};
-
-                if (sscanf(line.c_str(), "%d,%lf,%d,%d,%d,%d,%d,%d", &timingPoint.offset, &timingPoint.beatLength, &discard,
-                           &timingPoint.sampleType, &discard, &discard, &timingPoint.isUninherited, &timingPoint.isKiai) == EOF)
-                    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to parse timing point: %s", line.c_str());
-
-                // inherited timing points changes slider velocity, basically beat length
-                if (timingPoint.isUninherited)
-                    lastTimingPoint = timingPoint;
-                else if (lastTimingPoint.offset)
-                    timingPoint.beatLength = lastTimingPoint.beatLength / (-100 / timingPoint.beatLength);
-
-                beatmap->timingPoints.push_back(timingPoint);
+                int time;
+                sscanf(line.c_str(), "%d,%d,%d", &discard, &discard, &time);
+                beatmap->length = time + 2500;
             }
         }
 
@@ -238,6 +223,17 @@ namespace yuzu
 
         if (music != nullptr)
             Mix_FreeMusic(music);
+    }
+
+    std::string Beatmap::getLengthString() const
+    {
+        int minutes = length / 60000;
+        int seconds = (length - minutes * 60000) / 1000;
+
+        char buffer[6];
+        sprintf(buffer, "%02d:%02d", minutes, seconds);
+
+        return buffer;
     }
 
 } // yuzu
