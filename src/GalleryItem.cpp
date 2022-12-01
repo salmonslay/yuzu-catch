@@ -86,6 +86,10 @@ namespace yuzu
         delete songTitle; // this will destroy the title texture since it is owned by the label, etc
         delete songArtist;
         delete songTime;
+
+        delete coverBackdrop;
+        delete coverFrame;
+        delete lengthBackdrop;
     }
 
 } // yuzu

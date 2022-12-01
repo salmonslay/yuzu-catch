@@ -111,5 +111,8 @@ namespace yuzu
 
         for (auto &difficultyButton: difficultyButtons)
             delete difficultyButton;
+
+        delete coverBackdrop;
+        delete lengthBackdrop;
     }
 } // yuzu
