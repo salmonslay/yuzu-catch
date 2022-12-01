@@ -18,8 +18,8 @@ namespace yuzu
                                      yuzu::GalleryScene::get_instance()->setSelectedBeatmap(this->beatmapIndex); // beatmapIndex instead of 1 - how?
                                  });
 
-        coverBackdropRect = {x, y, 246, 139};
-        coverFrameRect = {x - 1, y - 1, 246 + 2, 139 + 2};
+        coverBackdrop = fruitwork::Rectangle::getInstance(x, y, 246, 139, {0, 0, 0, 255});
+        coverFrame = fruitwork::Rectangle::getInstance(x - 1, y - 1, 246 + 2, 139 + 2, {255, 255, 255, 255});
 
         songTitle = fruitwork::Label::getInstance(x, y + 139, 246, 40, beatmap->cleanedTitle);
         songTitle->setFontSize(20);
@@ -32,7 +32,7 @@ namespace yuzu
         songTime = fruitwork::Label::getInstance(x + 180, y + 110, 63, 23, "02:28"); // TODO: Get song time from beatmap
         songTime->setFontSize(24);
         songTime->setColor({255, 255, 255, 225});
-        lengthBackdropRect = {x + 180 - 1, y + 112 - 1, 63 + 2, 23 + 2};
+        lengthBackdrop = fruitwork::Rectangle::getInstance(x + 180 - 1, y + 112 - 1, 63 + 2, 23 + 2, {0, 0, 0, 178});
     }
 
     void GalleryItem::start()
@@ -45,25 +45,14 @@ namespace yuzu
 
     void GalleryItem::draw() const
     {
-        // black square behind the sprite
-        SDL_SetRenderDrawColor(fruitwork::sys.get_renderer(), 0, 0, 0, 0);
-        SDL_RenderFillRect(fruitwork::sys.get_renderer(), &coverBackdropRect);
-
-        // white frame
-        SDL_SetRenderDrawColor(fruitwork::sys.get_renderer(), 255, 255, 255, 255);
-        SDL_RenderDrawRect(fruitwork::sys.get_renderer(), &coverFrameRect);
+        coverFrame->draw();
+        coverBackdrop->draw();
 
         sprite->draw();
         songTitle->draw();
         songArtist->draw();
 
-        // gray transparent square behind the song time
-        SDL_SetRenderDrawColor(fruitwork::sys.get_renderer(), 0, 0, 0, 178);
-        SDL_SetRenderDrawBlendMode(fruitwork::sys.get_renderer(), SDL_BLENDMODE_BLEND);
-        SDL_RenderFillRect(fruitwork::sys.get_renderer(), &lengthBackdropRect);
-        SDL_SetRenderDrawColor(fruitwork::sys.get_renderer(), 255, 255, 255, 255);
-        SDL_SetRenderDrawBlendMode(fruitwork::sys.get_renderer(), SDL_BLENDMODE_NONE);
-
+        lengthBackdrop->draw();
         songTime->draw();
     }
 

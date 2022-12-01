@@ -7,6 +7,7 @@
 #include "Label.h"
 #include "Beatmap.h"
 #include "ImageButton.h"
+#include "Rectangle.h"
 
 namespace yuzu
 {
@@ -34,10 +35,10 @@ namespace yuzu
         GalleryItem(Beatmap *beatmap, int x, int y, int beatmapIndex);
 
     private:
+        fruitwork::Rectangle *coverBackdrop;
+        fruitwork::Rectangle *coverFrame;
+        fruitwork::Rectangle *lengthBackdrop;
 
-        SDL_Rect coverBackdropRect{};
-        SDL_Rect coverFrameRect{};
-        SDL_Rect lengthBackdropRect{};
         fruitwork::ImageButton *sprite;
         fruitwork::Label *songTitle;
         fruitwork::Label *songArtist;

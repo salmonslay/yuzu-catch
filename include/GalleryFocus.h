@@ -6,6 +6,7 @@
 #include "Label.h"
 #include "ResponsiveSprite.h"
 #include "Button.h"
+#include "Rectangle.h"
 
 namespace yuzu
 {
@@ -35,8 +36,8 @@ namespace yuzu
         GalleryFocus(int x, int y);
 
     private:
-        SDL_Rect coverBackdropRect;
-        SDL_Rect lengthBackdropRect;
+        fruitwork::Rectangle *coverBackdrop;
+        fruitwork::Rectangle *lengthBackdrop;
 
         fruitwork::ResponsiveSprite *background;
         fruitwork::Label *songTitle;

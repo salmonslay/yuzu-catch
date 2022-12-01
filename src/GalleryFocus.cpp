@@ -15,7 +15,7 @@ namespace yuzu
             Component(x, y, 530, 818)
     {
         background = fruitwork::ResponsiveSprite::getInstance(x, y, 528, 297, fruitwork::ResourceManager::getTexturePath("placeholder.png"));
-        coverBackdropRect = {x, y, 528, 297};
+        coverBackdrop = fruitwork::Rectangle::getInstance(x, y, 528, 297, {0, 0, 0, 255});
 
         songTitle = fruitwork::Label::getInstance(x, y + 300, 528, 63, "Pick a song to the left!");
         songTitle->setFontSize(36);
@@ -36,7 +36,7 @@ namespace yuzu
         songTime->setFontSize(36);
         songTime->setColor({255, 255, 255, 255});
 
-        lengthBackdropRect = {songX - 2, songY, 106, 36};
+        lengthBackdrop = fruitwork::Rectangle::getInstance(songX - 2, songY, 106, 36, {0, 0, 0, 178});
     }
 
     void GalleryFocus::start()
@@ -52,23 +52,14 @@ namespace yuzu
 
     void GalleryFocus::draw() const
     {
-        // black square behind the sprite
-        SDL_SetRenderDrawColor(fruitwork::sys.get_renderer(), 0, 0, 0, 0);
-        SDL_RenderFillRect(fruitwork::sys.get_renderer(), &coverBackdropRect);
-
-
+        coverBackdrop->draw();
         background->draw();
+
         songTitle->draw();
         songArtist->draw();
         songCreator->draw();
 
-        // gray transparent square behind the song time
-        SDL_SetRenderDrawColor(fruitwork::sys.get_renderer(), 0, 0, 0, 178);
-        SDL_SetRenderDrawBlendMode(fruitwork::sys.get_renderer(), SDL_BLENDMODE_BLEND);
-        SDL_RenderFillRect(fruitwork::sys.get_renderer(), &lengthBackdropRect);
-        SDL_SetRenderDrawColor(fruitwork::sys.get_renderer(), 255, 255, 255, 255);
-        SDL_SetRenderDrawBlendMode(fruitwork::sys.get_renderer(), SDL_BLENDMODE_NONE);
-
+        lengthBackdrop->draw();
         songTime->draw();
 
         for (auto &difficultyButton: difficultyButtons)
