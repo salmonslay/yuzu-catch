@@ -12,8 +12,8 @@ namespace yuzu
     GalleryItem::GalleryItem(Beatmap *beatmap, int x, int y, int beatmapIndex)
             : Component(x, y, 246, 199), beatmapIndex(beatmapIndex)
     {
-        sprite = fruitwork::ImageButton::getInstance(x, y, 246, 139, beatmap->getBackgroundTexture());
-        sprite->registerCallback([this](fruitwork::Button *src)
+        coverButton = fruitwork::ImageButton::getInstance(x, y, 246, 139, beatmap->getBackgroundTexture());
+        coverButton->registerCallback([this](fruitwork::Button *src)
                                  {
                                      yuzu::GalleryScene::get_instance()->setSelectedBeatmap(this->beatmapIndex); // beatmapIndex instead of 1 - how?
                                  });
@@ -37,7 +37,7 @@ namespace yuzu
 
     void GalleryItem::start()
     {
-        sprite->start();
+        coverButton->start();
         songTitle->start();
         songArtist->start();
         songTime->start();
@@ -48,7 +48,7 @@ namespace yuzu
         coverFrame->draw();
         coverBackdrop->draw();
 
-        sprite->draw();
+        coverButton->draw();
         songTitle->draw();
         songArtist->draw();
 
@@ -58,7 +58,7 @@ namespace yuzu
 
     void GalleryItem::onMouseDown(const SDL_Event &e)
     {
-        sprite->onMouseDown(e);
+        coverButton->onMouseDown(e);
         songTitle->onMouseDown(e);
         songArtist->onMouseDown(e);
         songTime->onMouseDown(e);
@@ -66,7 +66,7 @@ namespace yuzu
 
     void GalleryItem::onMouseUp(const SDL_Event &e)
     {
-        sprite->onMouseUp(e);
+        coverButton->onMouseUp(e);
         songTitle->onMouseUp(e);
         songArtist->onMouseUp(e);
         songTime->onMouseUp(e);
@@ -74,7 +74,7 @@ namespace yuzu
 
     void GalleryItem::update()
     {
-        sprite->update();
+        coverButton->update();
         songTitle->update();
         songArtist->update();
         songTime->update();
@@ -82,7 +82,7 @@ namespace yuzu
 
     GalleryItem::~GalleryItem()
     {
-        delete sprite; // this will NOT destroy the background texture since it is not owned by the sprite
+        delete coverButton; // this will NOT destroy the background texture since it is not owned by the sprite
         delete songTitle; // this will destroy the title texture since it is owned by the label, etc
         delete songArtist;
         delete songTime;

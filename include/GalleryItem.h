@@ -39,7 +39,7 @@ namespace yuzu
         fruitwork::Rectangle *coverFrame;
         fruitwork::Rectangle *lengthBackdrop;
 
-        fruitwork::ImageButton *sprite;
+        fruitwork::ImageButton *coverButton;
         fruitwork::Label *songTitle;
         fruitwork::Label *songArtist;
         fruitwork::Label *songTime;
