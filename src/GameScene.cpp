@@ -18,35 +18,6 @@ namespace yuzu
         return success;
     }
 
-    bool GameScene::exit()
-    {
-        bool success = true;
-        std::cout << "Exiting GameScene" << std::endl;
-
-        for (auto &c: components)
-        {
-            delete c;
-        }
-
-        for (HitObjectSet &s: fruitSets)
-        {
-            SDL_DestroyTexture(s.baseTexture);
-            SDL_DestroyTexture(s.overlayTexture);
-        }
-
-        SDL_DestroyTexture(bananaSet.baseTexture);
-        SDL_DestroyTexture(bananaSet.overlayTexture);
-        SDL_DestroyTexture(dropTexture);
-        SDL_DestroyTexture(backgroundTexture);
-
-        Mix_FreeChunk(hitSampleSet.normal);
-        Mix_FreeChunk(hitSampleSet.whistle);
-        Mix_FreeChunk(hitSampleSet.finish);
-        Mix_FreeChunk(hitSampleSet.clap);
-
-        return success;
-    }
-
     void GameScene::initResources()
     {
         SDL_Log("Loading game resources...");
@@ -79,9 +50,6 @@ namespace yuzu
         // drop
         dropTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), "fruit-drop.png");
 
-        // background
-        backgroundTexture = currentBeatmap->getBackgroundTexture();
-
         // samples
         std::string sample = "normal";
         if (currentBeatmap->sampleType == Beatmap::SampleType::SOFT)
@@ -96,10 +64,44 @@ namespace yuzu
 
         music = currentBeatmap->getAudio();
 
-        // https://stackoverflow.com/a/12883734/11420970
+        // @see https://stackoverflow.com/a/12883734/11420970
         auto finish = std::chrono::high_resolution_clock::now();
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
         SDL_Log("Game resources loaded in %lldms", ms.count());
+
+        backgroundOverlay = fruitwork::Rectangle::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, {0, 0, 0, 128});
+        backgroundSprite = fruitwork::CoveringSprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, currentBeatmap->getBackgroundTexture());
+
+        add_component(backgroundSprite);
+        add_component(backgroundOverlay);
+    }
+
+    bool GameScene::exit()
+    {
+        bool success = true;
+        std::cout << "Exiting GameScene" << std::endl;
+
+        for (auto &c: components)
+        {
+            delete c;
+        }
+
+        for (HitObjectSet &s: fruitSets)
+        {
+            SDL_DestroyTexture(s.baseTexture);
+            SDL_DestroyTexture(s.overlayTexture);
+        }
+
+        SDL_DestroyTexture(bananaSet.baseTexture);
+        SDL_DestroyTexture(bananaSet.overlayTexture);
+        SDL_DestroyTexture(dropTexture);
+
+        Mix_FreeChunk(hitSampleSet.normal);
+        Mix_FreeChunk(hitSampleSet.whistle);
+        Mix_FreeChunk(hitSampleSet.finish);
+        Mix_FreeChunk(hitSampleSet.clap);
+
+        return success;
     }
 
     GameScene::GameScene()

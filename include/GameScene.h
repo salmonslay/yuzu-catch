@@ -3,6 +3,9 @@
 
 #include <SDL_mixer.h>
 #include "Scene.h"
+#include "ResponsiveSprite.h"
+#include "CoveringSprite.h"
+#include "Rectangle.h"
 
 namespace yuzu
 {
@@ -42,7 +45,9 @@ namespace yuzu
         std::vector<HitObjectSet> fruitSets;
         HitObjectSet bananaSet;
         SDL_Texture *dropTexture;
-        SDL_Texture *backgroundTexture;
+
+        fruitwork::CoveringSprite *backgroundSprite = nullptr;
+        fruitwork::Rectangle *backgroundOverlay = nullptr;
 
         Mix_Music *music;
         HitSampleSet hitSampleSet;
