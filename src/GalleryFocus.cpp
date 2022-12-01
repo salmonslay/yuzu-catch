@@ -89,7 +89,9 @@ namespace yuzu
 
     void GalleryFocus::setBeatmap(std::vector<Beatmap *> beatmapSet)
     {
-        // TODO: clear old difficulty buttons
+        for (auto &difficultyButton: difficultyButtons)
+            GalleryScene::get_instance()->remove_component(difficultyButton, true);
+        difficultyButtons.clear();
 
         Beatmap *beatmap = beatmapSet[0];
         background->setTexture(beatmap->getBackgroundTexture());
@@ -99,7 +101,8 @@ namespace yuzu
         //songTime->setText(beatmap->time);
 
         // sort beatmaps by difficulty, this could ideally be done elsewhere but i think it's fine here
-        std::sort(beatmapSet.begin(), beatmapSet.end(), [](Beatmap *a, Beatmap *b) {
+        std::sort(beatmapSet.begin(), beatmapSet.end(), [](Beatmap *a, Beatmap *b)
+        {
             return a->difficulty < b->difficulty;
         });
 
