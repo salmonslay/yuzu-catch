@@ -7,6 +7,7 @@
 #include "CoveringSprite.h"
 #include "Rectangle.h"
 #include "Catcher.h"
+#include "Label.h"
 
 namespace yuzu
 {
@@ -53,7 +54,13 @@ namespace yuzu
         Mix_Music *music;
         HitSampleSet hitSampleSet;
 
+        // game objects
         Catcher *catcher = nullptr;
+
+        // UI
+        fruitwork::Label *scoreLabel = nullptr;
+        fruitwork::Label *comboLabel = nullptr;
+        fruitwork::Label *accuracyLabel = nullptr;
 
         void initResources();
 

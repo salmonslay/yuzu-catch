@@ -67,7 +67,25 @@ namespace yuzu
         backgroundOverlay = fruitwork::Rectangle::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, {0, 0, 0, 128});
         backgroundSprite = fruitwork::CoveringSprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, currentBeatmap->getBackgroundTexture());
 
-        catcher = Catcher::getInstance(0, 0, 610 / 2, 648 / 2);
+        int catcherWidth = 610 / 2;
+        int catcherHeight = 648 / 2;
+        catcher = Catcher::getInstance((constants::gScreenWidth - catcherWidth) / 2, 730, catcherWidth, catcherHeight);
+
+        // ui
+        scoreLabel = fruitwork::Label::getInstance(405, 0, 390, 98, "0000000");
+        scoreLabel->setFontSize(72);
+        scoreLabel->setColor({207,249,250,255});
+        scoreLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
+
+        comboLabel = fruitwork::Label::getInstance(795, 36, 157, 55, "x0");
+        comboLabel->setFontSize(40);
+        comboLabel->setColor({207,249,250,255});
+        comboLabel->setAlignment(fruitwork::Label::Alignment::LEFT);
+
+        accuracyLabel = fruitwork::Label::getInstance(248, 36, 157, 55, "100%");
+        accuracyLabel->setFontSize(40);
+        accuracyLabel->setColor({207,249,250,255});
+        accuracyLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
 
         // @see https://stackoverflow.com/a/12883734/11420970
         auto finish = std::chrono::high_resolution_clock::now();
@@ -77,6 +95,9 @@ namespace yuzu
         add_component(backgroundSprite);
         add_component(backgroundOverlay);
         add_component(catcher);
+        add_component(scoreLabel);
+        add_component(comboLabel);
+        add_component(accuracyLabel);
     }
 
     bool GameScene::exit()
