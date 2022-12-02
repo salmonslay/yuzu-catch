@@ -188,7 +188,7 @@ namespace yuzu
         return hitObjects;
     }
 
-    SDL_Texture *Beatmap::getBackgroundTexture()
+    SDL_Texture *Beatmap::getBackgroundTexture() // TODO: free texture
     {
         if (backgroundTexture != nullptr)
             return backgroundTexture;
@@ -202,7 +202,7 @@ namespace yuzu
         return backgroundTexture;
     }
 
-    Mix_Music *Beatmap::getAudio()
+    Mix_Music *Beatmap::getAudio() // TODO: free audio
     {
         if (music != nullptr)
             return music;
