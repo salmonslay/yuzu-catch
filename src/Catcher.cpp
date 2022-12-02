@@ -30,9 +30,15 @@ namespace yuzu
         fruitwork::Sprite::update();
 
         if (moveRight)
+        {
             moveBy(catcherSpeed * (isDash ? 2 : 1));
+            setFlip(SDL_FLIP_NONE);
+        }
         if (moveLeft)
+        {
             moveBy(-catcherSpeed * (isDash ? 2 : 1));
+            setFlip(SDL_FLIP_HORIZONTAL);
+        }
     }
 
     Catcher::~Catcher()
