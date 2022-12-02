@@ -19,7 +19,7 @@ namespace yuzu
          * The time in milliseconds when the hit object should be hit.
          */
         int time;
-        bool isCaught = false;
+
         HitsoundType hitsoundType = HitsoundType::Normal;
 
         /** Hyper fruits will make the catcher much faster. */

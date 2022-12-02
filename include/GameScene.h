@@ -6,6 +6,7 @@
 #include "ResponsiveSprite.h"
 #include "CoveringSprite.h"
 #include "Rectangle.h"
+#include "Catcher.h"
 
 namespace yuzu
 {
@@ -51,6 +52,8 @@ namespace yuzu
 
         Mix_Music *music;
         HitSampleSet hitSampleSet;
+
+        Catcher *catcher = nullptr;
 
         void initResources();
 

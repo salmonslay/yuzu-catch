@@ -64,16 +64,19 @@ namespace yuzu
 
         music = currentBeatmap->getAudio();
 
+        backgroundOverlay = fruitwork::Rectangle::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, {0, 0, 0, 128});
+        backgroundSprite = fruitwork::CoveringSprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, currentBeatmap->getBackgroundTexture());
+
+        catcher = Catcher::getInstance(0, 0, 610 / 2, 648 / 2);
+
         // @see https://stackoverflow.com/a/12883734/11420970
         auto finish = std::chrono::high_resolution_clock::now();
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
         SDL_Log("Game resources loaded in %lldms", ms.count());
 
-        backgroundOverlay = fruitwork::Rectangle::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, {0, 0, 0, 128});
-        backgroundSprite = fruitwork::CoveringSprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, currentBeatmap->getBackgroundTexture());
-
         add_component(backgroundSprite);
         add_component(backgroundOverlay);
+        add_component(catcher);
     }
 
     bool GameScene::exit()
