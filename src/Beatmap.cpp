@@ -39,6 +39,26 @@ namespace yuzu
         return s;
     }
 
+    static inline Beatmap::BeatmapSection getSectionFromLine(const std::string &line)
+    {
+        if (line.find("[General]") != std::string::npos)
+            return Beatmap::BeatmapSection::GENERAL;
+        else if (line.find("[Metadata]") != std::string::npos)
+            return Beatmap::BeatmapSection::METADATA;
+        else if (line.find("[Difficulty]") != std::string::npos)
+            return Beatmap::BeatmapSection::DIFFICULTY;
+        else if (line.find("[Events]") != std::string::npos)
+            return Beatmap::BeatmapSection::EVENTS;
+        else if (line.find("[TimingPoints]") != std::string::npos)
+            return Beatmap::BeatmapSection::TIMINGPOINTS;
+        else if (line.find("[Colours]") != std::string::npos)
+            return Beatmap::BeatmapSection::COLOURS;
+        else if (line.find("[HitObjects]") != std::string::npos)
+            return Beatmap::BeatmapSection::HITOBJECTS;
+        else
+            return Beatmap::BeatmapSection::NONE;
+    }
+
     Beatmap *Beatmap::loadBeatmap(const std::string &beatmapPath)
     {
         //SDL_Log("Parsing beatmap: %s...", beatmapPath.c_str());
@@ -52,6 +72,7 @@ namespace yuzu
         void *discard; // used to discard unused values
 
         beatmap->beatmapDir = beatmapPath.substr(0, beatmapPath.find_last_of('/'));
+        beatmap->beatmapPath = beatmapPath;
 
         while (std::getline(infile, line))
         {
@@ -60,23 +81,7 @@ namespace yuzu
 
             if (line[0] == '[') // set new section
             {
-                if (line.find("[General]") != std::string::npos)
-                    section = BeatmapSection::GENERAL;
-                else if (line.find("[Metadata]") != std::string::npos)
-                    section = BeatmapSection::METADATA;
-                else if (line.find("[Difficulty]") != std::string::npos)
-                    section = BeatmapSection::DIFFICULTY;
-                else if (line.find("[Events]") != std::string::npos)
-                    section = BeatmapSection::EVENTS;
-                else if (line.find("[TimingPoints]") != std::string::npos)
-                    section = BeatmapSection::TIMINGPOINTS;
-                else if (line.find("[Colours]") != std::string::npos)
-                    section = BeatmapSection::COLOURS;
-                else if (line.find("[HitObjects]") != std::string::npos)
-                    section = BeatmapSection::HITOBJECTS;
-                else
-                    section = BeatmapSection::NONE;
-
+                section = getSectionFromLine(line);
                 continue;
             }
 
@@ -118,18 +123,6 @@ namespace yuzu
                 {
                     // 0,0,"Splatoon-3.jpeg",0,0
                     beatmap->backgroundFilename = line.substr(line.find('"') + 1, line.find_last_of('"') - line.find('"') - 1);
-                }
-            }
-            else if (section == BeatmapSection::COLOURS)
-            {
-                // if the line starts with "Combo", it's a combo colour
-                if (line.find("Combo") != std::string::npos)
-                {
-                    SDL_Color c = {.a = 255};
-                    if (sscanf(line.c_str(), "%s : %hhd,%hhd,%hhd", &discard, &c.r, &c.g, &c.b) == EOF)
-                        ERR("Failed to parse combo colour: %d, and %d", c.r, c.g)
-
-                    beatmap->comboColours.push_back(c);
                 }
             }
             else if (section == BeatmapSection::HITOBJECTS)
@@ -181,11 +174,63 @@ namespace yuzu
         return beatmap;
     }
 
-    std::vector<HitObject> Beatmap::getHitObjects()
+    void Beatmap::loadGameplayInformation()
     {
-        std::vector<HitObject> hitObjects;
+        auto start = std::chrono::high_resolution_clock::now();
 
-        return hitObjects;
+        std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
+
+        std::string line;
+        BeatmapSection section = BeatmapSection::NONE;
+
+        // temps
+        Beatmap::TimingPoint lastTimingPoint{};
+        void *discard;
+
+        while (std::getline(infile, line))
+        {
+            if (line.empty())
+                continue;
+
+            if (line[0] == '[') // set new section
+            {
+                section = getSectionFromLine(line);
+                continue;
+            }
+
+            if (section == BeatmapSection::TIMINGPOINTS)
+            {
+                /**
+                  * @see Source https://github.com/LiterallyFabian/SVB/blob/main/app/public/catch/js/processor.js#L256-L302
+                  * @see Docs https://osu.ppy.sh/wiki/en/Client/File_formats/Osu_%28file_format%29#timing-points
+                  */
+                Beatmap::TimingPoint timingPoint{};
+
+                if (sscanf(line.c_str(), "%d,%lf,%d,%d,%d,%d,%d,%d", &timingPoint.offset, &timingPoint.beatLength, &discard,
+                           &timingPoint.sampleType, &discard, &discard, &timingPoint.isUninherited, &timingPoint.isKiai) == EOF)
+                    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to parse timing point: %s", line.c_str());
+
+                // inherited timing points changes slider velocity, basically beat length
+                if (timingPoint.isUninherited)
+                    lastTimingPoint = timingPoint;
+                else if (lastTimingPoint.offset)
+                    timingPoint.beatLength = lastTimingPoint.beatLength / (-100 / timingPoint.beatLength);
+
+                timingPoints.push_back(timingPoint);
+            }
+            else if (section == BeatmapSection::COLOURS)
+            {
+                // if the line starts with "Combo", it's a combo colour
+                if (line.find("Combo") != std::string::npos)
+                {
+                    SDL_Color c = {.a = 255};
+                    if (sscanf(line.c_str(), "%s : %hhd,%hhd,%hhd", &discard, &c.r, &c.g, &c.b) == EOF)
+                        ERR("Failed to parse combo colour: %d, and %d", c.r, c.g)
+
+                    comboColours.push_back(c);
+                }
+            }
+        }
     }
 
     SDL_Texture *Beatmap::getBackgroundTexture() // TODO: free texture

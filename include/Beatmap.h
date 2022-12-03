@@ -55,7 +55,12 @@ namespace yuzu
         // [General]
         SampleType sampleType = SampleType::NORMAL;
 
+        /** The directory name of the beatmap; NNNNN Artist - Title */
         std::string beatmapDir;
+
+        /** The path to the beatmap .osu file; NNNNN Artist - Title/XXXXX.osu */
+        std::string beatmapPath;
+
         std::string audioFilename;
         std::string backgroundFilename;
 
@@ -93,7 +98,7 @@ namespace yuzu
         double sliderMultiplier;
         double sliderTickRate;
 
-        // [TimingPoints]
+        // [TimingPoints], [Colours] & [HitObjects]
         struct TimingPoint {
 
             /** Start time of the timing section, in milliseconds. */
@@ -109,13 +114,12 @@ namespace yuzu
             bool isKiai;
         };
 
-        std::vector<TimingPoint> timingPoints;
+        std::vector<TimingPoint> timingPoints{};
+        std::vector<HitObject> hitObjects{};
+        std::vector<SDL_Color> comboColours{};
 
-        // [Colours]
-        std::vector<SDL_Color> comboColours;
-
-        // [HitObjects]
-        std::vector<HitObject> getHitObjects();
+        /** Parses timing points, combo colours and hit objects. */
+        void loadGameplayInformation();
 
         ~Beatmap();
 
