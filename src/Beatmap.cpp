@@ -14,8 +14,6 @@
 #include <algorithm>
 #include <regex>
 
-#define ERR(s, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, s, __VA_ARGS__);
-
 namespace yuzu
 {
     static inline double getDoubleFromLine(const std::string &line)
@@ -240,7 +238,7 @@ namespace yuzu
                 {
                     SDL_Color c = {.a = 255};
                     if (sscanf(line.c_str(), "%s : %hhd,%hhd,%hhd", &discard, &c.r, &c.g, &c.b) == EOF)
-                        ERR("Failed to parse combo colour: %d, and %d", c.r, c.g)
+                        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to parse combo colour: %d, and %d", c.r, c.g);
 
                     comboColours.push_back(c);
                 }
