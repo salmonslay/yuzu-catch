@@ -74,18 +74,20 @@ namespace yuzu
         // ui
         scoreLabel = fruitwork::Label::getInstance(405, 0, 390, 98, "0000000");
         scoreLabel->setFontSize(72);
-        scoreLabel->setColor({207,249,250,255});
+        scoreLabel->setColor({207, 249, 250, 255});
         scoreLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
 
         comboLabel = fruitwork::Label::getInstance(795, 36, 157, 55, "x0");
         comboLabel->setFontSize(40);
-        comboLabel->setColor({207,249,250,255});
+        comboLabel->setColor({207, 249, 250, 255});
         comboLabel->setAlignment(fruitwork::Label::Alignment::LEFT);
 
         accuracyLabel = fruitwork::Label::getInstance(248, 36, 157, 55, "100%");
         accuracyLabel->setFontSize(40);
-        accuracyLabel->setColor({207,249,250,255});
+        accuracyLabel->setColor({207, 249, 250, 255});
         accuracyLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
+
+        currentBeatmap->loadGameplayInformation(fruitSets, bananaSet, dropTexture, hitSampleSet);
 
         // @see https://stackoverflow.com/a/12883734/11420970
         auto finish = std::chrono::high_resolution_clock::now();

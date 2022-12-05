@@ -11,13 +11,18 @@ namespace yuzu
      * They're only spawned during banana showers.
      */
     class Banana : public Fruit {
-        static Banana getInstance();
+    public:
+        static Banana *getInstance(int x, int w, int h, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
 
         int getScore() const override { return 1000; }
 
         bool addsCombo() const override { return false; }
 
         bool comboDependent() const override { return false; }
+
+    protected:
+        Banana(int x, int w, int h, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
+
     };
 
 } // yuzu

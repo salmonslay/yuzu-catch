@@ -5,6 +5,8 @@
 #include "Beatmap.h"
 #include "Constants.h"
 #include "System.h"
+#include "JuiceDrop.h"
+#include "Banana.h"
 #include <fstream>
 #include <vector>
 #include <chrono>
@@ -174,8 +176,17 @@ namespace yuzu
         return beatmap;
     }
 
-    void Beatmap::loadGameplayInformation()
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-msc50-cpp" // warning for using rand()
+
+    void Beatmap::loadGameplayInformation(std::vector<GameScene::HitObjectSet> hitObjectSets,
+                                          yuzu::GameScene::HitObjectSet bananaSet,
+                                          SDL_Texture *dropTexture,
+                                          yuzu::GameScene::HitSampleSet hitSampleSet)
     {
+        if (!hitObjects.empty())
+            return;
+
         auto start = std::chrono::high_resolution_clock::now();
 
         std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
@@ -184,6 +195,7 @@ namespace yuzu
         BeatmapSection section = BeatmapSection::NONE;
 
         // temps
+        double beatLength = -1;
         Beatmap::TimingPoint lastTimingPoint{};
         void *discard;
 
@@ -216,6 +228,9 @@ namespace yuzu
                 else if (lastTimingPoint.offset)
                     timingPoint.beatLength = lastTimingPoint.beatLength / (-100 / timingPoint.beatLength);
 
+                if (beatLength == -1)
+                    beatLength = timingPoint.beatLength;
+
                 timingPoints.push_back(timingPoint);
             }
             else if (section == BeatmapSection::COLOURS)
@@ -230,8 +245,122 @@ namespace yuzu
                     comboColours.push_back(c);
                 }
             }
+            else if (section == BeatmapSection::HITOBJECTS)
+            {
+                /**
+                 * @see Source https://github.com/LiterallyFabian/SVB/blob/main/app/public/catch/js/processor.js#L304-L409
+                 * @see Docs https://osu.ppy.sh/wiki/en/Client/File_formats/Osu_%28file_format%29#hit-objects
+                 * x,y,time,type,hitSound,objectParams,hitSample
+                 */
+
+                // line is a comma separated list of values, make it into a vector
+                std::vector<std::string> values;
+                std::stringstream ss(line);
+                std::string value;
+                while (std::getline(ss, value, ','))
+                    values.push_back(value);
+
+                int x = std::stoi(values[0]);
+                int time = std::stoi(values[2]);
+                int type = std::stoi(values[3]);
+                auto hitsoundType = static_cast<HitsoundType>(std::stoi(values[4]));
+
+                if (type == 1) // circle - create one fruit
+                {
+                    SDL_Color c = comboColours[std::rand() % comboColours.size()];
+                    GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
+                    Fruit *f = Fruit::getInstance(x, 64, 64, time, fruit.baseTexture, fruit.overlayTexture, c);
+                    hitObjects.push_back(f);
+                }
+                else if (type == 6) // slider - create fruits and juice drops
+                {
+                    // start fruit
+                    SDL_Color c = comboColours[std::rand() % comboColours.size()];
+                    GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
+                    Fruit *f = Fruit::getInstance(x, 64, 64, time, fruit.baseTexture, fruit.overlayTexture, c);
+                    hitObjects.push_back(f);
+
+                    // update beat length by finding the timing point that is closest to the time, but not greater than the time
+                    auto timing = std::find_if(timingPoints.begin(), timingPoints.end(), [time](const TimingPoint &tp)
+                    {
+                        return tp.offset < time;
+                    });
+
+                    if (timing != timingPoints.end())
+                        beatLength = timing->beatLength;
+
+                    // slider positions
+                    std::vector<std::string> sliderPositions = {};
+                    std::stringstream ss(values[5]);
+                    std::string sliderPosition;
+                    while (std::getline(ss, sliderPosition, '|'))
+                        sliderPositions.push_back(sliderPosition);
+
+                    // slider end position
+                    std::vector<std::string> sliderEndPosition = {};
+                    std::stringstream ss2(sliderPositions[sliderPositions.size() - 1]);
+                    std::string sliderEndPositionValue;
+                    while (std::getline(ss2, sliderEndPositionValue, ':'))
+                        sliderEndPosition.push_back(sliderEndPositionValue);
+
+                    // calculate droplet stuff
+                    int sliderEndPos = std::stoi(sliderEndPosition[0]);
+                    int repeats = std::stoi(values[6]); // how many times the slider will repeat
+                    double sliderLength = std::stoi(values[7]) / (sliderMultiplier * 100) * beatLength * repeats; // how long the slider is in milliseconds
+                    double dropletsPerRepeat = std::stoi(values[7]) / 20; // actual value doesn't really matter, it's just for looks
+                    int droplets = dropletsPerRepeat * repeats; // amount of droplets slider contains
+                    double dropletDelay = sliderLength / droplets; // delay between each droplet
+                    double diff = (x - sliderEndPos) / droplets; // difference in x each droplet should have
+
+                    int currentDroplet = 0;
+                    for (int i = 0; i < droplets; i++)
+                    {
+                        int dropletPos = x - (diff * i);
+                        if (currentDroplet == dropletsPerRepeat)
+                        {
+                            Fruit *midFruit = Fruit::getInstance(dropletPos, 64, 64, time + dropletDelay * i, fruit.baseTexture, fruit.overlayTexture, c);
+                            hitObjects.push_back(midFruit);
+                            currentDroplet = 0;
+                        }
+                        else
+                        {
+                            JuiceDrop *jd = JuiceDrop::getInstance(dropletPos, 41, 51, time + dropletDelay * i, dropTexture, c);
+                            hitObjects.push_back(jd);
+                        }
+                        currentDroplet++;
+                    }
+
+                    // slider end fruit
+                    Fruit *f2 = Fruit::getInstance(sliderEndPos, 64, 64, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c);
+                    hitObjects.push_back(f2);
+                }
+                else if (type == 12)  // spinner - create bananas
+                {
+                    std::vector<SDL_Color> bananaColors = {
+                            {255, 240, 0,  255},
+                            {255, 192, 0,  255},
+                            {214, 221, 28, 255}
+                    };
+
+                    for (int i = time; i < std::stoi(values[5]); i += 60)
+                    {
+                        SDL_Color c = bananaColors[std::rand() % bananaColors.size()];
+                        Banana *b = Banana::getInstance(std::rand() % 512, 64, 64, i, bananaSet.baseTexture, bananaSet.overlayTexture, c);
+                        hitObjects.push_back(b);
+                    }
+                }
+            }
         }
+
+        infile.close();
+
+        auto finish = std::chrono::high_resolution_clock::now();
+        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
+
+        SDL_Log("Gameplay information for beatmap \"%s (%s)\"  parsed in %lld ms.", title.c_str(), version.c_str(), milliseconds.count());
     }
+
+#pragma clang diagnostic pop
 
     SDL_Texture *Beatmap::getBackgroundTexture() // TODO: free texture
     {

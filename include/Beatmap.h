@@ -5,6 +5,7 @@
 #include <vector>
 #include <SDL.h>
 #include "Fruit.h"
+#include "GameScene.h"
 #include <SDL_mixer.h>
 
 namespace yuzu
@@ -115,11 +116,14 @@ namespace yuzu
         };
 
         std::vector<TimingPoint> timingPoints{};
-        std::vector<HitObject> hitObjects{};
+        std::vector<HitObject*> hitObjects{};
         std::vector<SDL_Color> comboColours{};
 
         /** Parses timing points, combo colours and hit objects. */
-        void loadGameplayInformation();
+        void loadGameplayInformation(std::vector<GameScene::HitObjectSet> hitObjectSets,
+                                     yuzu::GameScene::HitObjectSet bananaSet,
+                                     SDL_Texture *dropTexture,
+                                     yuzu::GameScene::HitSampleSet hitSampleSet);
 
         ~Beatmap();
 
