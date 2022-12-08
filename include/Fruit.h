@@ -8,7 +8,7 @@ namespace yuzu
 {
     /**
      * A fruit is a hit object that can be caught by the player. It gives 300 score based on combo.
-     * Fruits are constructed by two sprites, one base and one overlay.
+     * Fruits are constructed by two sprites, one base and one overlay, where the base has a color mod applied to it.
      */
     class Fruit : public HitObject {
     public:

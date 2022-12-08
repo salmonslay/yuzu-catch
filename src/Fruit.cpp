@@ -12,7 +12,7 @@ namespace yuzu
             : HitObject(x, w, h, t, texture)
     {
         overlay = fruitwork::Sprite::getInstance(x, 0, w, h, overlayTexture);
-        overlay->setColorMod(color);
+        setColorMod(color);
     }
 
     void Fruit::draw() const
