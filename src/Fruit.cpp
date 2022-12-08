@@ -3,15 +3,15 @@
 namespace yuzu
 {
 
-    Fruit *Fruit::getInstance(int x, int w, int h, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color)
+    Fruit *Fruit::getInstance(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color)
     {
-        return new Fruit(x, w, h, t, texture, overlayTexture, color);
+        return new Fruit(x,  t, texture, overlayTexture, color);
     }
 
-    Fruit::Fruit(int x, int w, int h, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color)
-            : HitObject(x, w, h, t, texture)
+    Fruit::Fruit(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color)
+            : HitObject(x, WIDTH, HEIGHT, t, texture)
     {
-        overlay = fruitwork::Sprite::getInstance(x, 0, w, h, overlayTexture);
+        overlay = fruitwork::Sprite::getInstance(x, 0, WIDTH, HEIGHT, overlayTexture);
         setColorMod(color);
     }
 

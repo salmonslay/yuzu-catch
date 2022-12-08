@@ -267,7 +267,7 @@ namespace yuzu
                 {
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
-                    Fruit *f = Fruit::getInstance(x, 64, 64, time, fruit.baseTexture, fruit.overlayTexture, c);
+                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c);
                     hitObjects.push_back(f);
                 }
                 else if (type == 6) // slider - create fruits and juice drops
@@ -275,7 +275,7 @@ namespace yuzu
                     // start fruit
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
-                    Fruit *f = Fruit::getInstance(x, 64, 64, time, fruit.baseTexture, fruit.overlayTexture, c);
+                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c);
                     hitObjects.push_back(f);
 
                     // update beat length by finding the timing point that is closest to the time, but not greater than the time
@@ -316,20 +316,20 @@ namespace yuzu
                         int dropletPos = x - (diff * i);
                         if (currentDroplet == dropletsPerRepeat)
                         {
-                            Fruit *midFruit = Fruit::getInstance(dropletPos, 64, 64, time + dropletDelay * i, fruit.baseTexture, fruit.overlayTexture, c);
+                            Fruit *midFruit = Fruit::getInstance(dropletPos, time + dropletDelay * i, fruit.baseTexture, fruit.overlayTexture, c);
                             hitObjects.push_back(midFruit);
                             currentDroplet = 0;
                         }
                         else
                         {
-                            JuiceDrop *jd = JuiceDrop::getInstance(dropletPos, 41, 51, time + dropletDelay * i, dropTexture, c);
+                            JuiceDrop *jd = JuiceDrop::getInstance(dropletPos, time + dropletDelay * i, dropTexture, c);
                             hitObjects.push_back(jd);
                         }
                         currentDroplet++;
                     }
 
                     // slider end fruit
-                    Fruit *f2 = Fruit::getInstance(sliderEndPos, 64, 64, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c);
+                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c);
                     hitObjects.push_back(f2);
                 }
                 else if (type == 12)  // spinner - create bananas
@@ -343,7 +343,7 @@ namespace yuzu
                     for (int i = time; i < std::stoi(values[5]); i += 60)
                     {
                         SDL_Color c = bananaColors[std::rand() % bananaColors.size()];
-                        Banana *b = Banana::getInstance(std::rand() % 512, 64, 64, i, bananaSet.baseTexture, bananaSet.overlayTexture, c);
+                        Banana *b = Banana::getInstance(std::rand() % 512, i, bananaSet.baseTexture, bananaSet.overlayTexture, c);
                         hitObjects.push_back(b);
                     }
                 }

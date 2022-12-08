@@ -12,7 +12,7 @@ namespace yuzu
      */
     class Banana : public Fruit {
     public:
-        static Banana *getInstance(int x, int w, int h, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
+        static Banana *getInstance(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
 
         int getScore() const override { return 1000; }
 
@@ -21,8 +21,7 @@ namespace yuzu
         bool comboDependent() const override { return false; }
 
     protected:
-        Banana(int x, int w, int h, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
-
+        Banana(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
     };
 
 } // yuzu
