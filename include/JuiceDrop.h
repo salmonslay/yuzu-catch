@@ -17,12 +17,14 @@ namespace yuzu
 
         bool addsCombo() const override { return false; }
 
+        void draw() const override;
+
     protected:
         JuiceDrop(int x, int t, SDL_Texture *texture, SDL_Color color);
 
     private:
-        static const int WIDTH = 41;
-        static const int HEIGHT = 51;
+        static const int WIDTH = 82/1.5;
+        static const int HEIGHT = 103/1.5;
     };
 
 } // yuzu

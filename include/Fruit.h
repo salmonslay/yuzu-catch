@@ -26,8 +26,8 @@ namespace yuzu
     private:
         fruitwork::Sprite *overlay = nullptr;
 
-        static const int WIDTH = 64;
-        static const int HEIGHT = 64;
+        static const int WIDTH = 128 / 1.5;
+        static const int HEIGHT = 128 / 1.5;
     };
 
 } // yuzu
