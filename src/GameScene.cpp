@@ -114,7 +114,7 @@ namespace yuzu
         std::thread([this]()
                     {
                         std::this_thread::sleep_for(std::chrono::milliseconds(800));
-                        Mix_PlayMusic(music, -1);
+                        Mix_PlayMusic(music, 0);
                     }).detach();
     }
 
