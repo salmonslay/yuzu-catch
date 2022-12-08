@@ -306,7 +306,7 @@ namespace yuzu
                     int repeats = std::stoi(values[6]); // how many times the slider will repeat
                     double sliderLength = std::stoi(values[7]) / (sliderMultiplier * 100) * beatLength * repeats; // how long the slider is in milliseconds
                     double dropletsPerRepeat = std::stoi(values[7]) / 20; // actual value doesn't really matter, it's just for looks
-                    int droplets = dropletsPerRepeat * repeats; // amount of droplets slider contains
+                    int droplets = std::max(static_cast<int>(dropletsPerRepeat * repeats), 1); // amount of droplets slider contains
                     double dropletDelay = sliderLength / droplets; // delay between each droplet
                     double diff = (x - sliderEndPos) / droplets; // difference in x each droplet should have
 
