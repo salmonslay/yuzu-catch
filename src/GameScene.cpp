@@ -1,10 +1,12 @@
 #include <iostream>
 #include <SDL_image.h>
 #include <chrono>
+#include <thread>
 #include "GameScene.h"
 #include "System.h"
 #include "ResourceManager.h"
 #include "GalleryScene.h"
+#include "future"
 
 namespace yuzu
 {
@@ -100,6 +102,37 @@ namespace yuzu
         add_component(scoreLabel);
         add_component(comboLabel);
         add_component(accuracyLabel);
+
+        startGame();
+    }
+
+    void GameScene::startGame()
+    {
+        startTime = SDL_GetTicks64();
+
+        // play music after 800 ms
+        std::thread([this]()
+                    {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(800));
+                        Mix_PlayMusic(music, -1);
+                    }).detach();
+    }
+
+    void GameScene::update()
+    {
+        // add each hit object to the scene if it's time
+        if (startTime != -1)
+        {
+            uint64_t currentTime = SDL_GetTicks64() - startTime;
+            for (HitObject *hitObject: currentBeatmap->hitObjects)
+            {
+                if (hitObject->time <= currentTime && !hitObject->added)
+                {
+                    add_component(hitObject);
+                    hitObject->added = true;
+                }
+            }
+        }
     }
 
     bool GameScene::exit()
@@ -137,11 +170,6 @@ namespace yuzu
     GameScene *GameScene::get_instance()
     {
         return &instance;
-    }
-
-    void GameScene::update()
-    {
-
     }
 
     GameScene GameScene::instance;

@@ -25,6 +25,9 @@ namespace yuzu
         /** Hyper fruits will make the catcher much faster. */
         bool isHyper = false;
 
+        /** Whether or not this hit object is added */
+        bool added = false;
+
         // score stuff
 
         /** The score granted by the hit object. */
@@ -36,6 +39,8 @@ namespace yuzu
         /** Whether or not the score granted is affected by combo. If this is false, the flat score will be added. */
         virtual bool comboDependent() const { return true; }
 
+        void update() override;
+
     protected:
         /**
          * Creates a new hit object.
@@ -46,9 +51,6 @@ namespace yuzu
          * @param texture The texture to use for the hit object.
          */
         HitObject(int x, int w, int h, int t, SDL_Texture *texture);
-
-    private:
-
     };
 
 } // yuzu

@@ -57,12 +57,16 @@ namespace yuzu
         // game objects
         Catcher *catcher = nullptr;
 
+        Uint64 startTime = -1;
+
         // UI
         fruitwork::Label *scoreLabel = nullptr;
         fruitwork::Label *comboLabel = nullptr;
         fruitwork::Label *accuracyLabel = nullptr;
 
         void initResources();
+
+        void startGame();
 
         GameScene();
     };
