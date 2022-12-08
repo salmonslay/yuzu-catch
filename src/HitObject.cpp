@@ -1,5 +1,6 @@
 #include "HitObject.h"
 #include "Constants.h"
+#include "GameScene.h"
 
 namespace yuzu
 {
@@ -10,6 +11,7 @@ namespace yuzu
     void HitObject::start()
     {
         startTime = SDL_GetTicks64();
+        state = HitObjectState::ACTIVE;
     }
 
     void HitObject::update()
@@ -22,8 +24,16 @@ namespace yuzu
         rect.y = static_cast<int>(START_Y + (HIT_Y - START_Y) * (SDL_GetTicks64() - startTime) / DROP_TIME);
         set_rect(rect);
 
-        // check if the hit object is out of bounds
+        // check if the hit object is out of hit bounds
+        if (rect.y > MISS_Y && state == HitObjectState::ACTIVE)
+            state = HitObjectState::MISSED;
 
+        // remove & destroy if out of the screen
+        if (rect.y > constants::gScreenHeight)
+        {
+            state = HitObjectState::DESTROYED;
+            yuzu::GameScene::get_instance()->remove_component(this, true);
+        }
     }
 
 } // yuzu

@@ -15,6 +15,21 @@ namespace yuzu
 
     class HitObject : public fruitwork::Sprite {
     public:
+        enum class HitObjectState {
+            /** The hit object is not visible on the screen and has not been summoned yet */
+            IDLE,
+            /** The hit object is visible on the screen and has been summoned */
+            ACTIVE,
+            /** The hit object has been hit by the player */
+            HIT,
+            /** The hit object has been missed by the player, and can no longer be hit */
+            MISSED,
+            /** The hit object has been queued for removal */
+            DESTROYED,
+        };
+
+        HitObjectState getState() const { return state; }
+
         /**
          * The time in milliseconds when the hit object should be hit.
          */
@@ -67,6 +82,8 @@ namespace yuzu
 
         /** How many milliseconds it should take for the hit object to fall from START_Y to HIT_Y. */
         static const int DROP_TIME = 1000;
+
+        HitObjectState state = HitObjectState::IDLE;
 
     };
 
