@@ -39,6 +39,8 @@ namespace yuzu
         /** Whether or not the score granted is affected by combo. If this is false, the flat score will be added. */
         virtual bool comboDependent() const { return true; }
 
+        void start() override;
+
         void update() override;
 
     protected:
@@ -51,6 +53,21 @@ namespace yuzu
          * @param texture The texture to use for the hit object.
          */
         HitObject(int x, int w, int h, int t, SDL_Texture *texture);
+
+    private:
+        /** The time in milliseconds when the hit object was added as a component, aka summoned. */
+        Uint64 startTime;
+        static const int START_Y = -100;
+
+        /** The Y point at which the hit object can be hit. */
+        static const int HIT_Y = 1000;
+
+        /** The Y point at which the hit object is considered missed. */
+        static const int MISS_Y = HIT_Y - 20;
+
+        /** How many milliseconds it should take for the hit object to fall from START_Y to HIT_Y. */
+        static const int DROP_TIME = 1000;
+
     };
 
 } // yuzu
