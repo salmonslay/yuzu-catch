@@ -251,6 +251,15 @@ namespace yuzu
                  * x,y,time,type,hitSound,objectParams,hitSample
                  */
 
+                // add default combo colors if none are specified
+                if (comboColours.empty())
+                {
+                    comboColours.push_back({0, 202, 0, 255});
+                    comboColours.push_back({18, 124, 255, 255});
+                    comboColours.push_back({242, 24, 57, 255});
+                    comboColours.push_back({255, 192, 0, 255});
+                }
+
                 // line is a comma separated list of values, make it into a vector
                 std::vector<std::string> values;
                 std::stringstream ss(line);
