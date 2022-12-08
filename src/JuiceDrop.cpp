@@ -13,4 +13,9 @@ namespace yuzu
         this->setColorMod(color);
     }
 
+    void JuiceDrop::draw() const
+    {
+        Sprite::draw();
+    }
+
 } // yuzu

@@ -46,11 +46,11 @@ namespace yuzu
         }
 
         // banana
-        bananaSet.baseTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), "fruit-bananas.png");
-        bananaSet.overlayTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), "fruit-bananas-overlay.png");
+        bananaSet.baseTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-bananas.png").c_str());
+        bananaSet.overlayTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-bananas-overlay.png").c_str());
 
         // drop
-        dropTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), "fruit-drop.png");
+        dropTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-drop.png").c_str());
 
         // samples
         std::string sample = "normal";
