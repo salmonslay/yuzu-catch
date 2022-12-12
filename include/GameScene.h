@@ -49,6 +49,7 @@ namespace yuzu
         SDL_Texture *dropTexture;
 
         fruitwork::CoveringSprite *backgroundSprite = nullptr;
+        /** Background overlay is a black transparent rectangle making the background darker */
         fruitwork::Rectangle *backgroundOverlay = nullptr;
 
         Mix_Music *music;

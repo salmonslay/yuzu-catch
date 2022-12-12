@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "GalleryScene.h"
 #include "future"
+#include "JuiceDrop.h"
 
 namespace yuzu
 {
@@ -96,12 +97,12 @@ namespace yuzu
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
         SDL_Log("Game resources loaded in %lldms", ms.count());
 
-        add_component(backgroundSprite);
-        add_component(backgroundOverlay);
-        add_component(catcher);
-        add_component(scoreLabel);
-        add_component(comboLabel);
-        add_component(accuracyLabel);
+        add_component(backgroundSprite, -100);
+        add_component(backgroundOverlay, -99);
+        add_component(catcher, 0);
+        add_component(scoreLabel, 1);
+        add_component(comboLabel, 0);
+        add_component(accuracyLabel, 0);
 
         startGame();
     }
@@ -128,7 +129,8 @@ namespace yuzu
             {
                 if (hitObject->time <= currentTime && !hitObject->added)
                 {
-                    add_component(hitObject);
+                    int z = dynamic_cast<JuiceDrop *>(hitObject) != nullptr ? -50 : -49; // drops are behind fruits
+                    add_component(hitObject, z);
                     hitObject->added = true;
                 }
             }
