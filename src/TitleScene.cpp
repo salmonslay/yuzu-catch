@@ -8,7 +8,6 @@
 #include "InputField.h"
 #include "GalleryScene.h"
 #include "TestScene.h"
-#include "Beatmap.h"
 #include "ResourceManager.h"
 
 namespace yuzu
@@ -16,7 +15,7 @@ namespace yuzu
     bool TitleScene::enter()
     {
         bool success = true;
-        std::cout << "TitleScene::enter()" << std::endl;
+        SDL_Log("Entering TitleScene...");
 
         fruitwork::Button *startButton = fruitwork::Button::getInstance(50, 400, 240, 48, "Start");
         startButton->registerCallback([](fruitwork::Button *src)
@@ -45,9 +44,6 @@ namespace yuzu
                                      });
         testButton->setColor({255, 255, 255, 128});
         testButton->setTextColor({0, 0, 0, 128});
-
-        Beatmap* bm = Beatmap::loadBeatmap("1828729 Deep Cut - Anarchy Rainbow/Deep Cut - Anarchy Rainbow (-Cronik) [Easy].osu");
-        std::cout << "Beatmap: " << bm->title << std::endl;
 
         add_component(background);
         add_component(label);

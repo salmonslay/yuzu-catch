@@ -4,7 +4,6 @@
 #include "InputField.h"
 #include "Sprite.h"
 #include "Button.h"
-#include "GameScene.h"
 #include "GalleryItem.h"
 #include "ImageButton.h"
 #include <ResourceManager.h>
@@ -18,7 +17,7 @@ namespace yuzu
     bool GalleryScene::enter()
     {
         bool success = true;
-        std::cout << "GalleryScene::enter()" << std::endl;
+        SDL_Log("Entering GalleryScene...");
 
         if (beatmaps.empty())
             loadBeatmaps();
@@ -118,7 +117,7 @@ namespace yuzu
     bool GalleryScene::exit()
     {
         bool success = true;
-        std::cout << "Exiting GalleryScene" << std::endl;
+        SDL_Log("Exiting GalleryScene...");
 
         for (auto &c: components)
         {

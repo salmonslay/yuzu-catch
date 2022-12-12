@@ -6,7 +6,6 @@
 #include "System.h"
 #include "ResourceManager.h"
 #include "GalleryScene.h"
-#include "future"
 #include "JuiceDrop.h"
 
 namespace yuzu
@@ -14,7 +13,7 @@ namespace yuzu
     bool GameScene::enter()
     {
         bool success = true;
-        std::cout << "GameScene::enter()" << std::endl;
+        SDL_Log("Entering GameScene...");
 
         initResources();
 
@@ -140,7 +139,7 @@ namespace yuzu
     bool GameScene::exit()
     {
         bool success = true;
-        std::cout << "Exiting GameScene" << std::endl;
+        SDL_Log("Exiting GameScene...");
 
         for (auto &c: components)
         {
