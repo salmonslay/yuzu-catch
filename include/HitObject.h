@@ -7,10 +7,10 @@
 namespace yuzu
 {
     enum class HitsoundType {
-        Normal,
-        Whistle,
-        Finish,
-        Clap
+        NORMAL,
+        WHISTLE,
+        FINISH,
+        CLAP
     };
 
     class HitObject : public fruitwork::Sprite {
@@ -35,7 +35,7 @@ namespace yuzu
          */
         int time;
 
-        HitsoundType hitsoundType = HitsoundType::Normal;
+        HitsoundType hitsoundType = HitsoundType::NORMAL;
 
         /** Hyper fruits will make the catcher much faster. */
         bool isHyper = false;

@@ -11,7 +11,7 @@ namespace yuzu
 
     class GalleryScene : public fruitwork::Scene {
     public:
-        static GalleryScene *get_instance();
+        static GalleryScene *getInstance();
 
         bool enter() override;
 

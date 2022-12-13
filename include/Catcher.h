@@ -37,7 +37,7 @@ namespace yuzu
         SDL_Texture *textureKiai;
         SDL_Texture *textureFail;
 
-        const int catcherSpeed = 7;
+        const int CATCHER_SPEED = 7;
     };
 
 } // yuzu

@@ -14,7 +14,7 @@ namespace yuzu
 
     class GameScene : public fruitwork::Scene {
     public:
-        static GameScene *get_instance();
+        static GameScene *getInstance();
 
         bool enter() override;
 

@@ -17,7 +17,7 @@ namespace yuzu
 
     void Fruit::draw() const
     {
-        overlay->set_rect(this->get_rect());
+        overlay->setRect(this->getRect());
         Sprite::draw();
         overlay->draw();
     }

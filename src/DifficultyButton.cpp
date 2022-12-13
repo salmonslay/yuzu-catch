@@ -45,7 +45,7 @@ namespace yuzu
         }
 
         if (starTexture == nullptr)
-            starTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("star.png").c_str());
+            starTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("star.png").c_str());
 
         for (int i = 0; i < 5; i++)
         {
@@ -65,7 +65,7 @@ namespace yuzu
                              auto *button = (DifficultyButton *) src;
                              currentBeatmap = button->beatmap;
                              SDL_Log("Starting beatmap \"%s\" (%s)...", currentBeatmap->title.c_str(), currentBeatmap->version.c_str());
-                             fruitwork::sys.setNextScene(GameScene::get_instance());
+                             fruitwork::sys.setNextScene(GameScene::getInstance());
                          });
     }
 

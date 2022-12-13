@@ -26,7 +26,7 @@ namespace yuzu
                 92, 705, 128, 128, fruitwork::ResourceManager::getTexturePath("arrow.png"));
         buttonPreviousPage->registerCallback([](fruitwork::Button *src)
                                              {
-                                                 GalleryScene::get_instance()->changePage(false);
+                                                 GalleryScene::getInstance()->changePage(false);
                                              });
         buttonPreviousPage->setFlip(SDL_FLIP_HORIZONTAL);
 
@@ -34,7 +34,7 @@ namespace yuzu
                 374, 705, 128, 128, fruitwork::ResourceManager::getTexturePath("arrow.png"));
         buttonNextPage->registerCallback([](fruitwork::Button *src)
                                          {
-                                             GalleryScene::get_instance()->changePage(true);
+                                             GalleryScene::getInstance()->changePage(true);
                                          });
 
         pageLabel = fruitwork::Label::getInstance(223, 741, 149, 79, "1/1");
@@ -48,11 +48,11 @@ namespace yuzu
         galleryFocus = GalleryFocus::getInstance(637, 36);
 
 
-        add_component(background);
-        add_component(buttonPreviousPage);
-        add_component(buttonNextPage);
-        add_component(pageLabel);
-        add_component(galleryFocus);
+        addComponent(background);
+        addComponent(buttonPreviousPage);
+        addComponent(buttonNextPage);
+        addComponent(pageLabel);
+        addComponent(galleryFocus);
 
         addGalleryItems(currentPage);
 
@@ -64,7 +64,7 @@ namespace yuzu
     {
         for (auto &item: galleryItems)
         {
-            remove_component(item, true);
+            removeComponent(item, true);
         }
 
         galleryItems.clear();
@@ -88,7 +88,7 @@ namespace yuzu
             int beatmapIndex = (page * 6) + i;
             GalleryItem *item = GalleryItem::getInstance(beatmaps[beatmapIndex][0], x, y, beatmapIndex);
             galleryItems.push_back(item);
-            add_component(item);
+            addComponent(item);
 
             x += w + padding;
             if (i % 2 == 1)
@@ -131,7 +131,7 @@ namespace yuzu
     =
     default;
 
-    GalleryScene *GalleryScene::get_instance()
+    GalleryScene *GalleryScene::getInstance()
     {
         return &instance;
     }

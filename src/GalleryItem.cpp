@@ -15,7 +15,7 @@ namespace yuzu
         coverButton = fruitwork::ImageButton::getInstance(x, y, 246, 139, beatmap->getBackgroundTexture());
         coverButton->registerCallback([this](fruitwork::Button *src)
                                  {
-                                     yuzu::GalleryScene::get_instance()->setSelectedBeatmap(this->beatmapIndex); // beatmapIndex instead of 1 - how?
+                                     yuzu::GalleryScene::getInstance()->setSelectedBeatmap(this->beatmapIndex); // beatmapIndex instead of 1 - how?
                                  });
 
         coverBackdrop = fruitwork::Rectangle::getInstance(x, y, 246, 139, {0, 0, 0, 255});

@@ -23,8 +23,8 @@ namespace yuzu
         JuiceDrop(int x, int t, SDL_Texture *texture, SDL_Color color);
 
     private:
-        static const int WIDTH = 82/1.5;
-        static const int HEIGHT = 103/1.5;
+        static const int WIDTH = 82 / 1.5;
+        static const int HEIGHT = 103 / 1.5;
     };
 
 } // yuzu

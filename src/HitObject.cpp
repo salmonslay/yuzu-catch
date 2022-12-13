@@ -19,10 +19,10 @@ namespace yuzu
         Sprite::update();
 
         // move the hit object down
-        SDL_Rect rect = get_rect();
+        SDL_Rect rect = getRect();
         // the speed is calculated from DROP_TIME, which is the milliseconds it takes to fall from START_Y to HIT_Y
         rect.y = static_cast<int>(START_Y + (HIT_Y - START_Y) * (SDL_GetTicks64() - startTime) / DROP_TIME);
-        set_rect(rect);
+        setRect(rect);
 
         // check if the hit object is out of hit bounds
         if (rect.y > MISS_Y && state == HitObjectState::ACTIVE)
@@ -32,7 +32,7 @@ namespace yuzu
         if (rect.y > constants::gScreenHeight)
         {
             state = HitObjectState::DESTROYED;
-            yuzu::GameScene::get_instance()->remove_component(this, true);
+            yuzu::GameScene::getInstance()->removeComponent(this, true);
         }
     }
 

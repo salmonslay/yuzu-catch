@@ -21,7 +21,7 @@ namespace yuzu
         startButton->registerCallback([](fruitwork::Button *src)
                                       {
                                           std::cout << "Start button clicked" << std::endl;
-                                          fruitwork::sys.setNextScene(GalleryScene::get_instance());
+                                          fruitwork::sys.setNextScene(GalleryScene::getInstance());
                                       });
 
         startButton->setTextColor({134, 140, 158, 255});
@@ -40,16 +40,16 @@ namespace yuzu
         fruitwork::Button *testButton = fruitwork::Button::getInstance(10, 842, 240, 48, "Visual tests...");
         testButton->registerCallback([](fruitwork::Button *src)
                                      {
-                                         fruitwork::sys.setNextScene(fruitwork::TestScene::get_instance());
+                                         fruitwork::sys.setNextScene(fruitwork::TestScene::getInstance());
                                      });
         testButton->setColor({255, 255, 255, 128});
         testButton->setTextColor({0, 0, 0, 128});
 
-        add_component(background);
-        add_component(label);
-        add_component(startButton);
-        add_component(inputField);
-        add_component(testButton);
+        addComponent(background);
+        addComponent(label);
+        addComponent(startButton);
+        addComponent(inputField);
+        addComponent(testButton);
 
         return success;
     }
@@ -71,7 +71,7 @@ namespace yuzu
     =
     default;
 
-    TitleScene *TitleScene::get_instance()
+    TitleScene *TitleScene::getInstance()
     {
         return &instance;
     }

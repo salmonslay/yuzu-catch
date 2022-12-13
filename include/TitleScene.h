@@ -10,7 +10,7 @@ namespace yuzu
 
     class TitleScene : public fruitwork::Scene {
     public:
-        static TitleScene *get_instance();
+        static TitleScene *getInstance();
 
         bool enter() override;
 

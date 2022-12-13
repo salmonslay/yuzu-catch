@@ -40,17 +40,17 @@ namespace yuzu
         for (std::string &f: fruits)
         {
             HitObjectSet set{};
-            set.baseTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-" + f + ".png").c_str());
-            set.overlayTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-" + f + "-overlay.png").c_str());
+            set.baseTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-" + f + ".png").c_str());
+            set.overlayTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-" + f + "-overlay.png").c_str());
             fruitSets.push_back(set);
         }
 
         // banana
-        bananaSet.baseTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-bananas.png").c_str());
-        bananaSet.overlayTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-bananas-overlay.png").c_str());
+        bananaSet.baseTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-bananas.png").c_str());
+        bananaSet.overlayTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-bananas-overlay.png").c_str());
 
         // drop
-        dropTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-drop.png").c_str());
+        dropTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-drop.png").c_str());
 
         // samples
         std::string sample = "normal";
@@ -96,12 +96,12 @@ namespace yuzu
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
         SDL_Log("Game resources loaded in %lldms", ms.count());
 
-        add_component(backgroundSprite, -100);
-        add_component(backgroundOverlay, -99);
-        add_component(catcher, 0);
-        add_component(scoreLabel, 1);
-        add_component(comboLabel, 0);
-        add_component(accuracyLabel, 0);
+        addComponent(backgroundSprite, -100);
+        addComponent(backgroundOverlay, -99);
+        addComponent(catcher, 0);
+        addComponent(scoreLabel, 1);
+        addComponent(comboLabel, 0);
+        addComponent(accuracyLabel, 0);
 
         startGame();
     }
@@ -129,7 +129,7 @@ namespace yuzu
                 if (hitObject->time <= currentTime && !hitObject->added)
                 {
                     int z = dynamic_cast<JuiceDrop *>(hitObject) != nullptr ? -50 : -49; // drops are behind fruits
-                    add_component(hitObject, z);
+                    addComponent(hitObject, z);
                     hitObject->added = true;
                 }
             }
@@ -168,7 +168,7 @@ namespace yuzu
     =
     default;
 
-    GameScene *GameScene::get_instance()
+    GameScene *GameScene::getInstance()
     {
         return &instance;
     }

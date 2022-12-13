@@ -375,7 +375,7 @@ namespace yuzu
             return backgroundTexture;
 
         std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + backgroundFilename;
-        backgroundTexture = IMG_LoadTexture(fruitwork::sys.get_renderer(), fullPath.c_str());
+        backgroundTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fullPath.c_str());
 
         if (backgroundTexture == nullptr)
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load background texture %s: %s", fullPath.c_str(), IMG_GetError());

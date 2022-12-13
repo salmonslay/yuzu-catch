@@ -81,7 +81,7 @@ namespace yuzu
     void GalleryFocus::setBeatmap(std::vector<Beatmap *> beatmapSet)
     {
         for (auto &difficultyButton: difficultyButtons)
-            GalleryScene::get_instance()->remove_component(difficultyButton, true);
+            GalleryScene::getInstance()->removeComponent(difficultyButton, true);
         difficultyButtons.clear();
 
         Beatmap *beatmap = beatmapSet[0];
@@ -98,7 +98,7 @@ namespace yuzu
         });
 
         for (int i = 0; i < std::min(static_cast<int>(beatmapSet.size()), 4); i++)
-            difficultyButtons.push_back(DifficultyButton::getInstance(get_rect().x, get_rect().y + 460 + (90 * i), 460, 76, beatmapSet[i]));
+            difficultyButtons.push_back(DifficultyButton::getInstance(getRect().x, getRect().y + 460 + (90 * i), 460, 76, beatmapSet[i]));
     }
 
     GalleryFocus::~GalleryFocus()

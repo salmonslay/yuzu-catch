@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 
     Session ses;
 
-    ses.run(yuzu::TitleScene::get_instance());
+    ses.run(yuzu::TitleScene::getInstance());
 
     return 0;
 }

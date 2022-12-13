@@ -14,9 +14,9 @@ namespace yuzu
 
     Catcher::Catcher(int x, int y, int w, int h) : Sprite(x, y, w, h, nullptr)
     {
-        textureIdle = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-idle.png").c_str());
-        textureKiai = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-kiai.png").c_str());
-        textureFail = IMG_LoadTexture(fruitwork::sys.get_renderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-fail.png").c_str());
+        textureIdle = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-idle.png").c_str());
+        textureKiai = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-kiai.png").c_str());
+        textureFail = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-fail.png").c_str());
     }
 
     void Catcher::start()
@@ -31,12 +31,12 @@ namespace yuzu
 
         if (moveRight)
         {
-            moveBy(catcherSpeed * (isDash ? 2 : 1));
+            moveBy(CATCHER_SPEED * (isDash ? 2 : 1));
             setFlip(SDL_FLIP_NONE);
         }
         if (moveLeft)
         {
-            moveBy(-catcherSpeed * (isDash ? 2 : 1));
+            moveBy(-CATCHER_SPEED * (isDash ? 2 : 1));
             setFlip(SDL_FLIP_HORIZONTAL);
         }
     }
@@ -73,14 +73,14 @@ namespace yuzu
     {
         x = static_cast<int>(x * constants::speedMod);
 
-        SDL_Rect rect = get_rect();
+        SDL_Rect rect = getRect();
         rect.x += x;
         if (rect.x < 0)
             rect.x = 0;
         if (rect.x + rect.w > constants::gScreenWidth)
             rect.x = constants::gScreenWidth - rect.w;
 
-        set_rect(rect);
+        setRect(rect);
     }
 
 } // yuzu
