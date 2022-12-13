@@ -9,6 +9,7 @@
 #include "GalleryScene.h"
 #include "TestScene.h"
 #include "ResourceManager.h"
+#include "TestSceneIndex.h"
 
 namespace yuzu
 {
@@ -40,7 +41,7 @@ namespace yuzu
         fruitwork::Button *testButton = fruitwork::Button::getInstance(10, 842, 240, 48, "Visual tests...");
         testButton->registerCallback([](fruitwork::Button *src)
                                      {
-                                         fruitwork::sys.setNextScene(fruitwork::TestScene::getInstance());
+                                         fruitwork::sys.setNextScene(fruitwork::TestSceneIndex::getInstance());
                                      });
         testButton->setColor({255, 255, 255, 128});
         testButton->setTextColor({0, 0, 0, 128});
@@ -60,9 +61,7 @@ namespace yuzu
         SDL_Log("TitleScene::exit() cleaning up");
 
         for (auto &c: components)
-        {
-            delete c;
-        }
+            removeComponent(c, true);
 
         return success;
     }

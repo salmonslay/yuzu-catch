@@ -120,9 +120,7 @@ namespace yuzu
         SDL_Log("Exiting GalleryScene...");
 
         for (auto &c: components)
-        {
-            delete c;
-        }
+            removeComponent(c, true);
 
         return success;
     }

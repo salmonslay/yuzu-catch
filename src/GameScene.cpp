@@ -142,9 +142,7 @@ namespace yuzu
         SDL_Log("Exiting GameScene...");
 
         for (auto &c: components)
-        {
-            delete c;
-        }
+            removeComponent(c, true);
 
         for (HitObjectSet &s: fruitSets)
         {
