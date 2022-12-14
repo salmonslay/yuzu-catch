@@ -8,6 +8,7 @@
 #include "Rectangle.h"
 #include "Catcher.h"
 #include "Label.h"
+#include "Score.h"
 
 namespace yuzu
 {
@@ -42,6 +43,7 @@ namespace yuzu
             Mix_Chunk *clap;
         };
 
+        Score *score = nullptr;
     private:
         static GameScene instance;
 

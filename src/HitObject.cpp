@@ -19,6 +19,8 @@ namespace yuzu
     {
         Sprite::update();
 
+        auto gameScene = GameScene::getInstance();
+
         // move the hit object down
         SDL_Rect rect = getRect();
         // the speed is calculated from DROP_TIME, which is the milliseconds it takes to fall from START_Y to HIT_Y
@@ -29,7 +31,8 @@ namespace yuzu
         if ((rect.y + rect.h) > MISS_Y && state == HitObjectState::ACTIVE)
         {
             state = HitObjectState::MISSED;
-            setColorMod({255, 0, 0});
+
+            gameScene->score->processHitObject(this);
         }
 
         // check if the hit object is in hit bounds
@@ -42,7 +45,8 @@ namespace yuzu
             if (rect.x + rect.w > plateRange.x && rect.x < plateRange.y)
             {
                 state = HitObjectState::HIT;
-                setColorMod({0, 255, 0});
+                gameScene->score->processHitObject(this);
+                gameScene->removeComponent(this, true);
             }
         }
 
@@ -50,7 +54,7 @@ namespace yuzu
         if (rect.y > constants::gScreenHeight)
         {
             state = HitObjectState::DESTROYED;
-            yuzu::GameScene::getInstance()->removeComponent(this, true);
+            gameScene->removeComponent(this, true);
         }
     }
 

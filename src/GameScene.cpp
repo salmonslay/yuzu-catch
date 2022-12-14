@@ -73,6 +73,9 @@ namespace yuzu
         int catcherHeight = 648 / 2;
         catcher = Catcher::getInstance((constants::gScreenWidth - catcherWidth) / 2, 734, catcherWidth, catcherHeight);
 
+        delete score;
+        score = new Score();
+
         // ui
         scoreLabel = fruitwork::Label::getInstance(405, 0, 390, 98, "0000000");
         scoreLabel->setFontSize(72);
@@ -133,6 +136,19 @@ namespace yuzu
                 }
             }
         }
+
+        // update score
+        std::string scoreText = std::to_string(score->displayScore);
+        scoreText.insert(0, 7 - scoreText.length(), '0'); // pad with zeroes
+        scoreLabel->setText(scoreText);
+
+        std::string comboText = "x" + std::to_string(score->combo);
+        comboLabel->setText(comboText);
+
+        std::string accuracyText = std::to_string((int) (score->getAccuracy() * 10000) / 100.0);
+        accuracyText = accuracyText.substr(0, accuracyText.find('.') + 3);
+        accuracyText += "%";
+        accuracyLabel->setText(accuracyText);
     }
 
     bool GameScene::exit()
