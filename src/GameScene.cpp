@@ -71,7 +71,7 @@ namespace yuzu
 
         int catcherWidth = 610 / 2;
         int catcherHeight = 648 / 2;
-        catcher = Catcher::getInstance((constants::gScreenWidth - catcherWidth) / 2, 730, catcherWidth, catcherHeight);
+        catcher = Catcher::getInstance((constants::gScreenWidth - catcherWidth) / 2, 734, catcherWidth, catcherHeight);
 
         // ui
         scoreLabel = fruitwork::Label::getInstance(405, 0, 390, 98, "0000000");
@@ -110,10 +110,9 @@ namespace yuzu
     {
         startTime = SDL_GetTicks64();
 
-        // play music after 800 ms
         std::thread([this]()
                     {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(800));
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                         Mix_PlayMusic(music, 0);
                     }).detach();
     }

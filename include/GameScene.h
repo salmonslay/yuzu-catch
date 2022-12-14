@@ -22,6 +22,8 @@ namespace yuzu
 
         void update() override;
 
+        Catcher *getCatcher() const { return catcher; }
+
         /**
          * Container for the hit object sprites
          */

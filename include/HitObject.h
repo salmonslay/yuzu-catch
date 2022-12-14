@@ -3,6 +3,7 @@
 
 #include <SDL_render.h>
 #include "Sprite.h"
+#include "Catcher.h"
 
 namespace yuzu
 {
@@ -75,16 +76,17 @@ namespace yuzu
         static const int START_Y = -100;
 
         /** The Y point at which the hit object can be hit. */
-        static const int HIT_Y = 1000;
+        static const int HIT_Y = 750;
 
         /** The Y point at which the hit object is considered missed. */
-        static const int MISS_Y = HIT_Y - 20;
+        static const int MISS_Y = HIT_Y + 5;
 
         /** How many milliseconds it should take for the hit object to fall from START_Y to HIT_Y. */
         static const int DROP_TIME = 1000;
 
         HitObjectState state = HitObjectState::IDLE;
 
+        Catcher* catcher;
     };
 
 } // yuzu

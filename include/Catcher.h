@@ -19,8 +19,8 @@ namespace yuzu
 
         void onKeyUp(const SDL_Event &e) override;
 
-        /** Moves the catcher by the given amount. */
-        void moveBy(int x);
+        /** (x, x2) is the current range of the plate */
+        SDL_Point getPlateRange() const;
 
         ~Catcher() override;
 
@@ -38,6 +38,9 @@ namespace yuzu
         SDL_Texture *textureFail;
 
         const int CATCHER_SPEED = 7;
+
+        /** Moves the catcher by the given amount. */
+        void moveBy(int x);
     };
 
 } // yuzu

@@ -83,4 +83,10 @@ namespace yuzu
         setRect(rect);
     }
 
+    SDL_Point Catcher::getPlateRange() const
+    {
+        SDL_Rect rect = getRect();
+        return {rect.x + 20, rect.x + rect.w - 20};
+    }
+
 } // yuzu
