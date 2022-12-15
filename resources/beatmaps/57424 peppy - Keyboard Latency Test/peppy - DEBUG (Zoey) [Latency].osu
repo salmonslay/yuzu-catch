@@ -1,0 +1,77 @@
+osu file format v14
+
+[General]
+AudioFilename: offsetfinder.mp3
+AudioLeadIn: 0
+PreviewTime: -1
+Countdown: 1
+SampleSet: Soft
+StackLeniency: 0.7
+Mode: 0
+LetterboxInBreaks: 1
+WidescreenStoryboard: 1
+
+[Editor]
+DistanceSpacing: 1.4
+BeatDivisor: 1
+GridSize: 4
+TimelineZoom: 1
+
+[Metadata]
+Title:DEBUG
+TitleUnicode:DEBUG
+Artist:peppy
+ArtistUnicode:peppy
+Creator:Zoey
+Version:Latency
+Source:
+Tags:Offset Wizard keyboard
+BeatmapID:0
+BeatmapSetID:-1
+
+[Difficulty]
+HPDrainRate:5
+CircleSize:5
+OverallDifficulty:5
+ApproachRate:5
+SliderMultiplier:1.4
+SliderTickRate:1
+
+[Events]
+//Background and Video events
+//Break Periods
+//Storyboard Layer 0 (Background)
+//Storyboard Layer 1 (Fail)
+//Storyboard Layer 2 (Pass)
+//Storyboard Layer 3 (Foreground)
+//Storyboard Layer 4 (Overlay)
+//Storyboard Sound Samples
+
+[TimingPoints]
+-6,500,4,2,1,0,1,0
+8994,-50,4,2,1,0,0,0
+9994,-25,4,2,1,0,0,0
+11994,-133.333333333333,4,2,1,0,0,0
+14494,-1000,4,2,1,0,0,0
+
+
+[HitObjects]
+197,177,494,5,0,0:0:0:0:
+197,177,994,1,0,0:0:0:0:
+197,177,1494,1,0,0:0:0:0:
+197,177,1994,1,0,0:0:0:0:
+197,177,2494,1,0,0:0:0:0:
+197,177,2994,1,0,0:0:0:0:
+197,177,3494,2,0,L|199:22,1,140
+194,232,4494,2,0,L|204:21,2,140
+194,232,5994,1,0,0:0:0:0:
+194,232,6494,2,0,L|194:44,1,140
+194,92,7494,2,0,L|193:318,1,140
+189,36,8494,1,0,0:0:0:0:
+189,36,8994,2,0,L|191:330,1,280
+0,8,9994,2,0,L|458:361,1,560
+438,285,10994,5,0,0:0:0:0:
+363,185,11494,1,0,0:0:0:0:
+227,242,11994,2,0,P|149:195|100:101,1,105.000004005432
+119,39,12994,2,0,P|267:85|267:92,2,105.000004005432
+136,47,14494,2,0,L|149:45,1,14
