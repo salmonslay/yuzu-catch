@@ -186,6 +186,36 @@ namespace yuzu
         return &instance;
     }
 
+    void GameScene::processFruit(HitObject *ho)
+    {
+        if (ho->getState() == HitObjectState::HIT)
+        {
+            // play sound
+            switch (ho->hitsoundType)
+            {
+                case HitsoundType::WHISTLE:
+                    Mix_PlayChannel(-1, hitSampleSet.whistle, 0);
+                    break;
+                case HitsoundType::FINISH:
+                    Mix_PlayChannel(-1, hitSampleSet.finish, 0);
+                    break;
+                case HitsoundType::CLAP:
+                    Mix_PlayChannel(-1, hitSampleSet.clap, 0);
+                    break;
+                default:
+                    Mix_PlayChannel(-1, hitSampleSet.normal, 0);
+                    break;
+            }
+        }
+        else
+        {
+            if (score->combo > 15 && ho->comboDependent())
+                Mix_PlayChannel(-1, hitSampleSet.finish, 0); // TODO: replace with miss sound
+        }
+
+        score->processHitObject(ho);
+    }
+
     GameScene GameScene::instance;
 
 } // yuzu

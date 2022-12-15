@@ -62,7 +62,7 @@ namespace yuzu
         {
             int previousScore = score;
 
-            if (ho->getState() == HitObject::HitObjectState::HIT)
+            if (ho->getState() == HitObjectState::HIT)
             {
 
                 if (ho->addsCombo())
@@ -80,7 +80,7 @@ namespace yuzu
 
                 caughtRawScore += ho->getScore();
             }
-            else if (ho->getState() == HitObject::HitObjectState::MISSED)
+            else if (ho->getState() == HitObjectState::MISSED)
             {
                 if (ho->addsCombo())
                 {
@@ -102,6 +102,7 @@ namespace yuzu
                             }
                         }).detach();
         }
+
     };
 
 } // yuzu

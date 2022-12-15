@@ -25,6 +25,8 @@ namespace yuzu
 
         Catcher *getCatcher() const { return catcher; }
 
+        void processFruit(HitObject* ho);
+
         /**
          * Container for the hit object sprites
          */
@@ -43,7 +45,6 @@ namespace yuzu
             Mix_Chunk *clap;
         };
 
-        Score *score = nullptr;
     private:
         static GameScene instance;
 
@@ -61,6 +62,7 @@ namespace yuzu
 
         // game objects
         Catcher *catcher = nullptr;
+        Score *score = nullptr;
 
         Uint64 startTime = -1;
 

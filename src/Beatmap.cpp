@@ -272,14 +272,20 @@ namespace yuzu
                 int type = std::stoi(values[3]);
                 auto hitsoundType = static_cast<HitsoundType>(std::stoi(values[4]));
 
-                if (type == 1) // circle - create one fruit
+                /*
+                 * Hit object types are stored in an 8-bit integer where each bit is a flag with special meaning. The base hit object type is given by bits 0, 1, 3, and 7 (from least to most significant):
+                0 - Circle
+                1 - Slider
+                3 - Spinner
+                 */
+                if (type & 1) // circle - create one fruit
                 {
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
                     Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c);
                     hitObjects.push_back(f);
                 }
-                else if (type == 6) // slider - create fruits and juice drops
+                else if (type & 2) // slider - create fruits and juice drops
                 {
                     // start fruit
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
@@ -341,7 +347,7 @@ namespace yuzu
                     Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c);
                     hitObjects.push_back(f2);
                 }
-                else if (type == 12)  // spinner - create bananas
+                else if (type & 8) // spinner - create spinner
                 {
                     std::vector<SDL_Color> bananaColors = {
                             {255, 240, 0,  255},

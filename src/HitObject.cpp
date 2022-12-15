@@ -31,8 +31,7 @@ namespace yuzu
         if ((rect.y + rect.h) > MISS_Y && state == HitObjectState::ACTIVE)
         {
             state = HitObjectState::MISSED;
-
-            gameScene->score->processHitObject(this);
+            gameScene->processFruit(this);
         }
 
         // check if the hit object is in hit bounds
@@ -45,7 +44,7 @@ namespace yuzu
             if (rect.x + rect.w > plateRange.x && rect.x < plateRange.y)
             {
                 state = HitObjectState::HIT;
-                gameScene->score->processHitObject(this);
+                gameScene->processFruit(this);
                 gameScene->removeComponent(this, true);
             }
         }
