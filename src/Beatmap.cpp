@@ -270,19 +270,13 @@ namespace yuzu
                 int x = std::stoi(values[0]);
                 int time = std::stoi(values[2]);
                 int type = std::stoi(values[3]);
-                auto hitsoundType = static_cast<HitsoundType>(std::stoi(values[4]));
+                int hitSound = std::stoi(values[4]);
 
-                /*
-                 * Hit object types are stored in an 8-bit integer where each bit is a flag with special meaning. The base hit object type is given by bits 0, 1, 3, and 7 (from least to most significant):
-                0 - Circle
-                1 - Slider
-                3 - Spinner
-                 */
                 if (type & 1) // circle - create one fruit
                 {
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
-                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c);
+                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
                     hitObjects.push_back(f);
                 }
                 else if (type & 2) // slider - create fruits and juice drops
@@ -290,7 +284,7 @@ namespace yuzu
                     // start fruit
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
-                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c);
+                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
                     hitObjects.push_back(f);
 
                     // update beat length by finding the timing point that is closest to the time, but not greater than the time
@@ -331,7 +325,7 @@ namespace yuzu
                         int dropletPos = x - (diff * i);
                         if (currentDroplet == dropletsPerRepeat)
                         {
-                            Fruit *midFruit = Fruit::getInstance(dropletPos, time + dropletDelay * i, fruit.baseTexture, fruit.overlayTexture, c);
+                            Fruit *midFruit = Fruit::getInstance(dropletPos, time + dropletDelay * i, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
                             hitObjects.push_back(midFruit);
                             currentDroplet = 0;
                         }
@@ -344,7 +338,7 @@ namespace yuzu
                     }
 
                     // slider end fruit
-                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c);
+                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
                     hitObjects.push_back(f2);
                 }
                 else if (type & 8) // spinner - create spinner

@@ -12,7 +12,9 @@ namespace yuzu
      */
     class Fruit : public HitObject {
     public:
-        static Fruit *getInstance(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
+        static Fruit *getInstance(int x, int t,
+                                  SDL_Texture *texture, SDL_Texture *overlayTexture,
+                                  SDL_Color color, unsigned int hs);
 
         int getScore() const override { return 300; }
 
@@ -21,7 +23,9 @@ namespace yuzu
         ~Fruit() override;
 
     protected:
-        Fruit(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color);
+        Fruit(int x, int t,
+              SDL_Texture *texture, SDL_Texture *overlayTexture,
+              SDL_Color color, unsigned int hs);
 
     private:
         fruitwork::Sprite *overlay = nullptr;

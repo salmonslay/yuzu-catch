@@ -5,8 +5,9 @@
 namespace yuzu
 {
     // x*(gScreenWidth-100)/512+50 will scale the x position from osu!pixels to pixels, centered
-    HitObject::HitObject(int x, int w, int h, int t, SDL_Texture *texture) :
-            Sprite(static_cast<int>(x * (constants::gScreenWidth - 100.0) / 512.0 + 50), START_Y, w, h, texture), time(t) {}
+    HitObject::HitObject(int x, int w, int h, int t, SDL_Texture *texture, unsigned int hs) :
+            Sprite(static_cast<int>(x * (constants::gScreenWidth - 100.0) / 512.0 + 50), START_Y, w, h, texture),
+            time(t), hitSounds(hs) {}
 
     void HitObject::start()
     {

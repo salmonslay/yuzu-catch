@@ -7,14 +7,6 @@
 
 namespace yuzu
 {
-    enum class HitsoundType {
-        NONE,
-        NORMAL,
-        WHISTLE,
-        FINISH,
-        CLAP,
-    };
-
     enum class HitObjectState {
         /** The hit object is not visible on the screen and has not been summoned yet */
         IDLE,
@@ -40,7 +32,8 @@ namespace yuzu
          */
         int time;
 
-        HitsoundType hitsoundType = HitsoundType::NONE;
+        /** Bitfield of the hit sounds. 0=normal, 1=whistle, 2=finish, 3=clap */
+        unsigned int hitSounds = 0;
 
         /** Hyper fruits will make the catcher much faster. */
         bool isHyper = false;
@@ -72,7 +65,7 @@ namespace yuzu
          * @param t The time in milliseconds when the hit object should be hit.
          * @param texture The texture to use for the hit object.
          */
-        HitObject(int x, int w, int h, int t, SDL_Texture *texture);
+        HitObject(int x, int w, int h, int t, SDL_Texture *texture, unsigned int hs = 0);
 
     private:
         /** The time in milliseconds when the hit object was added as a component, aka summoned. */

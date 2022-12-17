@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "GalleryScene.h"
 #include "JuiceDrop.h"
+#include "Banana.h"
 
 namespace yuzu
 {
@@ -190,24 +191,20 @@ namespace yuzu
     {
         if (ho->getState() == HitObjectState::HIT)
         {
-            // play sound
-            switch (ho->hitsoundType)
+            if (dynamic_cast<Banana *>(ho) != nullptr)
             {
-                case HitsoundType::NORMAL:
-                    Mix_PlayChannel(-1, hitSampleSet.normal, 0);
-                    break;
-                case HitsoundType::WHISTLE:
+                // TODO: play banana hit sound
+            }
+            else if (dynamic_cast<Fruit *>(ho) != nullptr)
+            {
+                if (ho->hitSounds & 1)
                     Mix_PlayChannel(-1, hitSampleSet.whistle, 0);
-                    break;
-                case HitsoundType::FINISH:
+                if (ho->hitSounds & 2)
                     Mix_PlayChannel(-1, hitSampleSet.finish, 0);
-                    break;
-                case HitsoundType::CLAP:
+                if (ho->hitSounds & 4)
                     Mix_PlayChannel(-1, hitSampleSet.clap, 0);
-                    break;
-                case HitsoundType::NONE:
-                default:
-                    break;
+
+                Mix_PlayChannel(-1, hitSampleSet.normal, 0);
             }
         }
         else

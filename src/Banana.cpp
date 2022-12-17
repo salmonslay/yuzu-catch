@@ -8,5 +8,5 @@ namespace yuzu
     }
 
     Banana::Banana(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color)
-            : Fruit(x, t, texture, overlayTexture, color) {}
+            : Fruit(x, t, texture, overlayTexture, color, 0) {}
 } // yuzu
