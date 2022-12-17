@@ -8,10 +8,11 @@
 namespace yuzu
 {
     enum class HitsoundType {
+        NONE,
         NORMAL,
         WHISTLE,
         FINISH,
-        CLAP
+        CLAP,
     };
 
     enum class HitObjectState {
@@ -37,7 +38,7 @@ namespace yuzu
          */
         int time;
 
-        HitsoundType hitsoundType = HitsoundType::NORMAL;
+        HitsoundType hitsoundType = HitsoundType::NONE;
 
         /** Hyper fruits will make the catcher much faster. */
         bool isHyper = false;

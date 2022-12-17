@@ -193,6 +193,9 @@ namespace yuzu
             // play sound
             switch (ho->hitsoundType)
             {
+                case HitsoundType::NORMAL:
+                    Mix_PlayChannel(-1, hitSampleSet.normal, 0);
+                    break;
                 case HitsoundType::WHISTLE:
                     Mix_PlayChannel(-1, hitSampleSet.whistle, 0);
                     break;
@@ -202,8 +205,8 @@ namespace yuzu
                 case HitsoundType::CLAP:
                     Mix_PlayChannel(-1, hitSampleSet.clap, 0);
                     break;
+                case HitsoundType::NONE:
                 default:
-                    Mix_PlayChannel(-1, hitSampleSet.normal, 0);
                     break;
             }
         }
