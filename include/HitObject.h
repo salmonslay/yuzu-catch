@@ -26,6 +26,8 @@ namespace yuzu
         MISSED,
         /** The hit object has been queued for removal */
         DESTROYED,
+        /** The hit object has been removed from the screen */
+        HIDDEN,
     };
 
     class HitObject : public fruitwork::Sprite {

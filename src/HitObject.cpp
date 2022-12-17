@@ -45,15 +45,14 @@ namespace yuzu
             {
                 state = HitObjectState::HIT;
                 gameScene->processFruit(this);
-                gameScene->removeComponent(this, true);
+                state = HitObjectState::HIDDEN;
             }
         }
 
-        // remove & destroy if out of the screen
+        // remove & hide the hit object if it is out of bounds
         if (rect.y > constants::gScreenHeight)
         {
-            state = HitObjectState::DESTROYED;
-            gameScene->removeComponent(this, true);
+            state = HitObjectState::HIDDEN;
         }
     }
 

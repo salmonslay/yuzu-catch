@@ -15,6 +15,9 @@ namespace yuzu
 
     void JuiceDrop::draw() const
     {
+        if (getState() == HitObjectState::HIDDEN)
+            return;
+
         Sprite::draw();
     }
 
