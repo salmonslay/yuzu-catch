@@ -64,7 +64,8 @@ namespace yuzu
         hitSampleSet.whistle = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitwhistle.wav").c_str());
         hitSampleSet.finish = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitfinish.wav").c_str());
         hitSampleSet.clap = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/" + sample + "-hitclap.wav").c_str());
-
+        comboBreakSample = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/combobreak.wav").c_str());
+        bananaSample = Mix_LoadWAV(fruitwork::ResourceManager::getAudioPath("hs/catch-banana.wav").c_str());
         music = currentBeatmap->getAudio();
 
         backgroundOverlay = fruitwork::Rectangle::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, {0, 0, 0, 128});
@@ -175,6 +176,9 @@ namespace yuzu
         Mix_FreeChunk(hitSampleSet.finish);
         Mix_FreeChunk(hitSampleSet.clap);
 
+        Mix_FreeChunk(comboBreakSample);
+        Mix_FreeChunk(bananaSample);
+
         return success;
     }
 
@@ -193,7 +197,7 @@ namespace yuzu
         {
             if (dynamic_cast<Banana *>(ho) != nullptr)
             {
-                // TODO: play banana hit sound
+                Mix_PlayChannel(-1, bananaSample, 0);
             }
             else if (dynamic_cast<Fruit *>(ho) != nullptr)
             {
@@ -210,7 +214,7 @@ namespace yuzu
         else
         {
             if (score->combo > 15 && ho->comboDependent())
-                Mix_PlayChannel(-1, hitSampleSet.finish, 0); // TODO: replace with miss sound
+                Mix_PlayChannel(-1, comboBreakSample, 0);
         }
 
         score->processHitObject(ho);

@@ -59,6 +59,8 @@ namespace yuzu
 
         Mix_Music *music;
         HitSampleSet hitSampleSet;
+        Mix_Chunk *comboBreakSample;
+        Mix_Chunk *bananaSample;
 
         // game objects
         Catcher *catcher = nullptr;
