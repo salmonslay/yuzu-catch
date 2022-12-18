@@ -213,7 +213,7 @@ namespace yuzu
         }
         else
         {
-            if (score->combo > 15 && ho->comboDependent())
+            if (score->combo > 15 && ho->addsCombo())
                 Mix_PlayChannel(-1, comboBreakSample, 0);
         }
 
