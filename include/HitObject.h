@@ -73,10 +73,10 @@ namespace yuzu
         static const int START_Y = -100;
 
         /** The Y point at which the hit object can be hit. */
-        static const int HIT_Y = 750;
+        static const int HIT_Y = 748;
 
         /** The Y point at which the hit object is considered missed. */
-        static const int MISS_Y = HIT_Y + 5;
+        static const int MISS_Y = HIT_Y + 8;
 
         /** How many milliseconds it should take for the hit object to fall from START_Y to HIT_Y. */
         static const int DROP_TIME = 1000;
