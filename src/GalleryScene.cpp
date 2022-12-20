@@ -1,4 +1,3 @@
-#include <iostream>
 #include "GalleryScene.h"
 #include "Label.h"
 #include "InputField.h"
@@ -54,6 +53,7 @@ namespace yuzu
         addComponent(pageLabel);
         addComponent(galleryFocus);
 
+        currentPage = 0;
         addGalleryItems(currentPage);
 
         return success;
@@ -121,6 +121,9 @@ namespace yuzu
 
         for (auto &c: components)
             removeComponent(c, true);
+
+        components.clear();
+        galleryItems.clear(); // galleryItems will be deleted above, but we need to clear the vector from pointers
 
         return success;
     }

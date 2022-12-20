@@ -8,6 +8,7 @@
 #include "GalleryScene.h"
 #include "JuiceDrop.h"
 #include "Banana.h"
+#include "Main.h"
 
 namespace yuzu
 {
@@ -108,6 +109,11 @@ namespace yuzu
         addComponent(comboLabel, 0);
         addComponent(accuracyLabel, 0);
 
+        yuzu::ses.registerKeyboardEvent(SDLK_ESCAPE, [this]()
+        {
+            fruitwork::sys.setNextScene(GalleryScene::getInstance());
+        });
+
         startGame();
     }
 
@@ -160,12 +166,14 @@ namespace yuzu
 
         for (auto &c: components)
             removeComponent(c, true);
+        components.clear(); // clear after removing to avoid invalid memory access
 
         for (HitObjectSet &s: fruitSets)
         {
             SDL_DestroyTexture(s.baseTexture);
             SDL_DestroyTexture(s.overlayTexture);
         }
+        fruitSets.clear();
 
         SDL_DestroyTexture(bananaSet.baseTexture);
         SDL_DestroyTexture(bananaSet.overlayTexture);
@@ -178,6 +186,10 @@ namespace yuzu
 
         Mix_FreeChunk(comboBreakSample);
         Mix_FreeChunk(bananaSample);
+
+        yuzu::ses.deregisterKeyboardEvent(SDLK_ESCAPE);
+
+        Mix_HaltMusic();
 
         return success;
     }
