@@ -182,8 +182,11 @@ namespace yuzu
                                           SDL_Texture *dropTexture,
                                           yuzu::GameScene::HitSampleSet hitSampleSet)
     {
-        if (!hitObjects.empty())
-            return;
+        for (auto &hitObject: hitObjects)
+            delete hitObject;
+        hitObjects.clear();
+        timingPoints.clear();
+        comboColours.clear();
 
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -399,6 +402,10 @@ namespace yuzu
 
     Beatmap::~Beatmap()
     {
+        for (auto &hitObject: hitObjects)
+            delete hitObject;
+        hitObjects.clear();
+
         if (backgroundTexture != nullptr)
             SDL_DestroyTexture(backgroundTexture);
 

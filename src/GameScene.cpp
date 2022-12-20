@@ -165,7 +165,10 @@ namespace yuzu
         SDL_Log("Exiting GameScene...");
 
         for (auto &c: components)
-            removeComponent(c, true);
+        {
+            if (dynamic_cast<HitObject *>(c) == nullptr) // hit objects are deleted by the beatmap
+                delete c;
+        }
         components.clear(); // clear after removing to avoid invalid memory access
 
         for (HitObjectSet &s: fruitSets)
@@ -188,6 +191,11 @@ namespace yuzu
         Mix_FreeChunk(bananaSample);
 
         yuzu::ses.deregisterKeyboardEvent(SDLK_ESCAPE);
+
+
+        for (auto &ho: currentBeatmap->hitObjects)
+            delete ho;
+        currentBeatmap->hitObjects.clear();
 
         Mix_HaltMusic();
 
