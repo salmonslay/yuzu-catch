@@ -7,6 +7,7 @@
 #include "Fruit.h"
 #include "GameScene.h"
 #include <SDL_mixer.h>
+#include <ostream>
 
 namespace yuzu
 {
@@ -116,7 +117,7 @@ namespace yuzu
         };
 
         std::vector<TimingPoint> timingPoints{};
-        std::vector<HitObject*> hitObjects{};
+        std::vector<HitObject *> hitObjects{};
         std::vector<SDL_Color> comboColours{};
 
         /** Parses timing points, combo colours and hit objects. */
@@ -130,9 +131,13 @@ namespace yuzu
     private:
         SDL_Texture *backgroundTexture = nullptr;
         Mix_Music *music = nullptr;
-
-
     };
+
+    inline std::ostream &operator<<(std::ostream &os, Beatmap const &b)
+    {
+        os << b.artist << " - " << b.title << " [" << b.version << "]";
+        return os;
+    }
 
 } // yuzu
 #endif //YUZU_CATCH_BEATMAP_H
