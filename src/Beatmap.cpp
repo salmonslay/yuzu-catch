@@ -7,6 +7,7 @@
 #include "System.h"
 #include "JuiceDrop.h"
 #include "Banana.h"
+#include "BeatmapHelpers.h"
 #include <fstream>
 #include <vector>
 #include <chrono>
@@ -16,49 +17,6 @@
 
 namespace yuzu
 {
-    static inline double getDoubleFromLine(const std::string &line)
-    {
-        return std::stod(line.substr(line.find(':') + 1));
-    }
-
-    static inline std::string getStringFromLine(const std::string &line)
-    {
-        std::string s = line.substr(line.find(':') + 1);
-
-        // trim
-        // @see https://stackoverflow.com/a/217605/11420970
-        s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch)
-        {
-            return !std::isspace(ch);
-        }));
-        s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch)
-        {
-            return !std::isspace(ch);
-        }).base(), s.end());
-
-        return s;
-    }
-
-    static inline Beatmap::BeatmapSection getSectionFromLine(const std::string &line)
-    {
-        if (line.find("[General]") != std::string::npos)
-            return Beatmap::BeatmapSection::GENERAL;
-        else if (line.find("[Metadata]") != std::string::npos)
-            return Beatmap::BeatmapSection::METADATA;
-        else if (line.find("[Difficulty]") != std::string::npos)
-            return Beatmap::BeatmapSection::DIFFICULTY;
-        else if (line.find("[Events]") != std::string::npos)
-            return Beatmap::BeatmapSection::EVENTS;
-        else if (line.find("[TimingPoints]") != std::string::npos)
-            return Beatmap::BeatmapSection::TIMINGPOINTS;
-        else if (line.find("[Colours]") != std::string::npos)
-            return Beatmap::BeatmapSection::COLOURS;
-        else if (line.find("[HitObjects]") != std::string::npos)
-            return Beatmap::BeatmapSection::HITOBJECTS;
-        else
-            return Beatmap::BeatmapSection::NONE;
-    }
-
     Beatmap *Beatmap::loadBeatmap(const std::string &beatmapPath)
     {
         //SDL_Log("Parsing beatmap: %s...", beatmapPath.c_str());
@@ -81,7 +39,7 @@ namespace yuzu
 
             if (line[0] == '[') // set new section
             {
-                section = getSectionFromLine(line);
+                section = BeatmapHelpers::getSectionFromLine(line);
                 continue;
             }
 
@@ -95,27 +53,27 @@ namespace yuzu
                         beatmap->sampleType = SampleType::DRUM;
                 }
                 else if (line.find("AudioFilename:") != std::string::npos)
-                    beatmap->audioFilename = getStringFromLine(line);
+                    beatmap->audioFilename = BeatmapHelpers::getStringFromLine(line);
             }
             else if (section == BeatmapSection::METADATA)
             {
                 if (line.find("Title:") != std::string::npos)
-                    beatmap->title = getStringFromLine(line);
+                    beatmap->title = BeatmapHelpers::getStringFromLine(line);
                 else if (line.find("Artist:") != std::string::npos)
-                    beatmap->artist = getStringFromLine(line);
+                    beatmap->artist = BeatmapHelpers::getStringFromLine(line);
                 else if (line.find("Creator:") != std::string::npos)
-                    beatmap->creator = getStringFromLine(line);
+                    beatmap->creator = BeatmapHelpers::getStringFromLine(line);
                 else if (line.find("Version:") != std::string::npos)
-                    beatmap->version = getStringFromLine(line);
+                    beatmap->version = BeatmapHelpers::getStringFromLine(line);
                 else if (line.find("Tags:") != std::string::npos)
-                    beatmap->tags = getStringFromLine(line);
+                    beatmap->tags = BeatmapHelpers::getStringFromLine(line);
             }
             else if (section == BeatmapSection::DIFFICULTY)
             {
                 if (line.find("SliderMultiplier:") != std::string::npos)
-                    beatmap->sliderMultiplier = getDoubleFromLine(line);
+                    beatmap->sliderMultiplier = BeatmapHelpers::getDoubleFromLine(line);
                 else if (line.find("SliderTickRate:") != std::string::npos)
-                    beatmap->sliderTickRate = getDoubleFromLine(line);
+                    beatmap->sliderTickRate = BeatmapHelpers::getDoubleFromLine(line);
             }
             else if (section == BeatmapSection::EVENTS)
             {
@@ -207,7 +165,7 @@ namespace yuzu
 
             if (line[0] == '[') // set new section
             {
-                section = getSectionFromLine(line);
+                section = BeatmapHelpers::getSectionFromLine(line);
                 continue;
             }
 
@@ -263,13 +221,7 @@ namespace yuzu
                     comboColours.push_back({255, 192, 0, 255});
                 }
 
-                // line is a comma separated list of values, make it into a vector
-                std::vector<std::string> values;
-                std::stringstream ss(line);
-                std::string value;
-                while (std::getline(ss, value, ','))
-                    values.push_back(value);
-
+                std::vector<std::string> values = BeatmapHelpers::splitToString(line, ',');
                 int x = std::stoi(values[0]);
                 int time = std::stoi(values[2]);
                 int type = std::stoi(values[3]);
@@ -288,14 +240,8 @@ namespace yuzu
                     bool overrideHitSounds = values.size() > 8;
                     std::vector<int> hitSoundOverrides;
                     int overrideIndex = 0;
-                    if (overrideHitSounds) // split 8 by | and convert to int
-                    {
-                        std::stringstream ss(values[8]);
-                        std::string value;
-                        while (std::getline(ss, value, '|'))
-                            hitSoundOverrides.push_back(std::stoi(value));
-                    }
-
+                    if (overrideHitSounds)
+                        hitSoundOverrides = BeatmapHelpers::splitToInt(values[8], '|');
 
                     // start fruit
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
@@ -313,19 +259,8 @@ namespace yuzu
                     if (timing != timingPoints.end())
                         beatLength = timing->beatLength;
 
-                    // slider positions
-                    std::vector<std::string> sliderPositions = {};
-                    std::stringstream ss(values[5]);
-                    std::string sliderPosition;
-                    while (std::getline(ss, sliderPosition, '|'))
-                        sliderPositions.push_back(sliderPosition);
-
-                    // slider end position
-                    std::vector<std::string> sliderEndPosition = {};
-                    std::stringstream ss2(sliderPositions[sliderPositions.size() - 1]);
-                    std::string sliderEndPositionValue;
-                    while (std::getline(ss2, sliderEndPositionValue, ':'))
-                        sliderEndPosition.push_back(sliderEndPositionValue);
+                    std::vector<std::string> sliderPositions = BeatmapHelpers::splitToString(values[5], '|');
+                    std::vector<std::string> sliderEndPosition = BeatmapHelpers::splitToString(sliderPositions.back(), ':');
 
                     // calculate droplet stuff
                     int sliderEndPos = std::stoi(sliderEndPosition[0]);
