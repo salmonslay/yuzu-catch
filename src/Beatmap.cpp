@@ -284,10 +284,24 @@ namespace yuzu
                 }
                 else if (type & 2) // slider - create fruits and juice drops
                 {
+                    // override hitsounds
+                    bool overrideHitSounds = values.size() > 8;
+                    std::vector<int> hitSoundOverrides;
+                    int overrideIndex = 0;
+                    if (overrideHitSounds) // split 8 by | and convert to int
+                    {
+                        std::stringstream ss(values[8]);
+                        std::string value;
+                        while (std::getline(ss, value, '|'))
+                            hitSoundOverrides.push_back(std::stoi(value));
+                    }
+
+
                     // start fruit
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
-                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
+                    int hs = overrideHitSounds ? hitSoundOverrides[overrideIndex++] : hitSound;
+                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hs);
                     hitObjects.push_back(f);
 
                     // update beat length by finding the timing point that is closest to the time, but not greater than the time
@@ -328,7 +342,8 @@ namespace yuzu
                         int dropletPos = x - (diff * i);
                         if (currentDroplet == dropletsPerRepeat)
                         {
-                            Fruit *midFruit = Fruit::getInstance(dropletPos, time + dropletDelay * i, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
+                            hs = overrideHitSounds ? hitSoundOverrides[overrideIndex++] : hitSound;
+                            Fruit *midFruit = Fruit::getInstance(dropletPos, time + dropletDelay * i, fruit.baseTexture, fruit.overlayTexture, c, hs);
                             hitObjects.push_back(midFruit);
                             currentDroplet = 0;
                         }
@@ -341,7 +356,8 @@ namespace yuzu
                     }
 
                     // slider end fruit
-                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
+                    hs = overrideHitSounds ? hitSoundOverrides[overrideIndex++] : hitSound;
+                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c, hs);
                     hitObjects.push_back(f2);
                 }
                 else if (type & 8) // spinner - create spinner
