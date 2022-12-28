@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_TITLESCENE_H
-#define YUZU_CATCH_TITLESCENE_H
+#ifndef YUZU_CATCH_TITLE_SCENE_H
+#define YUZU_CATCH_TITLE_SCENE_H
 
 #include <Scene.h>
 #include <Button.h>
@@ -27,4 +27,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_TITLESCENE_H
+#endif //YUZU_CATCH_TITLE_SCENE_H

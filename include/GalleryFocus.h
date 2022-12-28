@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_GALLERYFOCUS_H
-#define YUZU_CATCH_GALLERYFOCUS_H
+#ifndef YUZU_CATCH_GALLERY_FOCUS_H
+#define YUZU_CATCH_GALLERY_FOCUS_H
 
 #include "Component.h"
 #include "Beatmap.h"
@@ -50,4 +50,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_GALLERYFOCUS_H
+#endif //YUZU_CATCH_GALLERY_FOCUS_H

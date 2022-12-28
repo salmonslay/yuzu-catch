@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_GALLERYSCENE_H
-#define YUZU_CATCH_GALLERYSCENE_H
+#ifndef YUZU_CATCH_GALLERY_SCENE_H
+#define YUZU_CATCH_GALLERY_SCENE_H
 
 #include "Scene.h"
 #include "Beatmap.h"
@@ -65,4 +65,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_GALLERYSCENE_H
+#endif //YUZU_CATCH_GALLERY_SCENE_H

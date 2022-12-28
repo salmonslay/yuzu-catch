@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_HITOBJECT_H
-#define YUZU_CATCH_HITOBJECT_H
+#ifndef YUZU_CATCH_HIT_OBJECT_H
+#define YUZU_CATCH_HIT_OBJECT_H
 
 #include <SDL_render.h>
 #include "Sprite.h"
@@ -88,4 +88,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_HITOBJECT_H
+#endif //YUZU_CATCH_HIT_OBJECT_H

@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_GAMESCENE_H
-#define YUZU_CATCH_GAMESCENE_H
+#ifndef YUZU_CATCH_GAME_SCENE_H
+#define YUZU_CATCH_GAME_SCENE_H
 
 #include <SDL_mixer.h>
 #include "Scene.h"
@@ -82,4 +82,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_GAMESCENE_H
+#endif //YUZU_CATCH_GAME_SCENE_H

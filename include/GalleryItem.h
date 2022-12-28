@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_GALLERYITEM_H
-#define YUZU_CATCH_GALLERYITEM_H
+#ifndef YUZU_CATCH_GALLERY_ITEM_H
+#define YUZU_CATCH_GALLERY_ITEM_H
 
 
 #include "Component.h"
@@ -47,4 +47,4 @@ namespace yuzu
     };
 
 } // yuzu
-#endif //YUZU_CATCH_GALLERYITEM_H
+#endif //YUZU_CATCH_GALLERY_ITEM_H

@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_JUICEDROP_H
-#define YUZU_CATCH_JUICEDROP_H
+#ifndef YUZU_CATCH_JUICE_DROP_H
+#define YUZU_CATCH_JUICE_DROP_H
 
 #include "HitObject.h"
 
@@ -29,4 +29,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_JUICEDROP_H
+#endif //YUZU_CATCH_JUICE_DROP_H

@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_BEATMAPHELPERS_H
-#define YUZU_CATCH_BEATMAPHELPERS_H
+#ifndef YUZU_CATCH_BEATMAP_HELPERS_H
+#define YUZU_CATCH_BEATMAP_HELPERS_H
 
 #include "Beatmap.h"
 
@@ -49,4 +49,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_BEATMAPHELPERS_H
+#endif //YUZU_CATCH_BEATMAP_HELPERS_H

@@ -1,5 +1,5 @@
-#ifndef YUZU_CATCH_DIFFICULTYBUTTON_H
-#define YUZU_CATCH_DIFFICULTYBUTTON_H
+#ifndef YUZU_CATCH_DIFFICULTY_BUTTON_H
+#define YUZU_CATCH_DIFFICULTY_BUTTON_H
 
 #include <vector>
 #include "Button.h"
@@ -35,4 +35,4 @@ namespace yuzu
 
 } // yuzu
 
-#endif //YUZU_CATCH_DIFFICULTYBUTTON_H
+#endif //YUZU_CATCH_DIFFICULTY_BUTTON_H
