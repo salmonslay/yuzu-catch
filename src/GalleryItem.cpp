@@ -15,7 +15,7 @@ namespace yuzu
         coverButton = fruitwork::ImageButton::getInstance(x, y, 246, 139, beatmap->getBackgroundTexture());
         coverButton->registerCallback([this](fruitwork::Button *src)
                                  {
-                                     yuzu::GalleryScene::getInstance()->setSelectedBeatmap(this->beatmapIndex); // beatmapIndex instead of 1 - how?
+                                     yuzu::GalleryScene::getInstance()->setSelectedBeatmap(this->beatmapIndex);
                                  });
 
         coverBackdrop = fruitwork::Rectangle::getInstance(x, y, 246, 139, {0, 0, 0, 255});
@@ -29,9 +29,11 @@ namespace yuzu
         songArtist->setFontSize(18);
         songArtist->setColor({255, 255, 255, 178});
 
-        songTime = fruitwork::Label::getInstance(x + 180, y + 110, 63, 23, beatmap->getLengthString()); // TODO: Get song time from beatmap
-        songTime->setFontSize(24);
+        songTime = fruitwork::Label::getInstance(x + 180, y + 110, 63, 23, beatmap->getLengthString());
+        songTime->setFontSize(20);
         songTime->setColor({255, 255, 255, 225});
+        songTime->setAlignment(fruitwork::Label::Alignment::CENTER);
+
         lengthBackdrop = fruitwork::Rectangle::getInstance(x + 180 - 1, y + 112 - 1, 63 + 2, 23 + 2, {0, 0, 0, 178});
     }
 

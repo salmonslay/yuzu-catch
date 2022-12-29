@@ -33,8 +33,9 @@ namespace yuzu
         int songY = y + 255;
 
         songTime = fruitwork::Label::getInstance(songX, songY, 100, 36, "00:00");
-        songTime->setFontSize(32);
+        songTime->setFontSize(30);
         songTime->setColor({255, 255, 255, 255});
+        songTime->setAlignment(fruitwork::Label::Alignment::CENTER);
 
         lengthBackdrop = fruitwork::Rectangle::getInstance(songX - 2, songY + 2, 106, 36, {0, 0, 0, 178});
     }
@@ -86,7 +87,7 @@ namespace yuzu
 
         Beatmap *beatmap = beatmapSet[0];
         background->setTexture(beatmap->getBackgroundTexture());
-        songTitle->setText(beatmap->title);
+        songTitle->setText(beatmap->cleanedTitle);
         songArtist->setText(beatmap->artist);
         songCreator->setText("Mapped by " + beatmap->creator);
         songTime->setText(beatmap->getLengthString());
