@@ -230,6 +230,47 @@ namespace yuzu
 
                 Mix_PlayChannel(-1, hitSampleSet.normal, 0);
             }
+
+            if (dynamic_cast<Fruit *>(ho) != nullptr)
+            {
+                ho->setState(HitObjectState::PLATED);
+
+                // local plate hit position
+                SDL_Point plateRange = catcher->getPlateRange();
+                int plateLeft = plateRange.x + (plateRange.y - plateRange.x) * 0.2f; // reduce plate area by 20% towards the center
+                int hitPosition = ho->getRect().x + ho->getRect().w / 2;
+                int localPosition = hitPosition - plateLeft;
+
+                catcher->addChild(ho);
+
+                SDL_Rect r = ho->getRect();
+                r.x = localPosition + r.w / 2;
+
+                r.y = -15 - rand() % 10; // move up between 15 and 25px
+
+                r.w /= 1.4f; // scale down slightly
+                r.h /= 1.4f;
+
+                for (size_t i = catcher->getChildren().size() - 1; i > 0; --i)
+                {
+                    fruitwork::Component *c = catcher->getChildren()[i];
+                    if (c == ho)
+                        continue;
+
+                    auto *f = dynamic_cast<HitObject *>(c);
+                    if (f->rectCollidesWith(ho, 20))
+                    {
+                        r.y = f->getLocalRect().y - (rand() % 15 + 15); // between 15-30px above the other fruit
+                        break;
+                    }
+                }
+
+                ho->setRect(r);
+            }
+            else
+            {
+                ho->setState(HitObjectState::HIDDEN);
+            }
         }
         else
         {

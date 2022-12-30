@@ -14,6 +14,8 @@ namespace yuzu
         ACTIVE,
         /** The hit object has been hit by the player */
         HIT,
+        /** The hit object is on the catcher plate */
+        PLATED,
         /** The hit object has been missed by the player, and can no longer be hit */
         MISSED,
         /** The hit object has been queued for removal */
@@ -24,6 +26,8 @@ namespace yuzu
 
     class HitObject : public fruitwork::Sprite {
     public:
+
+        void setState(HitObjectState state) { this->state = state; }
 
         HitObjectState getState() const { return state; }
 

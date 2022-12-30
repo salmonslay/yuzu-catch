@@ -62,7 +62,7 @@ namespace yuzu
         {
             int previousScore = score;
 
-            if (ho->getState() == HitObjectState::HIT)
+            if (ho->getState() == HitObjectState::HIT || ho->getState() == HitObjectState::PLATED)
             {
 
                 if (ho->addsCombo())

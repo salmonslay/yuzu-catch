@@ -20,6 +20,9 @@ namespace yuzu
     {
         Sprite::update();
 
+        if (state == HitObjectState::PLATED)
+            return; // don't move if plated, control is given to the catcher
+
         auto gameScene = GameScene::getInstance();
 
         // move the hit object down
@@ -47,7 +50,6 @@ namespace yuzu
                 // SDL_Log("HIT, summoned %llu ms ago", SDL_GetTicks64() - startTime);
                 state = HitObjectState::HIT;
                 gameScene->processFruit(this);
-                state = HitObjectState::HIDDEN;
             }
         }
 
