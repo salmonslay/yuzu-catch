@@ -13,7 +13,6 @@ namespace yuzu
     {
         startTime = SDL_GetTicks64();
         state = HitObjectState::ACTIVE;
-        catcher = GameScene::getInstance()->getCatcher();
     }
 
     void HitObject::update()
@@ -42,7 +41,7 @@ namespace yuzu
             // since rhythm games are very precise, we can not use collision detection here
         else if ((rect.y + rect.h) > HIT_Y && state == HitObjectState::ACTIVE)
         {
-            SDL_Point plateRange = catcher->getPlateRange(); // (x, x2)
+            SDL_Point plateRange = GameScene::getInstance()->getCatcher()->getPlateRange(); // (x, x2)
 
             // the fruit only needs to be partially in the plate range to be hit, not fully
             if (rect.x + rect.w > plateRange.x && rect.x < plateRange.y)

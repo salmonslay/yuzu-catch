@@ -3,7 +3,6 @@
 
 #include <SDL_render.h>
 #include "Sprite.h"
-#include "Catcher.h"
 
 namespace yuzu
 {
@@ -86,8 +85,6 @@ namespace yuzu
         static const int DROP_TIME = 1000;
 
         HitObjectState state = HitObjectState::IDLE;
-
-        Catcher *catcher;
     };
 
 } // yuzu
