@@ -3,6 +3,8 @@
 #include "Constants.h"
 #include "ResourceManager.h"
 #include "System.h"
+#include "Component.h"
+#include "HitObject.h"
 
 namespace yuzu
 {
@@ -87,6 +89,43 @@ namespace yuzu
     {
         SDL_Rect rect = getRect();
         return {rect.x + 20, rect.x + rect.w - 20};
+    }
+
+    void Catcher::addFruitToPlate(HitObject *ho)
+    {
+        ho->setState(HitObjectState::PLATED);
+
+        // local plate hit position
+        SDL_Point plateRange = getPlateRange();
+        int plateLeft = plateRange.x + (plateRange.y - plateRange.x) * 0.2f; // reduce plate area by 20% towards the center
+        int hitPosition = ho->getRect().x + ho->getRect().w / 2;
+        int localPosition = hitPosition - plateLeft;
+
+        addChild(ho);
+
+        SDL_Rect r = ho->getRect();
+        r.x = localPosition + r.w / 2;
+
+        r.y = -15 - rand() % 10; // move up between 15 and 25px
+
+        r.w /= 1.4f; // scale down slightly
+        r.h /= 1.4f;
+
+        for (size_t i = getChildren().size() - 1; i > 0; --i)
+        {
+            fruitwork::Component *c = getChildren()[i];
+            if (c == ho)
+                continue;
+
+            auto *f = dynamic_cast<HitObject *>(c);
+            if (f->rectCollidesWith(ho, 20))
+            {
+                r.y = f->getLocalRect().y - (rand() % 15 + 15); // between 15-30px above the other fruit
+                break;
+            }
+        }
+
+        ho->setRect(r);
     }
 
 } // yuzu

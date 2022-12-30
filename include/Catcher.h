@@ -3,6 +3,7 @@
 
 #include <SDL_render.h>
 #include "Sprite.h"
+#include "HitObject.h"
 
 namespace yuzu
 {
@@ -21,6 +22,10 @@ namespace yuzu
 
         /** (x, x2) is the current range of the plate */
         SDL_Point getPlateRange() const;
+
+        void addFruitToPlate(HitObject *ho);
+
+        void explodePlate();
 
         ~Catcher() override;
 
