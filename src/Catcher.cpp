@@ -126,6 +126,30 @@ namespace yuzu
         }
 
         ho->setRect(r);
+        SDL_Log("rect set to %d,%d", r.x, r.y);
+    }
+
+    void Catcher::explodePlate()
+    {
+        for (auto c: getChildren())
+        {
+            if (dynamic_cast<HitObject *>(c) == nullptr)
+                continue; // just to be safe
+
+            removeChild(c);
+
+            auto *b = fruitwork::PhysicsBody::getInstance(c->getRect(), 5);
+            c->setPhysicsBody(b);
+
+            SDL_Point plateRange = getPlateRange();
+            int plateCenter = (plateRange.y - plateRange.x) / 2;
+
+            b->setGravity(20);
+
+            float xForce = (c->getRect().x - plateCenter) * 3;
+            const float yForce = -5000;
+            b->addForce(xForce, yForce);
+        }
     }
 
 } // yuzu
