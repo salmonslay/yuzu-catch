@@ -213,13 +213,14 @@ namespace yuzu
 
     void GameScene::processFruit(HitObject *ho)
     {
+        Fruit *f = dynamic_cast<Fruit *>(ho);
         if (ho->getState() == HitObjectState::HIT)
         {
             if (dynamic_cast<Banana *>(ho) != nullptr)
             {
                 Mix_PlayChannel(-1, bananaSample, 0);
             }
-            else if (dynamic_cast<Fruit *>(ho) != nullptr)
+            else if (f != nullptr)
             {
                 if (ho->hitSounds & 1)
                     Mix_PlayChannel(-1, hitSampleSet.whistle, 0);
