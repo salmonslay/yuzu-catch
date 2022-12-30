@@ -224,8 +224,9 @@ namespace yuzu
                 std::vector<std::string> values = BeatmapHelpers::splitToString(line, ',');
                 int x = std::stoi(values[0]);
                 int time = std::stoi(values[2]);
-                int type = std::stoi(values[3]);
+                unsigned int type = std::stoi(values[3]); // 0 = circle, 1 = slider, 2 = new combo, 3 = spinner
                 int hitSound = std::stoi(values[4]);
+                bool isNewCombo = type & (1 << 2);
 
                 if (type & 1) // circle - create one fruit
                 {
@@ -233,6 +234,7 @@ namespace yuzu
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
                     Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hitSound);
                     hitObjects.push_back(f);
+
                 }
                 else if (type & 2) // slider - create fruits and juice drops
                 {
@@ -247,7 +249,7 @@ namespace yuzu
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
                     int hs = overrideHitSounds ? hitSoundOverrides[overrideIndex++] : hitSound;
-                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hs);
+                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hs, isNewCombo);
                     hitObjects.push_back(f);
 
                     // update beat length by finding the timing point that is closest to the time, but not greater than the time
@@ -292,7 +294,7 @@ namespace yuzu
 
                     // slider end fruit
                     hs = overrideHitSounds ? hitSoundOverrides[overrideIndex++] : hitSound;
-                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c, hs);
+                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c, hs, isNewCombo);
                     hitObjects.push_back(f2);
                 }
                 else if (type & 8) // spinner - create spinner
