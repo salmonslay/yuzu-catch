@@ -82,17 +82,14 @@ namespace yuzu
         // ui
         scoreLabel = fruitwork::Label::getInstance(405, 0, 390, 98, "0000000");
         scoreLabel->setFontSize(72);
-        scoreLabel->setColor({207, 249, 250, 255});
         scoreLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
 
         comboLabel = fruitwork::Label::getInstance(795, 36, 157, 55, "x0");
         comboLabel->setFontSize(40);
-        comboLabel->setColor({207, 249, 250, 255});
         comboLabel->setAlignment(fruitwork::Label::Alignment::LEFT);
 
         accuracyLabel = fruitwork::Label::getInstance(248, 36, 157, 55, "100%");
         accuracyLabel->setFontSize(40);
-        accuracyLabel->setColor({207, 249, 250, 255});
         accuracyLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
 
         currentBeatmap->loadGameplayInformation(fruitSets, bananaSet, dropTexture, hitSampleSet);
@@ -143,20 +140,33 @@ namespace yuzu
                     hitObject->added = true;
                 }
             }
+
+            // go through all timing points
+            for (Beatmap::TimingPoint timingPoint: currentBeatmap->timingPoints)
+            {
+                if (timingPoint.offset <= currentTime - 1000)
+                    kiai = timingPoint.isKiai;
+            }
         }
+
+        const SDL_Color normalColor = {207, 249, 250, 255};
+        const SDL_Color kiaiColor = {219, 207, 250, 255};
 
         // update score
         std::string scoreText = std::to_string(score->displayScore);
         scoreText.insert(0, 7 - scoreText.length(), '0'); // pad with zeroes
         scoreLabel->setText(scoreText);
+        scoreLabel->setColor(kiai ? kiaiColor : normalColor);
 
         std::string comboText = "x" + std::to_string(score->combo);
         comboLabel->setText(comboText);
+        comboLabel->setColor(kiai ? kiaiColor : normalColor);
 
         std::string accuracyText = std::to_string((int) (score->getAccuracy() * 10000) / 100.0);
         accuracyText = accuracyText.substr(0, accuracyText.find('.') + 3);
         accuracyText += "%";
         accuracyLabel->setText(accuracyText);
+        accuracyLabel->setColor(kiai ? kiaiColor : normalColor);
     }
 
     bool GameScene::exit()

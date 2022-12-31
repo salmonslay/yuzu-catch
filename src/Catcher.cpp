@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "HitObject.h"
 #include "Fruit.h"
+#include "GameScene.h"
 
 namespace yuzu
 {
@@ -51,6 +52,11 @@ namespace yuzu
                 lastPhantomSpawn = SDL_GetTicks64();
             }
         }
+
+        if (dynamic_cast<GameScene *>(fruitwork::sys.getCurrentScene())->isKiai())
+            setTexture(textureKiai);
+        else
+            setTexture(textureIdle);
     }
 
     Catcher::~Catcher()

@@ -25,6 +25,8 @@ namespace yuzu
 
         Catcher *getCatcher() const { return catcher; }
 
+        bool isKiai() const { return kiai; }
+
         void processFruit(HitObject* ho);
 
         /**
@@ -78,6 +80,8 @@ namespace yuzu
         void startGame();
 
         GameScene();
+
+        bool kiai = false;
     };
 
 } // yuzu
