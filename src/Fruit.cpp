@@ -1,4 +1,5 @@
 #include "Fruit.h"
+#include "Constants.h"
 
 namespace yuzu
 {
@@ -15,6 +16,28 @@ namespace yuzu
     {
         overlay = fruitwork::Sprite::getInstance(x, 0, WIDTH, HEIGHT, overlayTexture);
         setColorMod(color);
+    }
+
+    void Fruit::update()
+    {
+        HitObject::update();
+
+        setAlphaMod(static_cast<int>(a));
+        overlay->setAlphaMod(static_cast<int>(a));
+
+        if (a <= 0.0f)
+        {
+            fading = false;
+            a = 0;
+            setState(HitObjectState::HIDDEN);
+            delete getPhysicsBody();
+            setPhysicsBody(nullptr);
+        }
+
+        if (fading)
+        {
+            a -= constants::speedMod * 1.5;
+        }
     }
 
     void Fruit::draw() const

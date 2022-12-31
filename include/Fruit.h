@@ -22,7 +22,11 @@ namespace yuzu
 
         void setLastInCombo(bool l) { this->lastInCombo = l; }
 
+        void setFading() { this->fading = true; }
+
         void draw() const override;
+
+        void update() override;
 
         ~Fruit() override;
 
@@ -39,6 +43,9 @@ namespace yuzu
 
         /** Whether or not this object is the last object in a combo */
         bool lastInCombo = false;
+
+        float a = 255.0f;
+        bool fading = false;
     };
 
 } // yuzu

@@ -5,6 +5,7 @@
 #include "System.h"
 #include "Component.h"
 #include "HitObject.h"
+#include "Fruit.h"
 
 namespace yuzu
 {
@@ -132,7 +133,8 @@ namespace yuzu
     {
         for (auto c: getChildren())
         {
-            if (dynamic_cast<HitObject *>(c) == nullptr)
+            auto f = dynamic_cast<Fruit *>(c);
+            if (f == nullptr)
                 continue; // just to be safe
 
             removeChild(c);
@@ -148,6 +150,8 @@ namespace yuzu
             float xForce = (c->getRect().x - plateCenter) * 3;
             const float yForce = -5000;
             b->addForce(xForce, yForce);
+
+            f->setFading();
         }
     }
 
