@@ -80,15 +80,15 @@ namespace yuzu
         score = new Score();
 
         // ui
-        scoreLabel = fruitwork::Label::getInstance(405, 0, 390, 98, "0000000");
+        scoreLabel = fruitwork::Label::getInstance(793, 0, 390, 98, "0000000");
         scoreLabel->setFontSize(72);
-        scoreLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
+        scoreLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
 
-        comboLabel = fruitwork::Label::getInstance(795, 36, 157, 55, "x0");
+        comboLabel = fruitwork::Label::getInstance(17, 845, 157, 55, "x0");
         comboLabel->setFontSize(40);
         comboLabel->setAlignment(fruitwork::Label::Alignment::LEFT);
 
-        accuracyLabel = fruitwork::Label::getInstance(248, 36, 157, 55, "100%");
+        accuracyLabel = fruitwork::Label::getInstance(943, 98, 240, 55, "100%");
         accuracyLabel->setFontSize(40);
         accuracyLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
 
