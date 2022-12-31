@@ -38,7 +38,7 @@ namespace yuzu
         static const int HEIGHT = 128 / 1.5;
 
         /** Whether or not this object is the last object in a combo */
-        bool lastInCombo;
+        bool lastInCombo = false;
     };
 
 } // yuzu

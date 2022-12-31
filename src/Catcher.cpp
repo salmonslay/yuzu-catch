@@ -126,7 +126,6 @@ namespace yuzu
         }
 
         ho->setRect(r);
-        SDL_Log("rect set to %d,%d", r.x, r.y);
     }
 
     void Catcher::explodePlate()
