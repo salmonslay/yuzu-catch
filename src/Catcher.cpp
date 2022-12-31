@@ -30,7 +30,7 @@ namespace yuzu
 
     void Catcher::update()
     {
-        fruitwork::Sprite::update();
+        fruitwork::Component::update();
 
         if (moveRight)
         {
@@ -41,6 +41,15 @@ namespace yuzu
         {
             moveBy(-CATCHER_SPEED * (isDash ? 2 : 1));
             setFlip(SDL_FLIP_HORIZONTAL);
+        }
+
+        if (isDash)
+        {
+            if (SDL_GetTicks64() - lastPhantomSpawn > PHANTOM_INTERVAL)
+            {
+                spawnPhantom();
+                lastPhantomSpawn = SDL_GetTicks64();
+            }
         }
     }
 
@@ -153,6 +162,17 @@ namespace yuzu
 
             f->setFading();
         }
+    }
+
+    void Catcher::spawnPhantom()
+    {
+        SDL_Rect r = getRect();
+        fruitwork::Sprite *phantom = fruitwork::Sprite::getInstance(r.x, r.y, r.w, r.h, spriteTexture);
+        fruitwork::sys.getCurrentScene()->addComponent(phantom, -1);
+        phantom->setAlphaMod(200);
+        phantom->setColorMod({200, 200, 200});
+        phantom->fadeOut(3000);
+        phantom->setFlip(getFlip());
     }
 
 } // yuzu

@@ -46,6 +46,14 @@ namespace yuzu
 
         /** Moves the catcher by the given amount. */
         void moveBy(int x);
+
+        /** Milliseconds between each phantom spawn. */
+        const int PHANTOM_INTERVAL = 20;
+        /** The last time a phantom was spawned. */
+        Uint64 lastPhantomSpawn = 0;
+
+        void spawnPhantom();
+
     };
 
 } // yuzu
