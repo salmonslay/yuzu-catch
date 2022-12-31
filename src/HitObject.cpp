@@ -17,7 +17,7 @@ namespace yuzu
 
     void HitObject::update()
     {
-        Sprite::update();
+        Component::update();
 
         if (state == HitObjectState::PLATED)
             return; // don't move if plated, control is given to the catcher

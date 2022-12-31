@@ -22,21 +22,11 @@ namespace yuzu
     {
         HitObject::update();
 
-        setAlphaMod(static_cast<int>(a));
-        overlay->setAlphaMod(static_cast<int>(a));
-
-        if (a <= 0.0f)
+        if (getAlphaMod() == 0 && getPhysicsBody() != nullptr)
         {
-            fading = false;
-            a = 0;
             setState(HitObjectState::HIDDEN);
             delete getPhysicsBody();
             setPhysicsBody(nullptr);
-        }
-
-        if (fading)
-        {
-            a -= constants::speedMod * 1.5;
         }
     }
 
@@ -53,6 +43,18 @@ namespace yuzu
     Fruit::~Fruit()
     {
         delete overlay;
+    }
+
+    void Fruit::setFading()
+    {
+        fadeOut(1500, 300);
+        overlay->fadeOut(1500, 301);
+    }
+
+    void Fruit::update(float elapsedTime)
+    {
+        Sprite::update(elapsedTime);
+        overlay->update(elapsedTime);
     }
 
 } // yuzu
