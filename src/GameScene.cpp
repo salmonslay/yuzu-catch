@@ -247,7 +247,7 @@ namespace yuzu
                 Mix_PlayChannel(-1, comboBreakSample, 0);
         }
 
-        if (f != nullptr && f->isNewCombo()) // clear the plate if last combo
+        if (f != nullptr && f->isLastInCombo()) // clear the plate if last combo
             catcher->explodePlate();
 
         score->processHitObject(ho);

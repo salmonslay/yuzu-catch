@@ -5,13 +5,13 @@ namespace yuzu
 
     Fruit *Fruit::getInstance(int x, int t,
                               SDL_Texture *texture, SDL_Texture *overlayTexture,
-                              SDL_Color color, unsigned int hs, bool newCombo)
+                              SDL_Color color, unsigned int hs)
     {
-        return new Fruit(x, t, texture, overlayTexture, color, hs, newCombo);
+        return new Fruit(x, t, texture, overlayTexture, color, hs);
     }
 
-    Fruit::Fruit(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color, unsigned int hs, bool newCombo)
-            : HitObject(x, WIDTH, HEIGHT, t, texture, hs), newCombo(newCombo)
+    Fruit::Fruit(int x, int t, SDL_Texture *texture, SDL_Texture *overlayTexture, SDL_Color color, unsigned int hs)
+            : HitObject(x, WIDTH, HEIGHT, t, texture, hs)
     {
         overlay = fruitwork::Sprite::getInstance(x, 0, WIDTH, HEIGHT, overlayTexture);
         setColorMod(color);

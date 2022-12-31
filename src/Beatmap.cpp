@@ -228,6 +228,18 @@ namespace yuzu
                 int hitSound = std::stoi(values[4]);
                 bool isNewCombo = type & (1 << 2);
 
+                if (isNewCombo)
+                {
+                    for (int i = hitObjects.size() - 1; i >= 0; i--)
+                    {
+                        if (dynamic_cast<Fruit *>(hitObjects[i]))
+                        {
+                            dynamic_cast<Fruit *>(hitObjects[i])->setLastInCombo(true);
+                            break;
+                        }
+                    }
+                }
+
                 if (type & 1) // circle - create one fruit
                 {
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
@@ -249,7 +261,7 @@ namespace yuzu
                     SDL_Color c = comboColours[std::rand() % comboColours.size()];
                     GameScene::HitObjectSet fruit = hitObjectSets[std::rand() % hitObjectSets.size()];
                     int hs = overrideHitSounds ? hitSoundOverrides[overrideIndex++] : hitSound;
-                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hs, isNewCombo);
+                    Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hs);
                     hitObjects.push_back(f);
 
                     // update beat length by finding the timing point that is closest to the time, but not greater than the time
@@ -294,7 +306,7 @@ namespace yuzu
 
                     // slider end fruit
                     hs = overrideHitSounds ? hitSoundOverrides[overrideIndex++] : hitSound;
-                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c, hs, isNewCombo);
+                    Fruit *f2 = Fruit::getInstance(sliderEndPos, time + droplets * dropletDelay, fruit.baseTexture, fruit.overlayTexture, c, hs);
                     hitObjects.push_back(f2);
                 }
                 else if (type & 8) // spinner - create spinner

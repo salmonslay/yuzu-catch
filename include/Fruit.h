@@ -14,11 +14,13 @@ namespace yuzu
     public:
         static Fruit *getInstance(int x, int t,
                                   SDL_Texture *texture, SDL_Texture *overlayTexture,
-                                  SDL_Color color, unsigned int hs, bool newCombo = false);
+                                  SDL_Color color, unsigned int hs);
 
         int getScore() const override { return 300; }
 
-        bool isNewCombo() const { return newCombo; }
+        bool isLastInCombo() const { return lastInCombo; }
+
+        void setLastInCombo(bool l) { this->lastInCombo = l; }
 
         void draw() const override;
 
@@ -27,7 +29,7 @@ namespace yuzu
     protected:
         Fruit(int x, int t,
               SDL_Texture *texture, SDL_Texture *overlayTexture,
-              SDL_Color color, unsigned int hs, bool newCombo = false);
+              SDL_Color color, unsigned int hs);
 
     private:
         fruitwork::Sprite *overlay = nullptr;
@@ -35,8 +37,8 @@ namespace yuzu
         static const int WIDTH = 128 / 1.5;
         static const int HEIGHT = 128 / 1.5;
 
-        /** Whether or not this object is a new combo */
-        bool newCombo;
+        /** Whether or not this object is the last object in a combo */
+        bool lastInCombo;
     };
 
 } // yuzu
