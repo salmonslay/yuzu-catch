@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include "HitObject.h"
+#include "Banana.h"
 
 namespace yuzu
 {
@@ -22,6 +23,7 @@ namespace yuzu
         };
 
         int displayScore = 0; // the score displayed on the screen is delayed
+
         int score = 0; // the actual score
         int combo = 0;
         int maxCombo = 0;
@@ -37,7 +39,7 @@ namespace yuzu
             if (missedRawScore == 0)
                 return 1.0;
 
-            return caughtRawScore / (caughtRawScore + missedRawScore); // NOLINT
+            return (double) caughtRawScore / (caughtRawScore + missedRawScore);
         }
 
         Grade getGrade() const
@@ -73,12 +75,12 @@ namespace yuzu
                     maxCombo = std::max(maxCombo, combo);
                 }
 
-                if (ho->comboDependent())
-                    score += ho->getScore() * (combo != 0 ? 0 : combo - 1) / 25;
+                if (combo != 0 && ho->comboDependent())
+                    score += ho->getScore() * combo / 25;
                 score += ho->getScore();
 
-
-                caughtRawScore += ho->getScore();
+                if (dynamic_cast<Banana *>(ho) == nullptr)
+                    caughtRawScore += ho->getScore();
             }
             else if (ho->getState() == HitObjectState::MISSED)
             {
@@ -88,7 +90,8 @@ namespace yuzu
                     missedFruits++;
                 }
 
-                missedRawScore += ho->getScore();
+                if (dynamic_cast<Banana *>(ho) == nullptr)
+                    missedRawScore += ho->getScore();
             }
 
             // add score to display score slowly to make it look nice
