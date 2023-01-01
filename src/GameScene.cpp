@@ -260,7 +260,7 @@ namespace yuzu
         if (f != nullptr && f->isLastInCombo()) // clear the plate if last combo
             catcher->explodePlate();
 
-        score->processHitObject(ho);
+        score->processHitObject(ho, isKiai());
     }
 
     GameScene GameScene::instance;

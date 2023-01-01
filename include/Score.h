@@ -60,7 +60,7 @@ namespace yuzu
             return Grade::D;
         }
 
-        void processHitObject(HitObject *ho)
+        void processHitObject(HitObject *ho, bool kiai = false)
         {
             int previousScore = score;
 
@@ -75,11 +75,11 @@ namespace yuzu
                     maxCombo = std::max(maxCombo, combo);
                 }
 
-                if (combo != 0 && ho->comboDependent())
-                    score += ho->getScore() * combo / 25;
-                score += ho->getScore();
+                bool giveComboBonus = combo != 0 && ho->comboDependent();
+                int comboBonus = giveComboBonus ? (ho->getScore() * combo / 25) : 0;
+                score += (ho->getScore() + comboBonus) * (kiai ? 1.5 : 1.0); // kiai gives 50% bonus
 
-                if (dynamic_cast<Banana *>(ho) == nullptr)
+                if (dynamic_cast<Banana *>(ho) == nullptr) // bananas don't give raw score
                     caughtRawScore += ho->getScore();
             }
             else if (ho->getState() == HitObjectState::MISSED)
