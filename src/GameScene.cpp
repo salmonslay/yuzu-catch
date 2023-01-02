@@ -278,10 +278,10 @@ namespace yuzu
         {
             SDL_Log("Kiai time!");
             cannon->setRect({1200, 900, 24, 24});
-            cannon->fire(225, 20, 100, 1000, 3000);
+            cannon->fire(225, 30, 150, 1000, 3000);
 
             cannon->setRect({0, 900, 24, 24});
-            cannon->fire(315, 20, 100, 1000, 3000);
+            cannon->fire(315, 30, 150, 1000, 3000);
         }
         else
         {
