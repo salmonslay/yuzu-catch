@@ -174,9 +174,9 @@ namespace yuzu
     {
         SDL_Rect r = getRect();
         fruitwork::Sprite *phantom = fruitwork::Sprite::getInstance(r.x, r.y, r.w, r.h, spriteTexture);
-        fruitwork::sys.getCurrentScene()->addComponent(phantom, -1);
+        fruitwork::sys.getCurrentScene()->addComponent(phantom, zIndex() - 1);
         phantom->setAlphaMod(200);
-        phantom->setColorMod({200, 200, 200});
+        phantom->setColorMod({255, 168, 170});
         phantom->fadeOut(3000);
         phantom->setFlip(getFlip());
     }
