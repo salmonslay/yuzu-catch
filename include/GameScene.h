@@ -9,6 +9,7 @@
 #include "Catcher.h"
 #include "Label.h"
 #include "Score.h"
+#include "ConfettiCannon.h"
 
 namespace yuzu
 {
@@ -27,7 +28,7 @@ namespace yuzu
 
         bool isKiai() const { return kiai; }
 
-        void processFruit(HitObject* ho);
+        void processFruit(HitObject *ho);
 
         /**
          * Container for the hit object sprites
@@ -82,6 +83,10 @@ namespace yuzu
         GameScene();
 
         bool kiai = false;
+
+        void setKiai(bool kiai);
+
+        fruitwork::ConfettiCannon *cannon = nullptr;
     };
 
 } // yuzu

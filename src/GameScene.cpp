@@ -94,6 +94,9 @@ namespace yuzu
 
         currentBeatmap->loadGameplayInformation(fruitSets, bananaSet, dropTexture, hitSampleSet);
 
+        cannon = fruitwork::ConfettiCannon::getInstance(1240, 900, 24, 24, fruitwork::ResourceManager::getTexturePath("star.png"));
+        cannon->setColors(currentBeatmap->comboColours);
+
         // @see https://stackoverflow.com/a/12883734/11420970
         auto finish = std::chrono::high_resolution_clock::now();
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
@@ -105,6 +108,7 @@ namespace yuzu
         addComponent(scoreLabel, 1);
         addComponent(comboLabel, 0);
         addComponent(accuracyLabel, 0);
+        addComponent(cannon, 0);
 
         yuzu::ses.registerKeyboardEvent(SDLK_ESCAPE, [this]()
         {
@@ -142,11 +146,13 @@ namespace yuzu
             }
 
             // go through all timing points
+            bool k = false;
             for (Beatmap::TimingPoint timingPoint: currentBeatmap->timingPoints)
             {
                 if (timingPoint.offset <= currentTime - 1000)
-                    kiai = timingPoint.isKiai;
+                    k = timingPoint.isKiai;
             }
+            setKiai(k);
         }
 
         const SDL_Color normalColor = {207, 249, 250, 255};
@@ -262,6 +268,29 @@ namespace yuzu
 
         score->processHitObject(ho, isKiai());
     }
+
+    void GameScene::setKiai(bool k)
+    {
+        if (k == kiai)
+            return; // only process if changed
+
+        kiai = k;
+
+        if (k)
+        {
+            SDL_Log("Kiai time!");
+            cannon->setRect({1200, 900, 24, 24});
+            cannon->fire(225, 20, 100, 1000, 3000);
+
+            cannon->setRect({0, 900, 24, 24});
+            cannon->fire(315, 20, 100, 1000, 3000);
+        }
+        else
+        {
+            SDL_Log("Kiai ended.");
+        }
+    }
+
 
     GameScene GameScene::instance;
 
