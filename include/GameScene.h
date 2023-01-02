@@ -75,6 +75,8 @@ namespace yuzu
         fruitwork::Label *scoreLabel = nullptr;
         fruitwork::Label *comboLabel = nullptr;
         fruitwork::Label *accuracyLabel = nullptr;
+        const SDL_Color TEXT_NORMAL_COLOR = {207, 249, 250, 255};
+        const SDL_Color TEXT_KIAI_COLOR = {219, 207, 250, 255};
 
         void initResources();
 

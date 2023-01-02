@@ -83,14 +83,17 @@ namespace yuzu
         scoreLabel = fruitwork::Label::getInstance(793, 0, 390, 98, "0000000");
         scoreLabel->setFontSize(72);
         scoreLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
+        scoreLabel->setColor(TEXT_NORMAL_COLOR);
 
         comboLabel = fruitwork::Label::getInstance(17, 845, 157, 55, "x0");
         comboLabel->setFontSize(40);
         comboLabel->setAlignment(fruitwork::Label::Alignment::LEFT);
+        comboLabel->setColor(TEXT_NORMAL_COLOR);
 
         accuracyLabel = fruitwork::Label::getInstance(943, 98, 240, 55, "100%");
         accuracyLabel->setFontSize(40);
         accuracyLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
+        accuracyLabel->setColor(TEXT_NORMAL_COLOR);
 
         currentBeatmap->loadGameplayInformation(fruitSets, bananaSet, dropTexture, hitSampleSet);
 
@@ -155,24 +158,19 @@ namespace yuzu
             setKiai(k);
         }
 
-        const SDL_Color normalColor = {207, 249, 250, 255};
-        const SDL_Color kiaiColor = {219, 207, 250, 255};
 
         // update score
         std::string scoreText = std::to_string(score->displayScore);
         scoreText.insert(0, 7 - scoreText.length(), '0'); // pad with zeroes
         scoreLabel->setText(scoreText);
-        scoreLabel->setColor(kiai ? kiaiColor : normalColor);
 
         std::string comboText = "x" + std::to_string(score->combo);
         comboLabel->setText(comboText);
-        comboLabel->setColor(kiai ? kiaiColor : normalColor);
 
         std::string accuracyText = std::to_string((int) (score->getAccuracy() * 10000) / 100.0);
         accuracyText = accuracyText.substr(0, accuracyText.find('.') + 3);
         accuracyText += "%";
         accuracyLabel->setText(accuracyText);
-        accuracyLabel->setColor(kiai ? kiaiColor : normalColor);
     }
 
     bool GameScene::exit()
@@ -289,6 +287,10 @@ namespace yuzu
         {
             SDL_Log("Kiai ended.");
         }
+
+        scoreLabel->setColor(kiai ? TEXT_KIAI_COLOR : TEXT_NORMAL_COLOR);
+        comboLabel->setColor(kiai ? TEXT_KIAI_COLOR : TEXT_NORMAL_COLOR);
+        accuracyLabel->setColor(kiai ? TEXT_KIAI_COLOR : TEXT_NORMAL_COLOR);
     }
 
 
