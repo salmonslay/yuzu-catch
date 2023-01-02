@@ -53,7 +53,6 @@ namespace yuzu
         addComponent(pageLabel);
         addComponent(galleryFocus);
 
-        currentPage = 0;
         addGalleryItems(currentPage);
 
         return success;
