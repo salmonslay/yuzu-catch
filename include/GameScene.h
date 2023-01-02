@@ -10,6 +10,7 @@
 #include "Label.h"
 #include "Score.h"
 #include "ConfettiCannon.h"
+#include "ScoreDisplay.h"
 
 namespace yuzu
 {
@@ -68,6 +69,7 @@ namespace yuzu
         // game objects
         Catcher *catcher = nullptr;
         Score *score = nullptr;
+        ScoreDisplay *scoreDisplay = nullptr;
 
         Uint64 startTime = -1;
 

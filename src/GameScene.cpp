@@ -156,8 +156,18 @@ namespace yuzu
                     k = timingPoint.isKiai;
             }
             setKiai(k);
-        }
 
+            if (scoreDisplay == nullptr)
+            {
+                if (currentBeatmap->hitObjects[currentBeatmap->hitObjects.size() - 1]->time + 1500 <= currentTime)
+                {
+                    SDL_Log("Game finished, displaying score.");
+
+                    scoreDisplay = ScoreDisplay::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight, score);
+                    addComponent(scoreDisplay, 100);
+                }
+            }
+        }
 
         // update score
         std::string scoreText = std::to_string(score->displayScore);
@@ -167,10 +177,7 @@ namespace yuzu
         std::string comboText = "x" + std::to_string(score->combo);
         comboLabel->setText(comboText);
 
-        std::string accuracyText = std::to_string((int) (score->getAccuracy() * 10000) / 100.0);
-        accuracyText = accuracyText.substr(0, accuracyText.find('.') + 3);
-        accuracyText += "%";
-        accuracyLabel->setText(accuracyText);
+        accuracyLabel->setText(score->getAccuracyString());
     }
 
     bool GameScene::exit()

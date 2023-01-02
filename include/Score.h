@@ -5,6 +5,7 @@
 #include <thread>
 #include "HitObject.h"
 #include "Banana.h"
+#include "JuiceDrop.h"
 
 namespace yuzu
 {
@@ -13,15 +14,6 @@ namespace yuzu
      * Container for the score of a single play.
      */
     struct Score {
-        enum class Grade {
-            D, // <= 85
-            C, // <= 90
-            B, // <= 94
-            A, // <= 98
-            S, // <= 100
-            SS, // = 100
-        };
-
         int displayScore = 0; // the score displayed on the screen is delayed
 
         int score = 0; // the actual score
@@ -30,6 +22,12 @@ namespace yuzu
 
         int caughtFruits = 0;
         int missedFruits = 0;
+
+        int caughtBananas = 0;
+        int missedBananas = 0;
+
+        int caughtJuiceDrops = 0;
+        int missedJuiceDrops = 0;
 
         int caughtRawScore = 0;
         int missedRawScore = 0;
@@ -42,22 +40,31 @@ namespace yuzu
             return (double) caughtRawScore / (caughtRawScore + missedRawScore);
         }
 
-        Grade getGrade() const
+        std::string getAccuracyString() const
+        {
+            std::string accuracyText = std::to_string((int) (getAccuracy() * 10000) / 100.0);
+            accuracyText = accuracyText.substr(0, accuracyText.find('.') + 3);
+            accuracyText += "%";
+
+            return accuracyText;
+        }
+
+        std::string getGrade() const
         {
             double accuracy = getAccuracy();
 
             if (accuracy == 1.0)
-                return Grade::SS;
+                return "SS";
             if (accuracy > 0.98)
-                return Grade::S;
+                return "S";
             if (accuracy > 0.94)
-                return Grade::A;
+                return "A";
             if (accuracy > 0.90)
-                return Grade::B;
+                return "B";
             if (accuracy > 0.85)
-                return Grade::C;
+                return "C";
 
-            return Grade::D;
+            return "D";
         }
 
         void processHitObject(HitObject *ho, bool kiai = false)
@@ -66,11 +73,9 @@ namespace yuzu
 
             if (ho->getState() == HitObjectState::HIT || ho->getState() == HitObjectState::PLATED)
             {
-
                 if (ho->addsCombo())
                 {
                     combo++;
-                    caughtFruits++;
 
                     maxCombo = std::max(maxCombo, combo);
                 }
@@ -79,19 +84,44 @@ namespace yuzu
                 int comboBonus = giveComboBonus ? (ho->getScore() * combo / 25) : 0;
                 score += (ho->getScore() + comboBonus) * (kiai ? 1.5 : 1.0); // kiai gives 50% bonus
 
-                if (dynamic_cast<Banana *>(ho) == nullptr) // bananas don't give raw score
+                if (dynamic_cast<Banana *>(ho) != nullptr)
+                {
+                    caughtBananas++;
+                    // bananas don't give raw score
+                }
+                else if (dynamic_cast<JuiceDrop *>(ho) != nullptr)
+                {
+                    caughtJuiceDrops++;
                     caughtRawScore += ho->getScore();
+                }
+                else // fruit
+                {
+                    caughtFruits++;
+                    caughtRawScore += ho->getScore();
+                }
             }
             else if (ho->getState() == HitObjectState::MISSED)
             {
                 if (ho->addsCombo())
                 {
                     combo = 0;
-                    missedFruits++;
                 }
 
-                if (dynamic_cast<Banana *>(ho) == nullptr)
+                if (dynamic_cast<Banana *>(ho) != nullptr)
+                {
+                    missedBananas++;
+                    // bananas don't give raw score
+                }
+                else if (dynamic_cast<JuiceDrop *>(ho) != nullptr)
+                {
+                    missedJuiceDrops++;
                     missedRawScore += ho->getScore();
+                }
+                else // fruit
+                {
+                    missedFruits++;
+                    missedRawScore += ho->getScore();
+                }
             }
 
             // add score to display score slowly to make it look nice
