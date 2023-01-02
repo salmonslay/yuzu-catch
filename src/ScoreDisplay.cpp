@@ -1,6 +1,7 @@
 #include <SDL_image.h>
 #include "ScoreDisplay.h"
 #include "ResourceManager.h"
+#include "GalleryScene.h"
 
 namespace yuzu
 {
@@ -52,15 +53,23 @@ namespace yuzu
         hitBananaLabel->setFontSize(48);
         hitBananaLabel->setColor({255, 255, 255, 255});
 
-        scoreLabel = fruitwork::Label::getInstance(336, 678, 528, 45, "Score: " + std::to_string(score->displayScore));
+        scoreLabel = fruitwork::Label::getInstance(336, 578, 528, 45, "Score: " + std::to_string(score->displayScore));
         scoreLabel->setFontSize(36);
         scoreLabel->setColor({255, 255, 255, 255});
         scoreLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
 
-        accLabel = fruitwork::Label::getInstance(336, 723, 528, 45, "Accuracy: " + score->getAccuracyString());
+        accLabel = fruitwork::Label::getInstance(336, 623, 528, 45, "Accuracy: " + score->getAccuracyString());
         accLabel->setFontSize(36);
         accLabel->setColor({255, 255, 255, 255});
         accLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
+
+        // centered back button
+        backButton = fruitwork::Button::getInstance(400, 768, 400, 45, "Back to Menu");
+        backButton->registerCallback([](fruitwork::Button *src)
+                                     {
+                                         fruitwork::sys.setNextScene(GalleryScene::getInstance());
+                                     });
+        backButton->setColor({204, 255, 143});
     }
 
     void ScoreDisplay::draw() const
@@ -87,6 +96,8 @@ namespace yuzu
 
         scoreLabel->draw();
         accLabel->draw();
+
+        backButton->draw();
     }
 
     ScoreDisplay::~ScoreDisplay()
@@ -107,6 +118,21 @@ namespace yuzu
         delete hitBananaLabel;
         delete scoreLabel;
         delete accLabel;
+        delete backButton;
+    }
 
+    void ScoreDisplay::update()
+    {
+        backButton->update();
+    }
+
+    void ScoreDisplay::onMouseDown(const SDL_Event &e)
+    {
+        backButton->onMouseDown(e);
+    }
+
+    void ScoreDisplay::onMouseUp(const SDL_Event &e)
+    {
+        backButton->onMouseUp(e);
     }
 } // yuzu

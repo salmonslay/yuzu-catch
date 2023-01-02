@@ -6,6 +6,7 @@
 #include "Label.h"
 #include "JuiceDrop.h"
 #include "Rectangle.h"
+#include "Button.h"
 
 namespace yuzu
 {
@@ -15,6 +16,12 @@ namespace yuzu
         static ScoreDisplay *getInstance(int x, int y, int w, int h, Score *score);
 
         void draw() const override;
+
+        void update() override;
+
+        void onMouseDown(const SDL_Event &) override;
+
+        void onMouseUp(const SDL_Event &) override;
 
         ~ScoreDisplay() override;
 
@@ -46,6 +53,8 @@ namespace yuzu
 
         fruitwork::Label *scoreLabel;
         fruitwork::Label *accLabel;
+
+        fruitwork::Button *backButton;
     };
 
 } // yuzu
