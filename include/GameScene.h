@@ -80,6 +80,10 @@ namespace yuzu
         const SDL_Color TEXT_NORMAL_COLOR = {207, 249, 250, 255};
         const SDL_Color TEXT_KIAI_COLOR = {219, 207, 250, 255};
 
+        const int PROGRESS_BAR_HEIGHT = 5;
+        fruitwork::Rectangle *progressBar = nullptr;
+        fruitwork::Rectangle *progressBarFill = nullptr;
+
         void initResources();
 
         void startGame();

@@ -95,6 +95,14 @@ namespace yuzu
         accuracyLabel->setAlignment(fruitwork::Label::Alignment::RIGHT);
         accuracyLabel->setColor(TEXT_NORMAL_COLOR);
 
+        progressBar = fruitwork::Rectangle::getInstance(0, constants::gScreenHeight - PROGRESS_BAR_HEIGHT,
+                                                        constants::gScreenWidth, PROGRESS_BAR_HEIGHT,
+                                                        TEXT_NORMAL_COLOR);
+
+        progressBarFill = fruitwork::Rectangle::getInstance(0, constants::gScreenHeight - PROGRESS_BAR_HEIGHT,
+                                                            0, PROGRESS_BAR_HEIGHT,
+                                                            {0, 0, 0, 128});
+
         currentBeatmap->loadGameplayInformation(fruitSets, bananaSet, dropTexture, hitSampleSet);
 
         cannon = fruitwork::ConfettiCannon::getInstance(1240, 900, 24, 24, fruitwork::ResourceManager::getTexturePath("star.png"));
@@ -107,6 +115,8 @@ namespace yuzu
 
         addComponent(backgroundSprite, -100);
         addComponent(backgroundOverlay, -99);
+        addComponent(progressBar, -98);
+        addComponent(progressBarFill, -97);
         addComponent(catcher, 0);
         addComponent(scoreLabel, 1);
         addComponent(comboLabel, 0);
@@ -159,7 +169,7 @@ namespace yuzu
 
             if (scoreDisplay == nullptr)
             {
-                if (currentBeatmap->hitObjects[currentBeatmap->hitObjects.size() - 1]->time + 1500 <= currentTime)
+                if (currentBeatmap->length + 1500 <= currentTime)
                 {
                     SDL_Log("Game finished, displaying score.");
 
@@ -167,6 +177,11 @@ namespace yuzu
                     addComponent(scoreDisplay, 100);
                 }
             }
+
+            // update progress bar
+            SDL_Rect rect = progressBarFill->getRect();
+            rect.w = (int) (constants::gScreenWidth * (currentTime / (currentBeatmap->length + 1500.0)));
+            progressBarFill->setRect(rect);
         }
 
         // update score

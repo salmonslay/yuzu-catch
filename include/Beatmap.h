@@ -66,7 +66,13 @@ namespace yuzu
         std::string audioFilename;
         std::string backgroundFilename;
 
-        /** The beatmap length in milliseconds. */
+        /**
+         * The rough length in milliseconds.
+         * This is less accurate, but can be set without parsing all objects.
+         */
+        int roughLength = 0;
+
+        /** The time of the last hit object in milliseconds. */
         int length = 0;
 
         SDL_Texture *getBackgroundTexture();

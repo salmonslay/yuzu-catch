@@ -87,7 +87,7 @@ namespace yuzu
             {
                 int time;
                 sscanf(line.c_str(), "%d,%d,%d", &discard, &discard, &time);
-                beatmap->length = time + 2500;
+                beatmap->roughLength = time + 2500;
             }
         }
 
@@ -181,7 +181,7 @@ namespace yuzu
                            &timingPoint.sampleType, &discard, &discard, &timingPoint.isUninherited, &timingPoint.isKiai) == EOF)
                     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to parse timing point: %s", line.c_str());
 
-                // inherited timing points changes slider velocity, basically beat length
+                // inherited timing points changes slider velocity, basically beat roughLength
                 if (timingPoint.isUninherited)
                     lastTimingPoint = timingPoint;
                 else if (lastTimingPoint.offset)
@@ -264,7 +264,7 @@ namespace yuzu
                     Fruit *f = Fruit::getInstance(x, time, fruit.baseTexture, fruit.overlayTexture, c, hs);
                     hitObjects.push_back(f);
 
-                    // update beat length by finding the timing point that is closest to the time, but not greater than the time
+                    // update beat roughLength by finding the timing point that is closest to the time, but not greater than the time
                     auto timing = std::find_if(timingPoints.begin(), timingPoints.end(), [time](const TimingPoint &tp)
                     {
                         return tp.offset < time;
@@ -327,6 +327,17 @@ namespace yuzu
             }
         }
 
+        // set last fruit in combo to be last in combo
+        for (int i = hitObjects.size() - 1; i >= 0; i--)
+        {
+            if (dynamic_cast<Fruit *>(hitObjects[i]))
+            {
+                dynamic_cast<Fruit *>(hitObjects[i])->setLastInCombo(true);
+                length = hitObjects[i]->time;
+                break;
+            }
+        }
+
         infile.close();
 
         auto finish = std::chrono::high_resolution_clock::now();
@@ -380,8 +391,8 @@ namespace yuzu
 
     std::string Beatmap::getLengthString() const
     {
-        int minutes = length / 60000;
-        int seconds = (length - minutes * 60000) / 1000;
+        int minutes = roughLength / 60000;
+        int seconds = (roughLength - minutes * 60000) / 1000;
 
         char buffer[6];
         sprintf(buffer, "%02d:%02d", minutes, seconds);
