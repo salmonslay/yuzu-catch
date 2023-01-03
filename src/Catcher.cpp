@@ -133,10 +133,16 @@ namespace yuzu
             if (c == ho)
                 continue;
 
-            auto *f = dynamic_cast<HitObject *>(c);
-            if (f->rectCollidesWith(ho, 20))
+            auto *ho2 = dynamic_cast<HitObject *>(c);
+
+            // this checks for overlaps but completely ignores the y-axis to allow fruits to stack higher even if the detection is far under (the plate)
+            // i was considering editing Sprite::rectCollidesWith to take an optional y-axis parameter,
+            // but that felt kinda hacky and pointless
+            const int threshold = 35;
+            if (ho->getRect().x + ho->getRect().w >= ho2->getRect().x + threshold &&
+                ho->getRect().x <= ho2->getRect().x + ho2->getRect().w - threshold)
             {
-                r.y = f->getLocalRect().y - (rand() % 15 + 15); // between 15-30px above the other fruit
+                r.y = ho2->getLocalRect().y - (rand() % 15 + 15); // between 15-30px above the other fruit
                 break;
             }
         }
