@@ -5,6 +5,7 @@
 #include "Button.h"
 #include "GalleryItem.h"
 #include "ImageButton.h"
+#include "TitleScene.h"
 #include <ResourceManager.h>
 #include <filesystem>
 
@@ -41,15 +42,23 @@ namespace yuzu
         pageLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
         pageLabel->setColor({255, 255, 255, 255});
 
+        fruitwork::Button *returnButton = fruitwork::Button::getInstance(10, 842, 240, 48, "Back to main");
+        returnButton->registerCallback([](fruitwork::Button *src)
+                                       {
+                                           fruitwork::sys.setNextScene(yuzu::TitleScene::getInstance());
+                                       });
+        returnButton->setColor({255, 204, 232, 255});
+
         fruitwork::Sprite *background = fruitwork::Sprite::getInstance(0, 0, constants::gScreenWidth, constants::gScreenHeight,
                                                                        fruitwork::ResourceManager::getTexturePath("background.png"));
 
         galleryFocus = GalleryFocus::getInstance(637, 36);
 
 
-        addComponent(background);
+        addComponent(background, -10);
         addComponent(buttonPreviousPage);
         addComponent(buttonNextPage);
+        addComponent(returnButton);
         addComponent(pageLabel);
         addComponent(galleryFocus);
 
