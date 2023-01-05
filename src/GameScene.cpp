@@ -233,6 +233,8 @@ namespace yuzu
             delete ho;
         currentBeatmap->hitObjects.clear();
 
+        delete score;
+
         Mix_HaltMusic();
 
         return success;
