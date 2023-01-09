@@ -78,11 +78,16 @@ namespace yuzu
         /** The Y point at which the hit object can be hit. */
         static const int HIT_Y = 748;
 
+        /** How many pixels you can hit the hit object within */
+        static const int HIT_WINDOW = 4;
+
         /** The Y point at which the hit object is considered missed. */
-        static const int MISS_Y = HIT_Y + 8;
+        static const int MISS_Y = HIT_Y + HIT_WINDOW;
 
         /** How many milliseconds it should take for the hit object to fall from START_Y to HIT_Y. */
         static const int DROP_TIME = 1000;
+
+        Uint64 lastUpdate = 0;
 
         HitObjectState state = HitObjectState::IDLE;
     };

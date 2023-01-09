@@ -12,6 +12,7 @@ namespace yuzu
     void HitObject::start()
     {
         startTime = SDL_GetTicks64();
+        lastUpdate = startTime;
         state = HitObjectState::ACTIVE;
     }
 
@@ -30,33 +31,44 @@ namespace yuzu
         rect.y = static_cast<int>((START_Y - rect.h) + (HIT_Y - START_Y) * (SDL_GetTicks64() - startTime) / DROP_TIME);
         setRect(rect);
 
-        // check if the hit object is out of hit bounds
-        if ((rect.y + rect.h) > MISS_Y && state == HitObjectState::ACTIVE)
+        // go through all time points since last update and check for collisions
+        for (Uint64 t = lastUpdate; t < SDL_GetTicks64(); t++)
         {
-            state = HitObjectState::MISSED;
-            gameScene->processFruit(this);
-        }
+            int y = static_cast<int>((START_Y - rect.h) + (HIT_Y - START_Y) * (t - startTime) / DROP_TIME);
 
-            // check if the hit object is in hit bounds
-            // since rhythm games are very precise, we can not use collision detection here
-        else if ((rect.y + rect.h) > HIT_Y && state == HitObjectState::ACTIVE)
-        {
-            SDL_Point plateRange = GameScene::getInstance()->getCatcher()->getPlateRange(); // (x, x2)
-
-            // the fruit only needs to be partially in the plate range to be hit, not fully
-            if (rect.x + rect.w > plateRange.x && rect.x < plateRange.y)
+            // check if the hit object is out of hit bounds
+            if ((y + rect.h) > MISS_Y && state == HitObjectState::ACTIVE)
             {
-                // SDL_Log("HIT, summoned %llu ms ago", SDL_GetTicks64() - startTime);
-                state = HitObjectState::HIT;
+                state = HitObjectState::MISSED;
                 gameScene->processFruit(this);
+                break;
+            }
+
+                // check if the hit object is in hit bounds
+                // since rhythm games are very precise, we can not use collision detection here
+            else if ((y + rect.h) > HIT_Y && state == HitObjectState::ACTIVE)
+            {
+                SDL_Point plateRange = GameScene::getInstance()->getCatcher()->getPlateRange(); // (x, x2)
+
+                // the fruit only needs to be partially in the plate range to be hit, not fully
+                if (rect.x + rect.w > plateRange.x && rect.x < plateRange.y)
+                {
+                    // SDL_Log("HIT, summoned %llu ms ago", SDL_GetTicks64() - startTime);
+                    state = HitObjectState::HIT;
+                    gameScene->processFruit(this);
+                    break;
+                }
+            }
+
+                // remove & hide the hit object if it is out of bounds
+            else if (y > constants::gScreenHeight)
+            {
+                state = HitObjectState::HIDDEN;
+                break;
             }
         }
 
-            // remove & hide the hit object if it is out of bounds
-        else if (rect.y > constants::gScreenHeight)
-        {
-            state = HitObjectState::HIDDEN;
-        }
+        lastUpdate = SDL_GetTicks64();
     }
 
 } // yuzu
