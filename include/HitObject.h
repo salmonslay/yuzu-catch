@@ -26,7 +26,7 @@ namespace yuzu
     class HitObject : public fruitwork::Sprite {
     public:
 
-        void setState(HitObjectState state) { this->state = state; }
+        void setState(HitObjectState s) { this->state = s; }
 
         HitObjectState getState() const { return state; }
 
@@ -73,6 +73,8 @@ namespace yuzu
     private:
         /** The time in milliseconds when the hit object was added as a component, aka summoned. */
         Uint64 startTime;
+
+        /** The Y point at which the hit object is spawned. */
         static const int START_Y = -100;
 
         /** The Y point at which the hit object can be hit. */
