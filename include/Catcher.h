@@ -41,14 +41,15 @@ namespace yuzu
         SDL_Texture *textureIdle;
         SDL_Texture *textureKiai;
         SDL_Texture *textureFail;
+        SDL_FRect preciseRect;
+        const float CATCHER_SPEED = 750.0f;
 
-        const int CATCHER_SPEED = 7;
 
         /** Moves the catcher by the given amount. */
-        void moveBy(int x);
+        void moveBy(float x);
 
         /** Milliseconds between each phantom spawn. */
-        const int PHANTOM_INTERVAL = 20;
+        const float PHANTOM_INTERVAL = 100.0;
         /** The last time a phantom was spawned. */
         Uint64 lastPhantomSpawn = 0;
 

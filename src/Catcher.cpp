@@ -7,6 +7,7 @@
 #include "HitObject.h"
 #include "Fruit.h"
 #include "GameScene.h"
+#include "Main.h"
 
 namespace yuzu
 {
@@ -18,6 +19,7 @@ namespace yuzu
 
     Catcher::Catcher(int x, int y, int w, int h) : Sprite(x, y, w, h, nullptr)
     {
+        preciseRect = {static_cast<float>(x), static_cast<float>(y), static_cast<float>(w), static_cast<float>(h)};
         textureIdle = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-idle.png").c_str());
         textureKiai = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-kiai.png").c_str());
         textureFail = IMG_LoadTexture(fruitwork::sys.getRenderer(), fruitwork::ResourceManager::getTexturePath("fruit-catcher-fail.png").c_str());
@@ -33,20 +35,23 @@ namespace yuzu
     {
         fruitwork::Component::update();
 
+        float dashMultiplier = isDash ? 2.0f : 1.0f;
+        float movement = CATCHER_SPEED * yuzu::ses.getElapsedTime() * dashMultiplier;
+
         if (moveRight)
         {
-            moveBy(CATCHER_SPEED * (isDash ? 2 : 1));
+            moveBy(movement);
             setFlip(SDL_FLIP_NONE);
         }
         if (moveLeft)
         {
-            moveBy(-CATCHER_SPEED * (isDash ? 2 : 1));
+            moveBy(-movement);
             setFlip(SDL_FLIP_HORIZONTAL);
         }
 
         if (isDash)
         {
-            if (SDL_GetTicks64() - lastPhantomSpawn > PHANTOM_INTERVAL)
+            if (SDL_GetTicks64() - lastPhantomSpawn > PHANTOM_INTERVAL * yuzu::ses.getElapsedTime())
             {
                 spawnPhantom();
                 lastPhantomSpawn = SDL_GetTicks64();
@@ -87,18 +92,15 @@ namespace yuzu
             moveRight = false;
     }
 
-    void Catcher::moveBy(int x)
+    void Catcher::moveBy(float x)
     {
-        x = static_cast<int>(x * constants::speedMod);
+        preciseRect.x += x;
+        if (preciseRect.x < 0)
+            preciseRect.x = 0;
+        if (preciseRect.x + preciseRect.w > constants::gScreenWidth)
+            preciseRect.x = constants::gScreenWidth - preciseRect.w;
 
-        SDL_Rect rect = getRect();
-        rect.x += x;
-        if (rect.x < 0)
-            rect.x = 0;
-        if (rect.x + rect.w > constants::gScreenWidth)
-            rect.x = constants::gScreenWidth - rect.w;
-
-        setRect(rect);
+        setRect({static_cast<int>(preciseRect.x), static_cast<int>(preciseRect.y), static_cast<int>(preciseRect.w), static_cast<int>(preciseRect.h)});
     }
 
     SDL_Point Catcher::getPlateRange() const
