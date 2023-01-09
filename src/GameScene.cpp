@@ -184,6 +184,9 @@ namespace yuzu
             progressBarFill->setRect(rect);
         }
 
+        score->displayScore = (int) (score->displayScore + (score->score - score->displayScore) * 0.05);
+        score->displayScore = std::min(score->displayScore, score->score);
+
         // update score
         std::string scoreText = std::to_string(score->displayScore);
         scoreText.insert(0, 7 - scoreText.length(), '0'); // pad with zeroes
@@ -234,6 +237,7 @@ namespace yuzu
         currentBeatmap->hitObjects.clear();
 
         delete score;
+        score = nullptr;
 
         Mix_HaltMusic();
 

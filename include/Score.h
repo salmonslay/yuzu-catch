@@ -123,17 +123,6 @@ namespace yuzu
                     missedRawScore += ho->getScore();
                 }
             }
-
-            // add score to display score slowly to make it look nice
-            std::thread([=]
-                        {
-                            int scoreToAdd = (score - previousScore) / 25;
-                            for (int i = 0; i < 25; i++)
-                            {
-                                displayScore += scoreToAdd;
-                                std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 25));
-                            }
-                        }).detach();
         }
 
     };
