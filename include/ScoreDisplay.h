@@ -53,6 +53,7 @@ namespace yuzu
 
         fruitwork::Label *scoreLabel;
         fruitwork::Label *accLabel;
+        fruitwork::Label *comboLabel;
 
         fruitwork::Button *backButton;
     };

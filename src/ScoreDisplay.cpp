@@ -36,24 +36,23 @@ namespace yuzu
         hitIcon = fruitwork::Sprite::getInstance(552, 376, 48, 48, fruitwork::ResourceManager::getTexturePath("section-pass.png"));
         missIcon = fruitwork::Sprite::getInstance(552, 440, 48, 48, fruitwork::ResourceManager::getTexturePath("section-fail.png"));
 
-        hitLabel = fruitwork::Label::getInstance(614, 356, 390, 64, std::to_string(score->caughtFruits));
+        hitLabel = fruitwork::Label::getInstance(614, 356, 390, 64, std::to_string(score->getCaughtFruits()));
         hitLabel->setFontSize(48);
         hitLabel->setColor({255, 255, 255, 255});
 
-        missLabel = fruitwork::Label::getInstance(614, 420, 390, 64, std::to_string(score->missedFruits));
+        missLabel = fruitwork::Label::getInstance(614, 420, 390, 64, std::to_string(score->getMissedFruits()));
         missLabel->setFontSize(48);
         missLabel->setColor({255, 255, 255, 255});
 
         hitBananaBase = fruitwork::Sprite::getInstance(526, 488, 64, 64, fruitwork::ResourceManager::getTexturePath("fruit-bananas.png"));
         hitBananaBase->setColorMod({255, 240, 0});
         hitBananaOverlay = fruitwork::Sprite::getInstance(526, 488, 64, 64, fruitwork::ResourceManager::getTexturePath("fruit-bananas-overlay.png"));
-        int totalBananas = score->caughtBananas + score->missedBananas;
-        std::string hitBananaText = totalBananas != 0 ? std::to_string((int) (score->caughtBananas / (float) (totalBananas) * 100)) + "%" : "100%";
-        hitBananaLabel = fruitwork::Label::getInstance(614, 493, 390, 64, hitBananaText);
+
+        hitBananaLabel = fruitwork::Label::getInstance(614, 493, 390, 64, score->getBananaAccuracyString());
         hitBananaLabel->setFontSize(48);
         hitBananaLabel->setColor({255, 255, 255, 255});
 
-        scoreLabel = fruitwork::Label::getInstance(336, 578, 528, 45, "Score: " + std::to_string(score->displayScore));
+        scoreLabel = fruitwork::Label::getInstance(336, 578, 528, 45, "Score: " + std::to_string(score->getDisplayScore()));
         scoreLabel->setFontSize(36);
         scoreLabel->setColor({255, 255, 255, 255});
         scoreLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
@@ -62,6 +61,11 @@ namespace yuzu
         accLabel->setFontSize(36);
         accLabel->setColor({255, 255, 255, 255});
         accLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
+
+        comboLabel = fruitwork::Label::getInstance(336, 668, 528, 45, "Combo: " + std::to_string(score->getMaxCombo()) + "x");
+        comboLabel->setFontSize(36);
+        comboLabel->setColor({255, 255, 255, 255});
+        comboLabel->setAlignment(fruitwork::Label::Alignment::CENTER);
 
         // centered back button
         backButton = fruitwork::Button::getInstance(400, 768, 400, 45, "Back to Menu");
@@ -96,6 +100,7 @@ namespace yuzu
 
         scoreLabel->draw();
         accLabel->draw();
+        comboLabel->draw();
 
         backButton->draw();
     }
@@ -118,6 +123,7 @@ namespace yuzu
         delete hitBananaLabel;
         delete scoreLabel;
         delete accLabel;
+        delete comboLabel;
         delete backButton;
     }
 

@@ -77,7 +77,7 @@ namespace yuzu
         catcher = Catcher::getInstance((constants::gScreenWidth - catcherWidth) / 2, 734, catcherWidth, catcherHeight);
 
         delete score;
-        score = new Score();
+        score = Score::getInstance();
 
         // ui
         scoreLabel = fruitwork::Label::getInstance(793, 0, 390, 98, "0000000");
@@ -122,6 +122,7 @@ namespace yuzu
         addComponent(comboLabel, 0);
         addComponent(accuracyLabel, 0);
         addComponent(cannon, 0);
+        addComponent(score, 0);
 
         yuzu::ses.registerKeyboardEvent(SDLK_ESCAPE, [this]()
         {
@@ -184,15 +185,12 @@ namespace yuzu
             progressBarFill->setRect(rect);
         }
 
-        score->displayScore = (int) (score->displayScore + (score->score - score->displayScore) * 0.05);
-        score->displayScore = std::min(score->displayScore, score->score);
-
         // update score
-        std::string scoreText = std::to_string(score->displayScore);
+        std::string scoreText = std::to_string(score->getDisplayScore());
         scoreText.insert(0, 7 - scoreText.length(), '0'); // pad with zeroes
         scoreLabel->setText(scoreText);
 
-        std::string comboText = "x" + std::to_string(score->combo);
+        std::string comboText = "x" + std::to_string(score->getCombo());
         comboLabel->setText(comboText);
 
         accuracyLabel->setText(score->getAccuracyString());
@@ -235,9 +233,6 @@ namespace yuzu
         for (auto &ho: currentBeatmap->hitObjects)
             delete ho;
         currentBeatmap->hitObjects.clear();
-
-        delete score;
-        score = nullptr;
 
         Mix_HaltMusic();
 
@@ -285,7 +280,7 @@ namespace yuzu
         }
         else
         {
-            if (score->combo > 15 && ho->addsCombo())
+            if (score->getCombo() > 15 && ho->addsCombo())
                 Mix_PlayChannel(-1, comboBreakSample, 0);
         }
 
