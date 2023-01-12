@@ -76,7 +76,6 @@ namespace yuzu
         int catcherHeight = 648 / 2;
         catcher = Catcher::getInstance((constants::gScreenWidth - catcherWidth) / 2, 734, catcherWidth, catcherHeight);
 
-        delete score;
         score = Score::getInstance();
 
         // ui
