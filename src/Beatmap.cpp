@@ -22,7 +22,7 @@ namespace yuzu
         //SDL_Log("Parsing beatmap: %s...", beatmapPath.c_str());
         auto start = std::chrono::high_resolution_clock::now();
 
-        std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
+        std::ifstream infile(beatmapPath);
 
         auto *beatmap = new Beatmap();
         std::string line;
@@ -148,7 +148,7 @@ namespace yuzu
 
         auto start = std::chrono::high_resolution_clock::now();
 
-        std::ifstream infile(constants::gResPath + "beatmaps/" + beatmapPath);
+        std::ifstream infile(beatmapPath);
 
         std::string line;
         BeatmapSection section = BeatmapSection::NONE;
@@ -353,7 +353,7 @@ namespace yuzu
         if (backgroundTexture != nullptr)
             return backgroundTexture;
 
-        std::string fullPath = constants::gResPath + "beatmaps/" + beatmapDir + "/" + backgroundFilename;
+        std::string fullPath = beatmapDir + "/" + backgroundFilename;
         backgroundTexture = IMG_LoadTexture(fruitwork::sys.getRenderer(), fullPath.c_str());
 
         if (backgroundTexture == nullptr)
